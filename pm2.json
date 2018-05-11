@@ -1,0 +1,14 @@
+{
+    "apps": [
+        {
+            "name": "cms-app",
+            "script": "npm",
+            "args": "run start:prod"
+        },
+        {
+            "name": "cms-app-dev",
+            "script": "npm",
+            "args": "run start"
+        }
+    ]
+}

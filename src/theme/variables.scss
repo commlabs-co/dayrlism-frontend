@@ -1,0 +1,23 @@
+$color-dark-gray: #1f2024;
+$color-white: #eee;
+$pinkColor: #a31569;
+$pwhiteColor: white;
+$turqColor: #7afde3;
+$greyColor: #58595d;
+
+//variables
+$assetpath:'../../../assets/';
+$offsettop:22.1%;
+
+/* ---color--- */
+$color-primary-1:#a31569;
+$color-primary-2:#7afde3;
+
+$color-secondary-1:#58595d;
+$color-secondary-2:white;
+$color-secondary-3:#1f2024;
+
+.pinkColor{color:$color-primary-1;}
+.turqColor{color:$color-primary-2;}
+.greyColor{color:$color-secondary-1;}
+.pwhiteColor{color:$color-secondary-2;}

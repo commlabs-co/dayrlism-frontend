@@ -1,0 +1,16 @@
+@import '../../theme/variables';
+
+.Keys{
+    .container .bridge{
+        padding-top: 200px;
+        text-align: center;
+        .Logo span{
+            display: inherit;
+            max-width: 615px; height: 200px;min-width: 200px;
+            background:url('#{$assetpath}/keyLogo.svg')no-repeat;background-size: 100%;margin: 0 auto;
+        }
+        .Form{
+            color:blue;
+        }
+    }
+}

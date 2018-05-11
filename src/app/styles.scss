@@ -1,0 +1,11 @@
+@import '../theme/variables';
+
+html, body {
+  padding: 0;
+  font-family: 'Exo', sans-serif !important;
+  background-color: $color-dark-gray !important;
+}
+
+.App {
+  color: $color-white;
+}
