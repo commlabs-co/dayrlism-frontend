@@ -4,51 +4,74 @@ import Helmet from 'react-helmet';
 import axios from 'axios';
 import moment from 'moment';
 import * as api from 'helpers/library/api';
-import { Row, Col, Button, Form, Input, Icon, DatePicker, Radio, notification } from 'antd';
+import { Row, Col, Button, Form, Input, Icon, DatePicker, Radio, notification, Select } from 'antd';
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+const Option = Select.Option;
+
+import { Navigator } from '../../components';
+import styles from './styles.scss';
+
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 8 }
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 16 }
+  }
+};
+const tailFormItemLayout = {
+  wrapperCol: {
+    xs: {
+      span: 24,
+      offset: 0
+    },
+    sm: {
+      span: 16,
+      offset: 8
+    }
+  }
+};
 
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 
-import { Navigator } from '../../components';
-import styles from './styles.scss';
 
 const KeyForm = Form.create()(
   class extends React.Component {
     componentDidMount() {
-      // To disabled submit button at the beginning.
       this.props.form.validateFields();    
     }
-    handleNotification = (type) => {
+    handleNotification = (type, msg, des) => {
       notification[type]({
-        message: 'Notification Title',
-        description: 'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+        message: msg,
+        description: des,
       });
     };
     handleSubmit = (e) => {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
-          console.log(values);
-          api
-            .createRequest(
-              values.name,
-              moment(values.date_picker._d).format("YYYY-MM-DD"),
-              values.radio_Gender,
-              values.password,
-              values.email
-            )
-            .then(res => {
+          let guestinfos = {};
+          Object.assign(values, {dob : values.dob? moment(values.dob._d).format("YYYY-MM-DD"):undefined});
+          Object.assign(values, {profile_image : "-"});
+          Object.assign(guestinfos, {guestinfos:values});
+
+          api.createRequest(guestinfos).then(res => {
               if(!res.error){
-                this.handleNotification('success');
+                this.handleNotification('success', res.message, 'Kindly be awaited for approved...');
                 this.props.form.resetFields();
                 this.props.form.validateFields();  
                 return;
+              } else if(res.error){
+                this.handleNotification('info', res.errMessage, 'Ops, you have registered before...');
+              }else {
+                this.handleNotification("error", res.errMessage, "Ops, something went wrong...");
               }
-              this.handleNotification('error');
             });
             return;
         }
@@ -62,85 +85,80 @@ const KeyForm = Form.create()(
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
 
       // Only show error after a field is touched.
-      const calendarError = isFieldTouched('date_picker') && getFieldError('date_picker');
-      const genderError = isFieldTouched('radio_Gender') && getFieldError('radio_Gender');
+      const calendarError = isFieldTouched('dob') && getFieldError('dob');
+      const genderError = isFieldTouched('gender') && getFieldError('gender');
+      const reasonrequestError = isFieldTouched("reason_request") && getFieldError("reason_request");
       const nameError = isFieldTouched('name') && getFieldError('name');
-      const userNameError = isFieldTouched("userName") && getFieldError("userName");
       const emailError = isFieldTouched("email") && getFieldError("email");
       const passwordError = isFieldTouched('password') && getFieldError('password');
 
-      const config = {
-        rules: [{ type: 'object', required: true, message: 'Please select time!' }],
-      };
+      return <Form onSubmit={this.handleSubmit}>
+          <FormItem validateStatus={nameError ? "error" : ""} help={nameError || ""}>
+            {getFieldDecorator("name", {
+              rules: [
+                { required: true, message: "Please input your name!" }
+              ]
+            })(<Input prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />} placeholder="Name" />)}
+          </FormItem>
+          <FormItem validateStatus={emailError ? "error" : ""} help={emailError || ""}>
+            {getFieldDecorator("email", {
+              rules: [
+                {
+                  type: "email",
+                  message: "The input is not valid E-mail!"
+                },
+                {
+                  required: true,
+                  message: "Please input your E-mail!"
+                }
+              ]
+            })(<Input prefix={<Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />} type="email" placeholder="Email" />)}
+          </FormItem>
+          <FormItem validateStatus={reasonrequestError ? "error" : ""} help={reasonrequestError || ""}>
+            {getFieldDecorator("reason_request", {
+              rules: [
+                { required: true, message: "Please select reason!" }
+              ]
+            })(<Select placeholder="Please select reason request">
+                <Option value="knowing_me">Knowing Dayrl</Option>
+                <Option value="for_my_profession">
+                  For His Profession
+                </Option>
+                <Option value="build_website">
+                  Wanna build a website
+                </Option>
+                <Option value="others">Others</Option>
+              </Select>)}
+          </FormItem>
+          <FormItem validateStatus={calendarError ? "error" : ""} help={calendarError || ""}>
+            {getFieldDecorator("dob", {
+              rules: [
+                {
+                  type: "object",
+                  required: true,
+                  message: "Please select time!"
+                }
+              ]
+            })(<DatePicker />)}
+          </FormItem>
 
-      return (
-        <Form onSubmit={this.handleSubmit}>      
-          <FormItem
-            validateStatus={nameError ? 'error' : ''}
-            help={nameError || ''}
-          >
-            {getFieldDecorator('name', {
-              rules: [{ required: true, message: 'Please input your name!' }],
-            })(
-              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Name" />
-            )}
-          </FormItem>
-          <FormItem 
-            validateStatus={calendarError ? 'error' : ''}
-            help={calendarError || ''}
-          >
-            {getFieldDecorator('date_picker', config)(
-              <DatePicker />
-            )}
-          </FormItem>
-          <FormItem
-            validateStatus={genderError ? 'error' : ''}
-            help={genderError || ''}
-          >
-            {getFieldDecorator('radio_Gender',{
-              rules: [{ required: true, message: 'Please input your Gender' }],
-            })(
-              <RadioGroup>
+          <FormItem validateStatus={genderError ? "error" : ""} help={genderError || ""}>
+            {getFieldDecorator("gender", {
+              rules: [
+                { required: true, message: "Please input your Gender" }
+              ]
+            })(<RadioGroup>
                 <RadioButton value="Male">Male</RadioButton>
                 <RadioButton value="Female">Female</RadioButton>
-              </RadioGroup>
-            )}
+              </RadioGroup>)}
           </FormItem>
-          <FormItem
-            validateStatus={passwordError ? 'error' : ''}
-            help={passwordError || ''}
-          >
-            {getFieldDecorator('password', {
-              rules: [{ required: true, message: 'Please input your Password!' }],
-            })(
-              <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
-            )}
-          </FormItem>
-          <FormItem
-            validateStatus={emailError ? 'error' : ''}
-            help={emailError || ''}
-          >
-            {getFieldDecorator('email', {
-              rules: [{
-                type: 'email', message: 'The input is not valid E-mail!',
-              }, {
-                required: true, message: 'Please input your E-mail!',
-              }],
-            })(
-              <Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} type="email" placeholder="Email" />
-            )}
-          </FormItem>
+
           <FormItem>
-            <Button
-              type="primary"
-              htmlType="submit"
-              disabled={hasErrors(getFieldsError())}
-            >
-              Log in
-          </Button>
+            <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
+              Submit
+            </Button>
           </FormItem>
-        </Form>
-      );
+        </Form>;
     }
   }
 );

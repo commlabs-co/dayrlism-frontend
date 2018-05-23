@@ -1,8 +1,8 @@
 /* @flow */
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
-import { Row, Col, Button, Form, Input, Icon } from 'antd';
-import axios from 'axios';
+import { Row, Col, Button, Form, Input, Icon, notification } from "antd";
+import * as api from 'helpers/library/api';
 import { Navigator } from '../../components';
 import styles from './styles.scss';
 const FormItem = Form.Item;
@@ -14,63 +14,84 @@ function hasErrors(fieldsError) {
 const AccessForm = Form.create()(
   class extends React.Component {
     componentDidMount() {
-      // To disabled submit button at the beginning.
       this.props.form.validateFields();
     }
-    handleSubmit = (e) => {
+    handleNotification = (type, msg, des) => {
+      notification[type]({
+        message: msg,
+        description: des
+      });
+    };
+    handleSubmit = e => {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
+          api.loginAccess(values.userName, values.password).then(res => {
+            if (!res.error) {
+              this.handleNotification('success', res.message, 'Going to log you in...');
+              this.props.form.resetFields();
+              this.props.form.validateFields();
+              console.log(res);
+              return;
+            } else if (res.error) {
+              this.handleNotification('info', res.errMessage, 'Ops, admin hasnt approved you yet, kindly wait for hashkey from dayrl soon...');
+            } else {
+              this.handleNotification('error', res.errMessage, 'Ops, something went wrong...');
+            }
+          });
         }
       });
-      axios.get('http://localhost:1313/guestLists', {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'content-type': 'application/x-www-form-urlencoded'
-        }
-      }).then(function (response) {
-        console.log(response.data.data);
-      }).catch(function (error) {
-        if (error.response) {
-          console.log(error.response.headers);
-        }
-        else if (error.request) {
-          console.log(error.request);
-        }
-        else {
-          console.log(error.message);
-        }
-        console.log(error.config);
-      });
-    }
+    };
     render() {
-      const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+      const {
+        getFieldDecorator,
+        getFieldsError,
+        getFieldError,
+        isFieldTouched
+      } = this.props.form;
 
       // Only show error after a field is touched.
-      const userNameError = isFieldTouched('userName') && getFieldError('userName');
-      const passwordError = isFieldTouched('password') && getFieldError('password');
-      
+      const userNameError =
+        isFieldTouched("userName") && getFieldError("userName");
+      const passwordError =
+        isFieldTouched("password") && getFieldError("password");
+
       return (
         <Form layout="inline" onSubmit={this.handleSubmit}>
           <FormItem
-            validateStatus={userNameError ? 'error' : ''}
-            help={userNameError || ''}
+            validateStatus={userNameError ? "error" : ""}
+            help={userNameError || ""}
           >
-            {getFieldDecorator('userName', {
-              rules: [{ required: true, message: 'Please input your username!' }],
+            {getFieldDecorator("userName", {
+              rules: [
+                { required: true, message: "Please input your username!" }
+              ]
             })(
-              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+              <Input
+                prefix={
+                  <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
+                }
+                placeholder="Username"
+              />
             )}
           </FormItem>
           <FormItem
-            validateStatus={passwordError ? 'error' : ''}
-            help={passwordError || ''}
+            validateStatus={passwordError ? "error" : ""}
+            help={passwordError || ""}
           >
-            {getFieldDecorator('password', {
-              rules: [{ required: true, message: 'Please input your Password!' }],
+            {getFieldDecorator("password", {
+              rules: [
+                { required: true, message: "Please input your Password!" }
+              ]
             })(
-              <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+              <Input
+                prefix={
+                  <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
+                }
+                type="password"
+                placeholder="Password"
+              />
             )}
           </FormItem>
           <FormItem>
@@ -80,7 +101,7 @@ const AccessForm = Form.create()(
               disabled={hasErrors(getFieldsError())}
             >
               Log in
-          </Button>
+            </Button>
           </FormItem>
         </Form>
       );

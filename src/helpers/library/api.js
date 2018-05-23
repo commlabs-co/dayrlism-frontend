@@ -4,18 +4,20 @@ export async function fetchGuestList() {
     return await fetchJSON('/guestLists');
 }
 
-export async function createRequest(name, dob, gendar, password, email) {
-    return await fetchJSON('/guestRequest', {
+export async function loginAccess(email, token) {
+    return await fetchJSON('/login/guestUser', {
         method: 'post',
         data: {
-            "guestinfos": {
-                reason_request: "viewing infos",
-                name,
-                email,
-                dob,
-                profile_image: "-"
-            }
+            email,
+            token
         }
+    });
+}
+
+export async function createRequest(data) {
+    return await fetchJSON('/guestRequest', {
+        method: 'post',
+        data
     });
 }
 
