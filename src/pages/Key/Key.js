@@ -164,7 +164,15 @@ const KeyForm = Form.create()(
 );
 
 export default class Key extends PureComponent {
+  componentDidMount(){
+    console.log(this.props.history);
+    
+    if(this.props.route.authNeeded){
+      this.props.history.push('/');
+    }
+  }
   render() {
+    
     return (
       <div className={styles.Keys}>
         <Helmet title="Keys" />

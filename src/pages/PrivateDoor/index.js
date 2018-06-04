@@ -4,7 +4,7 @@ import loadable from 'loadable-components';
 
 import { ErrorDisplay, Loading } from '../../components';
 
-export default loadable(() => import('./UserInfo'), {
+export default loadable(() => import('./PrivateDoor'), {
   ErrorComponent: ErrorDisplay,
   LoadingComponent: Loading
 });

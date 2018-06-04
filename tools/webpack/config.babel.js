@@ -7,7 +7,6 @@ import CompressionPlugin from 'compression-webpack-plugin';
 import ImageminPlugin from 'imagemin-webpack-plugin';
 import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-require('dotenv').config();
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isDev = nodeEnv === 'development';
@@ -43,8 +42,9 @@ const getPlugins = () => {
       __CLIENT__: true,
       __SERVER__: false,
       __DEV__: isDev,
-      __APIURL__ : `'${process.env.API_URL}'`,
-      __TOKENKEY__ : `'${process.env.TOKEN_KEY}'`
+      __APIURL__ : `'${process.env.APIURL}'`,
+      __TOKEN__ : `'${process.env.TOKEN}'`,
+      __DBPASS__ : `'${process.env.DBPASS}'`
     }),
     new FriendlyErrorsWebpackPlugin()
   ];

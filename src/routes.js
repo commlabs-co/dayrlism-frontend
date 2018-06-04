@@ -1,15 +1,13 @@
 /* @flow */
 
-// import type { Dispatch } from './types';
-
-import { fetchUserIfNeeded } from './actions/user';
+import { fetchAccessIfNeeded } from './actions/access';
 import App from './app';
 import {
   asyncHome,
   asyncKey,
   asyncAbout,
   asyncAccess,
-  asyncUserInfo,
+  asyncPrivateDoor,
   NotFound
 } from './pages';
 
@@ -35,12 +33,13 @@ export default [
       {
         path: '/access',
         exact: true,
-        component: asyncAccess
+        component: asyncAccess,
+        loadData: ({ params }: Object) => [fetchAccessIfNeeded(params.id)]
       },
       {
-        path: '/UserInfo/:id',
-        component: asyncUserInfo,
-        loadData: ({ params }: Object) => [fetchUserIfNeeded(params.id)]
+        path: '/privatedoor',
+        exact: true,
+        component: asyncPrivateDoor
       },
       {
         component: NotFound

@@ -6,13 +6,8 @@ import type { Store as ReduxStore } from 'redux';
 import type { Reducers } from '../reducers';
 
 // Reducers
-export type Home = {
-  +readyStatus: string,
-  +err: any,
-  +list: Array<Object>
-};
 
-export type UserInfo = {
+export type AccessInfo = {
   +[userId: string]: {
     +readyStatus: string,
     +err: any,
@@ -20,11 +15,6 @@ export type UserInfo = {
   }
 };
 
-export type Request = {
-  +readyStatus: string,
-  +err: any,
-  +info: Object
-};
 
 // State
 type $ExtractFunctionReturn = <V>(v: (...args: any) => V) => V; // eslint-disable-line no-undef
@@ -32,12 +22,9 @@ export type ReduxState = $ObjMap<Reducers, $ExtractFunctionReturn>; // eslint-di
 
 // Action
 export type Action =
-  | { type: 'USERS_REQUESTING' }
-  | { type: 'USERS_SUCCESS', data: Array<Object> }
-  | { type: 'USERS_FAILURE', err: any }
-  | { type: 'USER_REQUESTING', userId: string }
-  | { type: 'USER_SUCCESS', userId: string, data: Object }
-  | { type: 'USER_FAILURE', userId: string, err: any };
+  | { type: 'AUTHENTICATING', userId: string }
+  | { type: 'AUTHENTICATE_SUCCESS', userId: string, data: Object }
+  | { type: 'AUTHENTICATE_FAILURE', userId: string, err: any };
 
 export type Dispatch = (
   action: Action | ThunkAction | PromiseAction | Array<Action>

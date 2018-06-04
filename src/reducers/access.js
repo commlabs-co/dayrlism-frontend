@@ -2,29 +2,29 @@
 
 import fp from 'lodash/fp';
 
-import type { UserInfo, Action } from '../types';
+import type { AccessInfo, Action } from '../types';
 
-type State = UserInfo;
+type State = AccessInfo;
 
 export default (state: State = {}, action: Action): State => {
   switch (action.type) {
-    case 'USER_REQUESTING':
+    case 'AUTHENTICATING':
       return fp.assign(state, {
         [action.userId]: {
-          readyStatus: 'USER_REQUESTING'
+          readyStatus: 'AUTHENTICATING'
         }
       });
-    case 'USER_FAILURE':
+    case 'AUTHENTICATE_FAILURE':
       return fp.assign(state, {
         [action.userId]: {
-          readyStatus: 'USER_FAILURE',
+          readyStatus: 'AUTHENTICATE_FAILURE',
           err: action.err
         }
       });
-    case 'USER_SUCCESS':
+    case 'AUTHENTICATE_SUCCESS':
       return fp.assign(state, {
         [action.userId]: {
-          readyStatus: 'USER_SUCCESS',
+          readyStatus: 'AUTHENTICATE_SUCCESS',
           info: action.data
         }
       });

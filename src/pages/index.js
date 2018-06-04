@@ -4,7 +4,7 @@ import asyncHome from './Home';
 import asyncKey from './Key';
 import asyncAbout from './About';
 import asyncAccess from './Access';
-import asyncUserInfo from './UserInfo';
+import asyncPrivateDoor from './PrivateDoor';
 import NotFound from './NotFound';
 
 export {
@@ -12,6 +12,6 @@ export {
   asyncKey,
   asyncAbout,
   asyncAccess,
-  asyncUserInfo,
+  asyncPrivateDoor,
   NotFound
 };

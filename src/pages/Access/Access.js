@@ -1,11 +1,29 @@
 /* @flow */
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
-import { Row, Col, Button, Form, Input, Icon, notification } from "antd";
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { hot } from 'react-hot-loader';
+import { Row, Col, Button, Form, Input, Icon, notification, Spin, message } from 'antd';
+import { AuthenticationLogin } from 'helpers/auth';
 import * as api from 'helpers/library/api';
 import { Navigator } from '../../components';
+import * as actionAccess from '../../actions/access';
+import type {
+  AccessInfo as UserAccessType,
+  Dispatch,
+  ReduxState
+} from '../../types';
 import styles from './styles.scss';
 const FormItem = Form.Item;
+const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+
+type Props = {
+  access: UserAccessType,
+  match: Object,
+  fetchAccessIfNeeded: (id: string) => void
+};
 
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -14,7 +32,7 @@ function hasErrors(fieldsError) {
 const AccessForm = Form.create()(
   class extends React.Component {
     componentDidMount() {
-      this.props.form.validateFields();
+      this.props.form.validateFields();   
     }
     handleNotification = (type, msg, des) => {
       notification[type]({
@@ -32,6 +50,9 @@ const AccessForm = Form.create()(
               this.handleNotification('success', res.message, 'Going to log you in...');
               this.props.form.resetFields();
               this.props.form.validateFields();
+              AuthenticationLogin(res.jwttoken);
+              message.success(`HELLO! `);              
+              this.props.history.push('/');
               console.log(res);
               return;
             } else if (res.error) {
@@ -44,14 +65,7 @@ const AccessForm = Form.create()(
       });
     };
     render() {
-      const {
-        getFieldDecorator,
-        getFieldsError,
-        getFieldError,
-        isFieldTouched
-      } = this.props.form;
-
-      // Only show error after a field is touched.
+      const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
       const userNameError = isFieldTouched("userName") && getFieldError("userName");
       const passwordError = isFieldTouched("password") && getFieldError("password");
 
@@ -71,7 +85,8 @@ const AccessForm = Form.create()(
               <Input prefix={ <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} /> } type="password" placeholder="Password" />
             )}
           </FormItem>
-          <FormItem> <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())} > Log in </Button>
+          <FormItem>
+            <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())} > Log in </Button>
           </FormItem>
         </Form>
       );
@@ -79,19 +94,37 @@ const AccessForm = Form.create()(
   }
 );
 
-export default class Access extends PureComponent {
-  
+export  class Access extends PureComponent {
+  componentDidMount() {
+    const { fetchAccessIfNeeded, match } = this.props;
+    fetchAccessIfNeeded(match.params.id);
+  }
+
+  renderAccess = () => {
+    const { access, match: { params } } = this.props;
+    const accessById = access[params.id];
+
+    console.log(accessById);
+
+    if (!accessById || accessById.readyStatus === 'AUTHENTICATING') {
+      return <Spin indicator={antIcon} />;
+    } else if (accessById.readyStatus === 'AUTHENTICATE_FAILURE') {
+      return <p>Oops, Failed to load info!</p>;
+    } 
+    
+    return <AccessForm />;
+  }
 
   render() {
     return (
       <div className={styles.Access}>
-        <Helmet title="Home" />
+        <Helmet title="Access" />
         <Navigator />
         <div className={styles.container}>
           <Row className={styles.bridge}>
             <Col className={styles.Logo} span={24}><span/></Col>
             <Col className={styles.Form} span={24}>
-              <AccessForm />
+              {this.renderAccess()}
             </Col>
           </Row>
         </div>
@@ -99,3 +132,15 @@ export default class Access extends PureComponent {
     );
   }
 }
+
+
+const connector = connect(
+  ({ access }: ReduxState) => ({ access }),
+  (dispatch: Dispatch) => ({
+    fetchAccessIfNeeded: (id: string) =>
+      dispatch(actionAccess.fetchAccessIfNeeded(id))
+  })
+);
+
+// Enable hot reloading for async componet
+export default compose(hot(module), withRouter, connector)(Access);

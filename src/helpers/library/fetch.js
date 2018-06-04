@@ -1,13 +1,11 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:1313';
-
 export async function fetchJSON(input, opts) {   
     console.log(opts);
     
     try {
         const { data, status, statusText } = await axios({
-            url: `${API_URL}${input}`,
+            url: `${__APIURL__}${input}`,
             ...opts
         });
         return data;
