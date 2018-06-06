@@ -16,7 +16,7 @@ export async function fetchJSON(input, opts) {
 
 export async function fetchRemoteJSON(input, opts) {
     try {
-        const { data } = await axios({
+        const { data, status, statusText  } = await axios({
             url: `${input}`,
             ...opts
         });

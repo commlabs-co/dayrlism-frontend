@@ -9,9 +9,11 @@ tools/flow
 /src/pages/About
 /src/pages/Key
 /src/pages/Access
+/src/pages/PrivateDoor
 
 
 /src/components/Navigator
 /src/components/Loading
+/src/components/IGCard
 
 /src/actions

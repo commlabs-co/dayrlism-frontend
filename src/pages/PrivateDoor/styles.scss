@@ -1,5 +1,17 @@
 @import '../../theme/variables';
 
 .PrivateDoor{
-  color:black;
+  .container{
+    color:white;
+
+    .stepsContent {
+      margin-top: 16px;
+      border-radius: 6px;
+      min-height: 200px;
+    }
+
+    .stepsAction {
+      margin-top: 24px;
+    }
+  }
 }

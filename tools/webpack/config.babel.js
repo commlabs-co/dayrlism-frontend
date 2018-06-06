@@ -43,8 +43,8 @@ const getPlugins = () => {
       __SERVER__: false,
       __DEV__: isDev,
       __APIURL__ : `'${process.env.APIURL}'`,
-      __TOKEN__ : `'${process.env.TOKEN}'`,
-      __DBPASS__ : `'${process.env.DBPASS}'`
+      __IGAPIURL__ : `'${process.env.IGAPIURL}'`,
+      __IGCLIENTID__ : `'${process.env.IGCLIENTID}'`
     }),
     new FriendlyErrorsWebpackPlugin()
   ];

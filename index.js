@@ -9,8 +9,8 @@ global.__SERVER__ = true;
 global.__DEV__ = process.env.NODE_ENV === 'development';
 
 global.__APIURL__ = process.env.APIURL;
-global.__TOKEN__ = process.env.TOKEN;
-global.__DBPASS__ = process.env.DBPASS;
+global.__IGAPIURL__ = process.env.IGAPIURL;
+global.__IGCLIENTID__ = process.env.IGCLIENTID;
 
 // Run assets require hooks
 require('./tools/webpack/hooks')();

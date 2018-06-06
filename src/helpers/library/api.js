@@ -1,9 +1,19 @@
 import { fetchJSON, fetchRemoteJSON } from './fetch';
 
+//GET---------------------------------------------
 export async function fetchGuestList() {
     return await fetchJSON('/guestLists');
 }
 
+export async function getIgSelfUser(token) {
+    return await fetchRemoteJSON(`${__IGAPIURL__}/users/self/?access_token=${token}`);
+}
+
+export async function getIgRecentPost(token) {
+    return await fetchRemoteJSON(`${__IGAPIURL__}/users/self/media/recent/?access_token=${token}`);
+}
+
+//POST---------------------------------------------
 export async function loginAccess(email, token) {
     return await fetchJSON('/login/guestUser', {
         method: 'post',

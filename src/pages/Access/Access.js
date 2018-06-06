@@ -51,8 +51,9 @@ const AccessForm = Form.create()(
               this.props.form.resetFields();
               this.props.form.validateFields();
               AuthenticationLogin(res.jwttoken);
+              // this.props.history.push('/');
+              window.location = '/privatedoor';
               message.success(`HELLO! `);              
-              this.props.history.push('/');
               console.log(res);
               return;
             } else if (res.error) {
