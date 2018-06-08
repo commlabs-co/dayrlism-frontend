@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import InstagramLogin from 'react-instagram-login';
+import FacebookLogin from 'react-facebook-login';
 import { Icon, Alert, Steps, Button, message } from 'antd';
 import PropTypes from 'prop-types';
 import { AuthState, SessionData } from 'helpers/auth';
@@ -53,6 +54,12 @@ export default class PrivateDoor extends PureComponent {
     const responseInstagram = (response) => {
       cookie.set('igtoken', response, { expires: 1 });
     }
+    const responseFacebook = (response) => {
+      console.log(response);
+    }
+    const componentClicked = (response) => {
+      console.log(response);
+    }
 
     return(
       <div className={styles.container}>
@@ -74,6 +81,12 @@ export default class PrivateDoor extends PureComponent {
                 <Icon type="instagram" />
                 <span> Login with Instagram</span>
               </InstagramLogin>
+              <FacebookLogin
+                appId="174974206508127"
+                autoLoad={true}
+                fields="name,email,picture"
+                onClick={componentClicked}
+                callback={responseFacebook} />
             </div>
           }
           {
