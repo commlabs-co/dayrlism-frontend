@@ -1,0 +1,26 @@
+@import '../../theme/variables';
+
+.UserList {
+  background-color: red;
+  color: $color-white;
+
+  ul {
+    padding-left: 17px;
+
+    li {
+      margin-bottom: 0.5em;
+    }
+  }
+
+  a {
+    color: $color-white;
+  }
+}
+
+.Test{
+  background-color: yellow;
+}
+
+.Testtest{
+  background-color: aqua;
+}
