@@ -41,10 +41,10 @@ const shouldFetchAccess = (state: ReduxState, userId: string): boolean => {
   // or your reducer hot reloading won't updated on the view
   if (__DEV__) return true;
 
-  const loginInfo = state.loginInfo[userId];
+  const access = state.access[userId];
 
   // Fetching data once in production
-  if (loginInfo && loginInfo.readyStatus === 'AUTHENTICATE_SUCCESS')
+  if (access && access.readyStatus === 'AUTHENTICATE_SUCCESS')
     return false;
 
   return true;
