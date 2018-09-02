@@ -1,15 +1,15 @@
 import axios from 'axios';
 
-export async function fetchJSON(input, opts) {   
+export async function fetchJSON(input, opts) {
     console.log(opts);
-    
+
     try {
         const { data, status, statusText } = await axios({
             url: `${__APIURL__}${input}`,
             ...opts
         });
         return data;
-    } catch(err) {        
+    } catch(err) {
         return err;
     }
 }

@@ -44,7 +44,7 @@ function hasErrors(fieldsError) {
 const KeyForm = Form.create()(
   class extends React.Component {
     componentDidMount() {
-      this.props.form.validateFields();    
+      this.props.form.validateFields();
     }
     handleNotification = (type, msg, des) => {
       notification[type]({
@@ -56,6 +56,8 @@ const KeyForm = Form.create()(
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
+          console.log(values);
+
           let guestinfos = {};
           Object.assign(values, {dob : values.dob? moment(values.dob._d).format("YYYY-MM-DD"):undefined});
           Object.assign(values, {profile_image : "-"});
@@ -65,7 +67,7 @@ const KeyForm = Form.create()(
               if(!res.error){
                 this.handleNotification('success', res.message, 'Kindly be awaited for approved...');
                 this.props.form.resetFields();
-                this.props.form.validateFields();  
+                this.props.form.validateFields();
                 return;
               } else if(res.error){
                 this.handleNotification('info', res.errMessage, 'Ops, you have registered before...');
@@ -76,10 +78,10 @@ const KeyForm = Form.create()(
             return;
         }
         this.handleNotification('error');
-        
+
       });
-      
-      
+
+
     }
     render() {
       const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
@@ -166,13 +168,13 @@ const KeyForm = Form.create()(
 export default class Key extends PureComponent {
   componentDidMount(){
     console.log(this.props.history);
-    
+
     if(this.props.route.authNeeded){
       this.props.history.push('/');
     }
   }
   render() {
-    
+
     return (
       <div className={styles.Keys}>
         <Helmet title="Keys" />
@@ -181,7 +183,7 @@ export default class Key extends PureComponent {
           <Row className={styles.bridge}>
             <Col className={styles.Logo} span={24}><span /></Col>
             <Row className={styles.Form}>
-              <KeyForm />              
+              <KeyForm />
             </Row>
           </Row>
         </div>
