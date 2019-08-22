@@ -1,9 +1,0 @@
-{
-    "apps": [
-        {
-            "name": "dayrlism-app",
-            "script": "npm",
-            "args": "run start:prod"
-        }
-    ]
-}

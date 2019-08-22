@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <!-- Metas -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="Dayrl, a full stack JS developer, he will develop a fully funcitional web application from backend(NodeJS) to the frontend. In addition, he's major in work are mostly in Frontend Development, with ReactJS ES6 or Typescript, he will get involve as well in backend whenever there is a need of his expertise." />
+    <meta name="description" content="Dayrl, a full stack JS developer, he will develop a fully funcitional web application from backend(NodeJS) to the frontend. In addition, he's major in work are mostly in Frontend Development, with ReactJS ES6 or Typescript, he will get involve as well in backend whenever there is a need of his expertise." />
+    <meta name="author" content="Dayrl Lee" />
+    <meta name="google-site-verification" content="JM_SGf8vbt6iUqEPskbPOjWNUkZP1N_7z8_FvvunlM8" />
+    <!-- Title  -->
+    <title>O2 Bill Calc</title>
+    <style>
+        #priceTable>div>span{border:1px solid black;}
+        #priceDiff>div>span{border:1px solid black;}
+        #tenantUnits>div>span{border:1px solid black;}
+        #priceOweTable>div>span{border:1px solid black;}
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <div>Usage Calculator</div>
+        House Usage: <input id="house" type="text" ><br>
+        <!-- Room1 Usage: <input id="room1" type="text" ><br> -->
+        <!-- Room2 Usage: <input id="room2" type="text" ><br> -->
+        <!-- Room3 Usage: <input id="room3" type="text" ><br> -->
+        Room4 Usage: <input id="room4" type="text" ><br>
+        <!-- Room5 Usage: <input id="room5" type="text" ><br> -->
+        <input id="submitBTN" type="submit" value="Submit">
+        <div id="display"></div>
+    <div/>
+    <div>Tracking Record</div>
+    <div id="priceTable"></div>
+    <div>Last Record Differences</div>
+    <div id="priceDiff"></div>
+    <div>Tenant Units</div>
+    <div id="tenantUnits"></div>
+    <div>Tenant Price(RM)</div>
+    <div id="priceOweTable"></div>
+
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="js/jquery-migrate-3.0.0.min.js"></script>
+    <script>
+        var APIURL = 'https://o2dash.dayrlism.info';
+
+         $.get(APIURL + '/electrictracks', function (res) {
+             var lastIndex = res.length-1;
+             var secondlastIndex = res.length-2;
+             var lastOutcome = res[lastIndex];
+             var secondlastOutcome = res[secondlastIndex];
+             var diff = calCulateDiff(lastOutcome, secondlastOutcome);
+             var stack = calCulateUnitStacking(res);
+             var price = calCulatePrice(stack);
+
+            $('#priceOweTable').append(
+                 $(
+                     '<div>' +
+                     '<span>' + price.R1Usage + ' </span>' +
+                     '<span>' + price.R2Usage + ' </span>' +
+                     '<span>' + price.R3Usage + ' </span>' +
+                     '<span>' + price.R4Usage + ' </span>' +
+                     '<span>' + price.R5Usage + ' </span>' +
+                     '</div>'
+                 )
+             );
+
+             $('#tenantUnits').append(
+                 $(
+                     '<div>' +
+                     '<span>' + stack.R1Usage + ' </span>' +
+                     '<span>' + stack.R2Usage + ' </span>' +
+                     '<span>' + stack.R3Usage + ' </span>' +
+                     '<span>' + stack.R4Usage + ' </span>' +
+                     '<span>' + stack.R5Usage + ' </span>' +
+                     '</div>'
+                 )
+             );
+
+             $('#priceDiff').append(
+                 $(
+                     '<div>' +
+                     '<span>' + diff.R1UsageDiff + ' </span>' +
+                     '<span>' + diff.R2UsageDiff + ' </span>' +
+                     '<span>' + diff.R3UsageDiff + ' </span>' +
+                     '<span>' + diff.R4UsageDiff + ' </span>' +
+                     '<span>' + diff.R5UsageDiff + ' </span>' +
+                     '</div>'
+                 )
+             );
+                $.each(res, function (index, value) {
+                    // console.log(JSON.parse(value.Status));
+
+                    $('#priceTable').append(
+                        $(
+                            '<div>'+
+                                '<span>' + value.R1Usage+' </span>'+
+                                '<span>' + value.R2Usage + ' </span>'+
+                                '<span>' + value.R3Usage+' </span>'+
+                                '<span>' + value.R4Usage + ' </span>'+
+                                '<span>' + value.R5Usage + ' </span>'+
+                            '</div>'
+                        )
+                    );
+                });
+            });
+
+        $('#submitBTN').on('click', function() {
+            //1st 200 0.218
+            //2st 100 0.334
+            var houseUsage=$('#house').val();
+            var roomUsage1=$('#room1').val();
+            var roomUsage2=$('#room2').val();
+            var roomUsage3=$('#room3').val();
+            var roomUsage4=$('#room4').val();
+            var roomUsage5=$('#room5').val();
+
+            var shareDivide= houseUsage- (roomUsage4);
+            // var shareDivide= houseUsage- (roomUsage1+ roomUsage2+ roomUsage3+ roomUsage4+ roomUsage5);
+
+            var shareDivide =feeCalculate(shareDivide)/2;
+            var housePaying =feeCalculate(houseUsage);
+            var roomPaying1 =feeCalculate(roomUsage1)+ shareDivide;
+            var roomPaying2 =feeCalculate(roomUsage2)+ shareDivide;
+            var roomPaying3 =feeCalculate(roomUsage3)+ shareDivide;
+            var roomPaying4 =feeCalculate(roomUsage4)+ shareDivide;
+            var roomPaying5 =feeCalculate(roomUsage5)+ shareDivide;
+
+
+            console.log(shareDivide)
+            console.log(housePaying)
+            // console.log(roomPaying1)
+            // console.log(roomPaying2)
+            // console.log(roomPaying3)
+            // console.log(roomPaying4)
+            // console.log(roomPaying5)
+            
+
+            // $('#display').append( $( "<div> R1 Price: RM" + roomPaying1 + "</div>" ) );
+            // $('#display').append( $( "<div> R2 Price: RM" + roomPaying2 + "</div>" ) );
+            $('#display').append( $( "<div> R4 Price: RM" + roomPaying4 + "</div>" ) );
+            // $('#display').append( $( "<div> R5 Price: RM" + roomPaying5 + "</div>" ) );
+            $('#display').append( $( "<div> Total: RM" + housePaying + "</div>" ) );
+        });
+
+        function feeCalculate(usage){
+            var rate100 = 0.218,
+            rate300 = 0.334,
+            rate600 = 0.516,
+            rate900 = 0.546;
+            var leftoverUsage = usage;
+
+            if(leftoverUsage<=200){
+                return rate100 * leftoverUsage;
+            }
+
+            if(leftoverUsage>200){
+                leftoverUsage = leftoverUsage - 200;
+
+                return (200 * rate100) + (leftoverUsage * rate300)
+            }else if (leftoverUsage > 300&& leftoverUsage<600) {
+                leftoverUsage = leftoverUsage - 300;
+
+                return (200 *rate100)+(100*rate300)+(leftoverUsage* rate600)
+            }else if (leftoverUsage > 600) {
+                leftoverUsage = leftoverUsage - 600;
+
+                return (200 * rate100) + (100 * rate300) + (300 * rate600)+(leftoverUsage * rate900)
+            }
+            
+        }
+        
+        function calCulateDiff(obj1, obj2){
+            return{
+                'R1UsageDiff':(obj1.R1Usage- obj2.R1Usage).toFixed(2),
+                'R2UsageDiff':(obj1.R2Usage- obj2.R2Usage).toFixed(2),
+                'R3UsageDiff':(obj1.R3Usage- obj2.R3Usage).toFixed(2),
+                'R4UsageDiff':(obj1.R4Usage- obj2.R4Usage).toFixed(2),
+                'R5UsageDiff':(obj1.R5Usage- obj2.R5Usage).toFixed(2),
+            }
+        }
+
+        function calCulateUnitStacking(arr){
+            var R1Usage=0, R2Usage = 0, R3Usage = 0, R4Usage = 0, R5Usage = 0;
+            $.each(arr, function (index, value) {
+                var roomStatus =returnStatus(value.UsageStatus);
+                // console.log(roomStatus)
+                R1Usage = !roomStatus.R1UsageStatus?R1Usage+value.R1Usage:R1Usage;
+                R2Usage = !roomStatus.R2UsageStatus?R2Usage+value.R2Usage:R2Usage;
+                R3Usage = !roomStatus.R3UsageStatus?R3Usage+value.R3Usage:R3Usage;
+                R4Usage = !roomStatus.R4UsageStatus?R4Usage+value.R4Usage:R4Usage;
+                R5Usage = !roomStatus.R5UsageStatus?R5Usage+value.R5Usage:R5Usage;
+            });
+            return {
+                R1Usage,
+                R2Usage,
+                R3Usage,
+                R4Usage,
+                R5Usage,
+            }
+        }
+
+        function calCulatePrice(stack){
+
+            return{
+                R1Usage:feeCalculate(stack.R1Usage).toFixed(2),
+                R2Usage:feeCalculate(stack.R2Usage).toFixed(2),
+                R3Usage:feeCalculate(stack.R3Usage).toFixed(2),
+                R4Usage:feeCalculate(stack.R4Usage).toFixed(2),
+                R5Usage:feeCalculate(stack.R5Usage).toFixed(2),
+            }
+        }
+
+        function returnStatus(status){
+            var roomStatus=status.split(',');
+            
+            return{
+                R1UsageStatus:roomStatus[0].split(':')[1]==='true',
+                R2UsageStatus:roomStatus[1].split(':')[1]==='true',
+                R3UsageStatus:roomStatus[2].split(':')[1]==='true',
+                R4UsageStatus:roomStatus[3].split(':')[1]==='true',
+                R5UsageStatus:roomStatus[4].split(':')[1]==='true',
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>
