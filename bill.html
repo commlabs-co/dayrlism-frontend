@@ -27,7 +27,7 @@
         House Usage: <input id="house" type="text" ><br>
         <!-- Room1 Usage: <input id="room1" type="text" ><br> -->
         <!-- Room2 Usage: <input id="room2" type="text" ><br> -->
-        <!-- Room3 Usage: <input id="room3" type="text" ><br> -->
+        Room3 Usage: <input id="room3" type="text" ><br>
         Room4 Usage: <input id="room4" type="text" ><br>
         <!-- Room5 Usage: <input id="room5" type="text" ><br> -->
         <input id="submitBTN" type="submit" value="Submit">
@@ -118,7 +118,7 @@
             var roomUsage4=$('#room4').val();
             var roomUsage5=$('#room5').val();
 
-            var shareDivide= houseUsage- (roomUsage4);
+            var shareDivide= houseUsage- (roomUsage3+roomUsage4);
             // var shareDivide= houseUsage- (roomUsage1+ roomUsage2+ roomUsage3+ roomUsage4+ roomUsage5);
 
             var shareDivide =feeCalculate(shareDivide)/2;
@@ -130,8 +130,8 @@
             var roomPaying5 =feeCalculate(roomUsage5)+ shareDivide;
 
 
-            console.log(shareDivide)
-            console.log(housePaying)
+            // console.log(shareDivide)
+            // console.log(housePaying)
             // console.log(roomPaying1)
             // console.log(roomPaying2)
             // console.log(roomPaying3)
@@ -141,9 +141,10 @@
 
             // $('#display').append( $( "<div> R1 Price: RM" + roomPaying1 + "</div>" ) );
             // $('#display').append( $( "<div> R2 Price: RM" + roomPaying2 + "</div>" ) );
-            $('#display').append( $( "<div> R4 Price: RM" + roomPaying4 + "</div>" ) );
+            $('#display').append( $( "<div> Room3+Share Price: RM" + roomPaying3.toFixed(2) + "</div>" ) );
+            $('#display').append( $( "<div> Room4+Share Price: RM" + roomPaying4.toFixed(2) + "</div>" ) );
             // $('#display').append( $( "<div> R5 Price: RM" + roomPaying5 + "</div>" ) );
-            $('#display').append( $( "<div> Total: RM" + housePaying + "</div>" ) );
+            $('#display').append( $( "<div> House Total: RM" + housePaying.toFixed(2) + "</div>" ) );
         });
 
         function feeCalculate(usage){
@@ -151,19 +152,19 @@
             rate300 = 0.334,
             rate600 = 0.516,
             rate900 = 0.546;
-            var leftoverUsage = usage;
-
+            var leftoverUsage = usage;            
+            
             if(leftoverUsage<=200){
                 return rate100 * leftoverUsage;
             }
 
-            if(leftoverUsage>200){
+            if(leftoverUsage>200 && leftoverUsage<300){
                 leftoverUsage = leftoverUsage - 200;
 
                 return (200 * rate100) + (leftoverUsage * rate300)
             }else if (leftoverUsage > 300&& leftoverUsage<600) {
                 leftoverUsage = leftoverUsage - 300;
-
+                
                 return (200 *rate100)+(100*rate300)+(leftoverUsage* rate600)
             }else if (leftoverUsage > 600) {
                 leftoverUsage = leftoverUsage - 600;
@@ -184,6 +185,8 @@
         }
 
         function calCulateUnitStacking(arr){
+            console.log(arr);
+            
             var R1Usage=0, R2Usage = 0, R3Usage = 0, R4Usage = 0, R5Usage = 0;
             $.each(arr, function (index, value) {
                 var roomStatus =returnStatus(value.UsageStatus);
