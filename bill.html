@@ -209,20 +209,18 @@
             </div>
           </li>
           <li>
-            <a class="uk-accordion-title" href="#">Tenant Price(RM)</a>
+            <a class="uk-accordion-title" href="#">Bills</a>
             <div class="uk-accordion-content">
               <div class="uk-overflow-auto">
                 <table
-                  id="o2-price-owe-table"
+                  id="o2-bill-table"
                   class="uk-table uk-table-small uk-table-divider"
                 >
                   <thead>
                     <tr>
-                      <th>Room-1</th>
-                      <th>Room-2</th>
-                      <th>Room-3</th>
-                      <th>Room-4</th>
-                      <th>Room-5</th>
+                      <th>Bill Date</th>
+                      <th>Amount(RM)</th>
+                      <th>Watt</th>
                     </tr>
                   </thead>
                   <tbody></tbody>
@@ -302,6 +300,21 @@
                     </tr>
                 `)
         );
+      });
+
+      $.get(APIURL + '/bills', function (res) {
+        console.log(res);
+        $.each(res, function (index, value) {
+          $('#o2-bill-table>tbody').append(
+            $(`
+                        <tr>
+                            <td>${new Date(value.billdate).toLocaleDateString('en-GB')}</td>
+                            <td>${value.amount}</td>
+                            <td>${value.watt_usage}</td>
+                        </tr>
+                    `)
+          );
+        });
       });
 
       $('#o2-submit-calculator').on('click', function() {
