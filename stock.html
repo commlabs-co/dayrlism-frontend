@@ -97,6 +97,55 @@
       <div class="uk-container dv-section-padding">
         <form>
           <fieldset class="uk-fieldset">
+            <h1 class="uk-heading-bullet dv-bullet-margin">Submit Today's Price</h1>
+        
+            <div class="uk-margin">
+              <input id="dv-ds-input" class="uk-input" type="text" placeholder="DS" required />
+            </div>
+            <div class="uk-margin">
+              <input id="dv-ds-wa-input" class="uk-input" type="text" placeholder="DS-WA" required />
+            </div>
+            <div class="uk-margin">
+              <input id="dv-dnex-wa-input" class="uk-input" type="text" placeholder="DNEX-WA" required />
+            </div>
+            <div class="uk-margin">
+              <input id="dv-wd-input" class="uk-input" type="text" placeholder="WD" required />
+            </div>
+            <div class="uk-margin">
+              <input id="dv-wd-wa-input" class="uk-input" type="text" placeholder="WD-WA" required />
+            </div>
+          </fieldset>
+          <button id="dv-submit-update-stock" class="uk-button uk-button-primary">
+            Submit
+          </button>
+        </form>
+        <h1 class="uk-heading-divider">Updated's Price</h1>
+
+        <div id="dv-stock-board">
+          <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-expand" uk-leader="fill: -">DS</div>
+            <div class="dv-ds"></div>
+          </div>
+          <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-expand" uk-leader="fill: -">DS-WA</div>
+            <div class="dv-dsw"></div>
+          </div>
+          <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-expand" uk-leader="fill: -">DNEX-WA</div>
+            <div class="dv-dnexw"></div>
+          </div>
+          <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-expand" uk-leader="fill: -">WD</div>
+            <div class="dv-wd"></div>
+          </div>
+          <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-expand" uk-leader="fill: -">WD-WA</div>
+            <div class="dv-wdw"></div>
+          </div>
+        </div>
+        <hr class="uk-divider-icon" />
+        <form>
+          <fieldset class="uk-fieldset">
             <h1 class="uk-heading-bullet dv-bullet-margin">Stock Calculator</h1>
 
             <div class="uk-margin">
@@ -131,6 +180,8 @@
             Submit
           </button>
         </form>
+        <hr class="uk-divider-icon" />
+        
         <h1 class="uk-heading-divider">Summary</h1>
         <div id="dv-summary-dummy-hide" class="uk-placeholder uk-text-center">
           Submit to show summaries
@@ -357,6 +408,7 @@
      function exec(){
       renderTables();
       renderProfiles();
+      renderTodaysPrice();
       $('.dv-number-delimiter').divide({
          delimiter: ',',
          divideThousand: false
@@ -378,7 +430,6 @@
       }
       
       
-
       function dataMassageProcess(data){
         let userProfile=[];
         let investProfile=[];
@@ -414,7 +465,9 @@
         userProfile.push({ name: investors.dayrl, totalCapital: grandTotal(investors.dayrl, data.capitalRecords) })
         userProfile.push({ name: investors.aaron, totalCapital: grandTotal(investors.aaron, data.capitalRecords) })
         // console.log(data.stockingRecords);
-
+        console.log(userProfile);
+        console.log(data.stockingRecords);
+          
         data.stockingRecords.map(res=>{ })
         return userProfile
       }
@@ -444,6 +497,9 @@
         })
 
         db.stockingRecords.map(res=>{
+          const stockPrice = JSON.parse(localStorage.getItem('dv-stock-price'));
+          console.log(stockPrice);
+          
           $('#dv-stocking-table>tbody').append(
             $(`
                 <tr>
@@ -492,6 +548,20 @@
             `)
           );
         })
+      }
+
+      function renderTodaysPrice(){
+        const stockPrice = JSON.parse(localStorage.getItem('dv-stock-price'));
+
+        if (stockPrice){
+          Object.keys(stockPrice).map(stockName=>{
+            $(`.dv-${stockName}`).append(
+              $(`
+                  <span>${stockPrice[stockName]}</span>
+              `)
+            );
+          })
+        }
       }
 
       $('#dv-submit-calculator').on('click', function () {
@@ -543,6 +613,27 @@
           });
           return false;
         });
+
+      $('#dv-submit-update-stock').on('click', function () {
+        var ds = Number($('#dv-ds-input').val());
+        var dsw = Number($('#dv-ds-wa-input').val());
+        var dnexw = Number($('#dv-dnex-wa-input').val());
+        var wd = Number($('#dv-wd-input').val());
+        var wdw = Number($('#dv-wd-wa-input').val());
+        if(ds&& dsw&& dnexw&& wd&& wdw){
+          localStorage.setItem('dv-stock-price', JSON.stringify( {
+            ds,
+            dsw,
+            dnexw,
+            wd,
+            wdw
+          }));
+          location.reload();
+        }
+
+        return false
+      });
+
     </script>
 
   </body>
