@@ -178,15 +178,15 @@ ul {
 }
 
 .c-yellow {
-    color: rgb(255, 196, 84)
+    color: #50ffe1
 }
 
 .c-pink {
-    color: rgb(255, 81, 126)
+    color: #50ffe1
 }
 
 .c-orange {
-    color: rgb(255, 117, 74)
+    color: #50ffe1
 }
 
 .c-cyan {
@@ -194,15 +194,15 @@ ul {
 }
 
 .bg-yellow {
-    background-color: rgb(255, 196, 84)
+    background-color: #50ffe1
 }
 
 .bg-pink {
-    background-color: rgb(255, 81, 126)
+    background-color: #50ffe1
 }
 
 .bg-orange {
-    background-color: rgb(255, 117, 74)
+    background-color: #50ffe1
 }
 
 .bg-cyan {
@@ -236,7 +236,7 @@ ul {
 .port_heading_wrapper .port_sub_heading:after {
     content: "";
     position: absolute;
-    background: #ffc454;
+    background: #50ffe1;
     left: -12%;
     right: -12%;
     top: 10px;
@@ -271,7 +271,7 @@ ul {
 .port_heading_wrapper .port_sub_heading:before {
     content: "";
     position: absolute;
-    background: #fcc255;
+    background: #50ffe1;
     z-index: -1;
     left: 120%;
     right: -12px;
@@ -310,7 +310,7 @@ ul {
     margin: auto;
     width: 83px;
     height: 2px;
-    background: rgb(255, 196, 85);
+    background: #50ffe1;
 }
 
 /* --- End heading css  --- */
@@ -318,7 +318,7 @@ ul {
 .port_btn {
     width: 200px;
     height: 60px;
-    background: rgb(252, 194, 85);
+    background: #50ffe1;
     display: inline-block;
     border-radius: 30px;
     text-align: center;
@@ -340,7 +340,7 @@ ul {
     overflow: hidden;
     min-width: 200px;
     height: 60px;
-    background: rgb(252, 194, 85);
+    background: #50ffe1;
     border-radius: 30px;
     text-align: center;
     line-height: 64px;
@@ -394,7 +394,7 @@ ul {
 }
 
 .portfolio_btn:hover {
-    background: #ff517e;
+    background: #50ffe1;
     color: #ffffff;
 }
 
@@ -438,7 +438,7 @@ ul {
 .port_sidebar_wrapper {
     width: 120px;
     text-align: center;
-    background: white;
+    background: #222;
     position: fixed;
     left: 0;
     height: 100%;
@@ -516,7 +516,7 @@ ul {
 }
 
 .port_navigation .nav_list li.active:first-child::before {
-    background: #ff4a4a2e;
+    background: #1bcae538;
 }
 
 .port_navigation .nav_list li.active:nth-child(2)::before {
@@ -524,11 +524,11 @@ ul {
 }
 
 .port_navigation .nav_list li.active:nth-child(3)::before {
-    background: #ffc4554f;
+    background: #50ffe14f;
 }
 
 .port_navigation .nav_list li.active:last-child::before {
-    background: #ff754a4f;
+    background: #50ffe14f;
 }
 
 .port_navigation .nav_list li:before {
@@ -616,7 +616,7 @@ ul {
     margin: 0 auto;
     left: 0;
     right: 0;
-    color: #ff5352;
+    color: #50ffe1;
     opacity: 0;
     visibility: hidden;
     -webkit-transition: all 0.3s;
@@ -664,11 +664,11 @@ ul {
 }
 
 .port_navigation .nav_list li a svg.nav_quotes_svg {
-    fill: #ffc455;
+    fill: #50ffe1;
 }
 
 .port_navigation .nav_list li a svg.nav_contact_svg {
-    fill: #ff754a;
+    fill: #50ffe1;
 }
 
 .port_navigation .nav_list li:nth-child(2) .tooltip_box span.menu_tooltip {
@@ -676,11 +676,11 @@ ul {
 }
 
 .port_navigation .nav_list li:nth-child(3) .tooltip_box span.menu_tooltip {
-    color: #ffc454;
+    color: #50ffe1;
 }
 
 .port_navigation .nav_list li:nth-child(4) .tooltip_box span.menu_tooltip {
-    color: #ff754a;
+    color: #50ffe1;
 }
 
 .port_navigation .nav_list li:nth-child(2) .tooltip_box span.menu_tooltip:after {
@@ -688,11 +688,11 @@ ul {
 }
 
 .port_navigation .nav_list li:nth-child(3) .tooltip_box span.menu_tooltip:after {
-    border-right-color: #ffc454;
+    border-right-color: #50ffe1;
 }
 
 .port_navigation .nav_list li:nth-child(4) .tooltip_box span.menu_tooltip:after {
-    border-right-color: #ff754a;
+    border-right-color: #50ffe1;
 }
 
 .active-menu {
@@ -813,23 +813,23 @@ ul {
 }
 
 .social_list li a .nav_fb {
-    color: #3b5999;
+    color: #50ffe1;
 }
 
 .social_list li a .nav_in {
-    color: #0077b5;
+    color: #50ffe1;
 }
 
 .social_list li a .nav_whats {
-    color: #25d366;
+    color: #50ffe1;
 }
 
 .social_list li a .nav_twit {
-    color: #55acee;
+    color: #50ffe1;
 }
 
 .social_list li a .nav_insta {
-    color: #e4405f;
+    color: #50ffe1;
 }
 
 /* ---- End Social icon ---- */
@@ -925,7 +925,7 @@ ul {
     left: 0;
     margin: 0 auto;
     width: 244px;
-    background: #ffc455;
+    background: #50ffe1;
     z-index: -1;
 }
 
@@ -958,7 +958,7 @@ p.banner_pera:after {
     bottom: 0;
     width: 4px;
     height: 100%;
-    background: #ffc455;
+    background: #50ffe1;
 }
 
 .banner_typingtext {
@@ -973,45 +973,45 @@ p.banner_pera:after {
 
 .port_btn:hover {
     color: #ffffff;
-    box-shadow: 0px 8px 20px 0px rgba(255, 196, 85, 0.3);
-    -webkit-box-shadow: 0px 8px 20px 0px rgba(255, 196, 85, 0.3);
-    -moz-box-shadow: 0px 8px 20px 0px rgba(255, 196, 85, 0.3);
-    -o-box-shadow: 0px 8px 20px 0px rgba(255, 196, 85, 0.3);
-    -ms-box-shadow: 0px 8px 20px 0px rgba(255, 196, 85, 0.3);
+    box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -webkit-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -moz-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -o-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -ms-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
 }
 
 .portfolio_btn.btn_yellow {
     margin-right: 26px;
-    box-shadow: 0px 8px 20px 0px rgba(255, 196, 85, 0.3);
-    -webkit-box-shadow: 0px 8px 20px 0px rgba(255, 196, 85, 0.3);
-    -moz-box-shadow: 0px 8px 20px 0px rgba(255, 196, 85, 0.3);
-    -o-box-shadow: 0px 8px 20px 0px rgba(255, 196, 85, 0.3);
-    -ms-box-shadow: 0px 8px 20px 0px rgba(255, 196, 85, 0.3);
+    box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -webkit-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -moz-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -o-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -ms-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
     color: #fff;
 }
 
 .portfolio_btn.btn_yellow:hover {
-    box-shadow: 0px 8px 20px 0px rgba(255, 81, 126, 0.3);
+    box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
 }
 
 
 .portfolio_btn.btn_red {
-    background-color: rgb(255, 81, 126);
-    -webkit-box-shadow: 0px 8px 20px 0px rgba(255, 81, 126, 0.3);
-    -moz-box-shadow: 0px 8px 20px 0px rgba(255, 81, 126, 0.3);
-    -ms-box-shadow: 0px 8px 20px 0px rgba(255, 81, 126, 0.3);
-    -o-box-shadow: 0px 8px 20px 0px rgba(255, 81, 126, 0.3);
-    box-shadow: 0px 8px 20px 0px rgba(255, 81, 126, 0.3);
+    background-color: #50ffe1;
+    -webkit-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -moz-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -ms-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -o-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
     color: #fff;
 }
 
 .portfolio_btn.btn_red:hover {
-    background: #fcc255;
-    -webkit-box-shadow: 0px 8px 20px 0px rgba(255, 196, 85, 0.3);
-    -moz-box-shadow: 0px 8px 20px 0px rgba(255, 196, 85, 0.3);
-    -ms-box-shadow: 0px 8px 20px 0px rgba(255, 196, 85, 0.3);
-    -o-box-shadow: 0px 8px 20px 0px rgba(255, 196, 85, 0.3);
-    box-shadow: 0px 8px 20px 0px rgba(255, 196, 85, 0.3);
+    background: #50ffe1;
+    -webkit-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -moz-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -ms-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -o-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
 }
 
 .banner_img_wrapper {
@@ -1067,12 +1067,12 @@ p.banner_pera:after {
 }
 
 .brc_hirebtn .portfolio_btn.btn_orange {
-    background-color: rgb(255, 117, 74);
-    -webkit-box-shadow: 0px 8px 20px 0px rgba(255, 117, 74, 0.3);
-    -moz-box-shadow: 0px 8px 20px 0px rgba(255, 117, 74, 0.3);
-    -ms-box-shadow: 0px 8px 20px 0px rgba(255, 117, 74, 0.3);
-    -o-box-shadow: 0px 8px 20px 0px rgba(255, 117, 74, 0.3);
-    box-shadow: 0px 8px 20px 0px rgba(255, 117, 74, 0.3);
+    background-color: #50ffe1;
+    -webkit-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -moz-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -ms-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    -o-box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
+    box-shadow: 0px 8px 20px 0px rgba(80, 255, 225, 0.3);
     font-size: 16px;
     color: #ffffff;
 }
@@ -1274,7 +1274,7 @@ p.banner_pera:after {
 }
 
 .selfintro_section .right_section .port_about_heading {
-    background: #fcc255;
+    background: #50ffe1;
     color: #fff;
     display: inline-block;
     padding: 10px 22px 5px 22px;
@@ -1375,18 +1375,18 @@ p.banner_pera:after {
 }
 
 .about_leftsection.open_details .icon {
-    background: #ff517e;
+    background: #50ffe1;
 }
 
 .selfintro_section .about_leftsection:after {
     content: "";
     position: absolute;
-    background: #ff517e00;
+    background: #50ffe100;
     top: 25px;
     left: -25px;
     height: 100%;
     width: 90%;
-    border: 4px solid #ff517e;
+    border: 4px solid #50ffe1;
     z-index: -1;
 }
 
@@ -1438,7 +1438,7 @@ p.banner_pera:after {
 
 span.title {
     padding-right: 10px;
-    color: #fcc255;
+    color: #50ffe1;
     font-weight: 400;
     font-size: 16px;
     min-width: 110px;
@@ -1487,7 +1487,7 @@ span.value a {
 
 .personal_details a.social-button:hover {
     color: #ffffff;
-    background-color: #ff517e;
+    background-color: #50ffe1;
 }
 
 /* End selfintro section */
@@ -1498,7 +1498,7 @@ span.value a {
 .education_main_wrapper:after {
     content: "";
     position: absolute;
-    background-color: #ff517e;
+    background-color: #50ffe1;
     width: 2px;
     top: -10px;
     bottom: 90px;
@@ -1739,18 +1739,18 @@ h3.education_place {
 }
 
 .education_box.firstbox h1 {
-    border-color: rgb(255, 81, 126);
-    color: rgb(255, 81, 126);
+    border-color: #50ffe1;
+    color: #50ffe1;
 }
 
 .education_box.secondbox h1 {
-    border-color: rgb(255, 196, 84);
-    color: rgb(255, 196, 84);
+    border-color: #50ffe1;
+    color: #50ffe1;
 }
 
 .education_box.thirdbox h1 {
-    border-color: rgb(255, 117, 74);
-    color: rgb(255, 117, 74);
+    border-color: #50ffe1;
+    color: #50ffe1;
 }
 
 .education_box.fourthbox h1 {
@@ -1759,15 +1759,15 @@ h3.education_place {
 }
 
 .education_box.firstbox .edu_mainyear h1:after {
-    border-left-color: rgb(255, 81, 126);
+    border-left-color: #50ffe1;
 }
 
 .education_box.secondbox .edu_mainyear h1:after {
-    border-right-color: rgb(255, 196, 84);
+    border-right-color: #50ffe1;
 }
 
 .education_box.thirdbox .edu_mainyear h1:after {
-    border-left-color: rgb(255, 117, 74);
+    border-left-color: #50ffe1;
 }
 
 .education_box.fourthbox .edu_mainyear h1:after {
@@ -1775,15 +1775,15 @@ h3.education_place {
 }
 
 .education_box.firstbox .edu_mainyear h1:before {
-    border-color: rgb(255, 81, 126);
+    border-color: #50ffe1;
 }
 
 .education_box.secondbox .edu_mainyear h1:before {
-    border-color: rgb(255, 196, 84);
+    border-color: #50ffe1;
 }
 
 .education_box.thirdbox .edu_mainyear h1:before {
-    border-color: rgb(255, 117, 74);
+    border-color: #50ffe1;
 }
 
 .education_box.fourthbox .edu_mainyear h1:before {
@@ -1791,15 +1791,15 @@ h3.education_place {
 }
 
 .education_box.firstbox .edu_mainyear:after {
-    background: rgb(255, 81, 126);
+    background: #50ffe1;
 }
 
 .education_box.secondbox .edu_mainyear:after {
-    background: rgb(255, 196, 84);
+    background: #50ffe1;
 }
 
 .education_box.thirdbox .edu_mainyear:after {
-    background: rgb(255, 117, 74);
+    background: #50ffe1;
 }
 
 .education_box.fourthbox .edu_mainyear:after {
@@ -1810,12 +1810,12 @@ h3.education_place {
 
 /*================== 07 Start progress baar section css ==================  */
 .port_progress_setions {
-    background: rgb(252, 194, 85);
+    background: #50ffe1;
     padding-bottom: 71px;
 }
 
 .port_progress_setions .prt_heading_white .prt_heading_wrapper .prt_head:after {
-    background: #fcc255;
+    background: #50ffe1;
 }
 
 /* Progress bar css */
@@ -1880,7 +1880,7 @@ h3.education_place {
 }
 
 .port_experience_setions .ex_leftside {
-    background: #ff517e;
+    background: #50ffe1;
     border-radius: 3px;
     padding: 23px 20px;
     position: relative;
@@ -1917,7 +1917,7 @@ h3.education_place {
     content: "";
     right: -22px;
     top: 80px;
-    border-left: 11px solid #ff517e;
+    border-left: 11px solid #50ffe1;
     border-right: 11px solid #ffffff00;
     border-top: 11px solid #ffffff00;
     border-bottom: 11px solid #ffffff00;
@@ -1929,7 +1929,7 @@ h3.education_place {
     left: -22px;
     top: 96px;
     border-left: 11px solid #f6483a00;
-    border-right: 11px solid #ff517e;
+    border-right: 11px solid #50ffe1;
     border-top: 11px solid #ffffff00;
     border-bottom: 11px solid #ffffff00;
 }
@@ -1990,11 +1990,11 @@ h3.education_place {
 }
 
 .experience_section .col-md-12:nth-child(2) .ex_leftside {
-    background: #ffc454;
+    background: #50ffe1;
 }
 
 .experience_section .col-md-12:nth-child(3) .ex_leftside {
-    background: #ff754a;
+    background: #50ffe1;
 }
 
 .experience_section .col-md-12:nth-child(4) .ex_leftside {
@@ -2002,19 +2002,19 @@ h3.education_place {
 }
 
 .experience_section .col-md-12:nth-child(5) .ex_leftside {
-    background: #ffc454;
+    background: #50ffe1;
 }
 
 .experience_section .col-md-12:nth-child(6) .ex_leftside {
-    background: #ff517e;
+    background: #50ffe1;
 }
 
 .experience_section .col-md-12:nth-child(2) .ex_leftside:after {
-    border-left-color: #ffc454;
+    border-left-color: #50ffe1;
 }
 
 .experience_section .col-md-12:nth-child(3) .ex_leftside:after {
-    border-right-color: #ff754a;
+    border-right-color: #50ffe1;
 }
 
 .experience_section .col-md-12:nth-child(4) .ex_leftside:after {
@@ -2022,11 +2022,11 @@ h3.education_place {
 }
 
 .experience_section .col-md-12:nth-child(5) .ex_leftside:after {
-    border-left-color: #ffc454;
+    border-left-color: #50ffe1;
 }
 
 .experience_section .col-md-12:nth-child(6) .ex_leftside:after {
-    border-left-color: #ff517e;
+    border-left-color: #50ffe1;
 }
 
 /*================== 08 End Experience section css ==================  */
@@ -2080,7 +2080,7 @@ h3.education_place {
 h2.project_heading:after {
     content: "";
     position: absolute;
-    background: rgb(255, 196, 84);
+    background: #50ffe1;
     width: 70px;
     height: 2px;
     left: 0;
@@ -2220,7 +2220,7 @@ h2.project_heading:after {
     -ms-transition: ease all 0.55s;
     -o-transition: ease all 0.55s;
     transition: ease all 0.55s;
-    background: #ff517e;
+    background: #50ffe1;
 }
 
 .port_project_gallery .gallery_nav ul li a.gallery_active:after {
@@ -2228,14 +2228,14 @@ h2.project_heading:after {
 }
 
 .port_project_gallery .gallery_nav ul li .gallery_active {
-    color: #ff517e;
+    color: #50ffe1;
 }
 
 /*================== 10 End Projects section css ==================  */
 
 /*================== 11 Start testimonial section css ==================  */
 .testimonial_section .prt_heading_white .prt_heading_wrapper .prt_head:after {
-    background: #fcc255;
+    background: #50ffe1;
 }
 
 .port_testimonial_setions {
@@ -2250,7 +2250,7 @@ h2.project_heading:after {
     position: absolute;
     bottom: 0;
     left: 0;
-    background: rgb(255, 196, 86);
+    background: #50ffe1;
     width: 35%;
     height: 344px;
     z-index: -1;
@@ -2501,7 +2501,7 @@ h2.project_heading:after {
 }
 
 .port_blog_setions .port_blog_contentbox span a {
-    color: #ff754a;
+    color: #50ffe1;
     text-decoration: none;
     text-transform: uppercase;
     position: relative;
@@ -2533,7 +2533,7 @@ h2.project_heading:after {
 
 .port_blog_setions .port_blog_contentbox .blog_info a {
     margin-left: 10px;
-    color: #ff517e;
+    color: #50ffe1;
 }
 
 .port_blog_setions .port_blog_contentbox p {
@@ -2549,12 +2549,12 @@ h2.project_heading:after {
 }
 
 .port_blog_setions .port_blog_contentbox .blog_info ul li i {
-    color: #ff517e;
+    color: #50ffe1;
     vertical-align: middle;
 }
 
 .readmore_btn {
-    color: #ff754a;
+    color: #50ffe1;
     font-weight: 500;
     -webkit-transition: all 0.5s;
     -moz-transition: all 0.5s;
@@ -2565,7 +2565,7 @@ h2.project_heading:after {
 }
 
 .readmore_btn:hover {
-    color: #ff517e;
+    color: #50ffe1;
     letter-spacing: 1px;
 }
 
@@ -2738,7 +2738,7 @@ h2.project_heading:after {
     margin: auto;
     width: 50px;
     height: 2px;
-    background: rgb(255, 196, 85);
+    background: #50ffe1;
 }
 
 .copy_right_wrapper p {
@@ -2750,7 +2750,7 @@ h2.project_heading:after {
 }
 
 .port_footer_setions .copy_right_wrapper {
-    background: #ffc454;
+    background: #50ffe1;
     padding: 17px 0 12px 0;
     margin-top: 72px;
 }
@@ -2810,13 +2810,13 @@ h2.project_heading:after {
 
 .blog_postinfo ul li a:hover,
 .blog_shareinfo .blog_tag a:hover {
-    color: #ff517e;
+    color: #50ffe1;
 }
 
 .blog_postinfo ul li a i,
 .blog_shareinfo .blog_tag a i {
     padding-right: 5px;
-    color: #ff517e;
+    color: #50ffe1;
 }
 
 .blog_postinfo ul li:last-child::after {
@@ -2917,7 +2917,7 @@ h2.project_heading:after {
 
 .comment_data .client_name span {
     letter-spacing: 2px;
-    color: #ff517e;
+    color: #50ffe1;
     margin: 5px 0;
     display: block;
     text-transform: capitalize;
@@ -2953,8 +2953,8 @@ h2.project_heading:after {
 
 .comment_reply:hover,
 .comment_reply:focus {
-    background: rgb(255, 81, 126);
-    border-color: rgb(255, 81, 126);
+    background: #50ffe1;
+    border-color: #50ffe1;
     color: #ffffff;
 }
 
@@ -2999,7 +2999,7 @@ h2.project_heading:after {
     position: absolute;
     right: 0;
     top: 0;
-    color: #ff517e;
+    color: #50ffe1;
 }
 
 .blogsidebar_wrapper .widget .form-control:focus {
@@ -3039,7 +3039,7 @@ h2.project_heading:after {
 }
 
 .widget .widget_rp .rp_date {
-    color: #ff517e;
+    color: #50ffe1;
     text-transform: capitalize;
 }
 
@@ -3124,7 +3124,7 @@ h2.project_heading:after {
 }
 
 .widget.categroies_widget ul li a:hover {
-    color: #ff517e;
+    color: #50ffe1;
 }
 
 .widget.tag_widget ul li {
@@ -3161,7 +3161,7 @@ h2.project_heading:after {
     top: 0;
     right: 15px;
     color: #ffffff;
-    background-color: #ff517e;
+    background-color: #50ffe1;
     z-index: 4;
     width: 40px;
     text-align: center;
@@ -3272,7 +3272,7 @@ h2.project_heading:after {
 .port_sidebar_wrapper .mCSB_scrollTools .mCSB_dragger.mCSB_dragger_onDrag .mCSB_dragger_bar,
 .port_sidebar_wrapper .mCSB_scrollTools .mCSB_dragger:active .mCSB_dragger_bar,
 .port_sidebar_wrapper .mCSB_scrollTools .mCSB_dragger:hover .mCSB_dragger_bar {
-    background-color: #ff517e;
+    background-color: #50ffe1;
 }
 
 /*================== 19 End custom scroll bar css ==================  */
@@ -3517,12 +3517,12 @@ h2.project_heading:after {
 
     .education_box.firstbox .edu_mainyear h1:after {
         border-left-color: transparent;
-        border-top-color: #ff517e;
+        border-top-color: #50ffe1;
     }
 
     .education_box.thirdbox .edu_mainyear h1:after {
         border-left-color: transparent;
-        border-top-color: rgb(255, 117, 74);
+        border-top-color: #50ffe1;
     }
 
     .education_secondbox .education_left {
@@ -3544,7 +3544,7 @@ h2.project_heading:after {
 
     .education_box.secondbox .edu_mainyear h1:after {
         border-right-color: transparent;
-        border-bottom-color: rgb(255, 196, 84);
+        border-bottom-color: #50ffe1;
     }
 
     .education_box.fourthbox .edu_mainyear h1:after {
@@ -3666,7 +3666,7 @@ h2.project_heading:after {
     .ex_leftsidebox .ex_leftside:after {
         border-left: 11px solid transparent;
         border-right: 11px solid transparent;
-        border-top: 11px solid #ff517e;
+        border-top: 11px solid #50ffe1;
         border-bottom: 11px solid transparent;
         bottom: -22px;
         left: 30px;
@@ -3676,12 +3676,12 @@ h2.project_heading:after {
 
     .experience_section .col-md-12:nth-child(2) .ex_leftside:after {
         border-left-color: transparent;
-        border-top-color: #ffc454;
+        border-top-color: #50ffe1;
     }
 
     .experience_section .col-md-12:nth-child(5) .ex_leftside:after {
         border-left-color: transparent;
-        border-top-color: #ffc454;
+        border-top-color: #50ffe1;
     }
 
     .ex_rightsidebox .ex_leftside:after {
@@ -3697,7 +3697,7 @@ h2.project_heading:after {
 
     .experience_section .col-md-12:nth-child(3) .ex_leftside:after {
         border-right-color: transparent;
-        border-bottom-color: #ff754a;
+        border-bottom-color: #50ffe1;
     }
 
     .experience_section .col-md-12:nth-child(3) .ex_leftside {
@@ -3747,7 +3747,7 @@ h2.project_heading:after {
     }
 
     .experience_section .col-md-12:nth-child(6) .ex_leftside:after {
-        border-left-color: #ff517e00;
+        border-left-color: #50ffe100;
     }
 
     .port_testimonial_setions .testimonial_details_box {
