@@ -1,7 +1,8 @@
-var APIURL = 'https://api.im90s.org';
+var APIURL = "https://cms.im90s.org";
+// var APIURL = 'https://api.im90s.org';
 
 $(function() {
-  'use strict';
+  "use strict";
 
   var wind = $(window);
 
@@ -9,34 +10,34 @@ $(function() {
   $.scrollIt({
     upKey: 38, // key code to navigate to the next section
     downKey: 40, // key code to navigate to the previous section
-    easing: 'swing', // the easing function for animation
+    easing: "swing", // the easing function for animation
     scrollTime: 600, // how long (in ms) the animation takes
-    activeClass: 'active', // class given to the active nav element
+    activeClass: "active", // class given to the active nav element
     onPageChange: null, // function(pageIndex) that is called when page is changed
     topOffset: -80 // offste (in px) for fixed top navigation
   });
 
   // navbar scrolling background
-  wind.on('scroll', function() {
+  wind.on("scroll", function() {
     var bodyScroll = wind.scrollTop(),
-      navbar = $('.navbar'),
-      logo = $('.navbar .logo> img');
+      navbar = $(".navbar"),
+      logo = $(".navbar .logo> img");
 
     if (bodyScroll > 100) {
-      navbar.addClass('nav-scroll');
-      logo.attr('src', 'img/logo-dark.png');
+      navbar.addClass("nav-scroll");
+      logo.attr("src", "img/logo-dark.png");
     } else {
-      navbar.removeClass('nav-scroll');
-      logo.attr('src', 'img/logo-light.png');
+      navbar.removeClass("nav-scroll");
+      logo.attr("src", "img/logo-light.png");
     }
   });
 
   // progress bar
-  wind.on('scroll', function() {
-    $('.skills-progress span').each(function() {
+  wind.on("scroll", function() {
+    $(".skills-progress span").each(function() {
       var bottom_of_object = $(this).offset().top + $(this).outerHeight();
       var bottom_of_window = $(window).scrollTop() + $(window).height();
-      var myVal = $(this).attr('data-value');
+      var myVal = $(this).attr("data-value");
       if (bottom_of_window > bottom_of_object) {
         $(this).css({
           width: myVal
@@ -46,12 +47,12 @@ $(function() {
   });
 
   // sections background image from data background
-  var pageSection = $('.bg-img, section');
+  var pageSection = $(".bg-img, section");
   pageSection.each(function(indx) {
-    if ($(this).attr('data-background')) {
+    if ($(this).attr("data-background")) {
       $(this).css(
-        'background-image',
-        'url(' + $(this).data('background') + ')'
+        "background-image",
+        "url(" + $(this).data("background") + ")"
       );
     }
   });
@@ -61,10 +62,10 @@ $(function() {
   // Blog owlCarousel
 
   var feed = new Instafeed({
-    get: 'user',
+    get: "user",
     userId: 248624218,
-    accessToken: '248624218.a3a0a43.1e2a725cc2144f778281179f3714841f',
-    sortBy: 'most-liked',
+    accessToken: "248624218.a3a0a43.1e2a725cc2144f778281179f3714841f",
+    sortBy: "most-liked",
     template:
       '<div class="item"> <div class="post-img"> <img src="{{image}}" alt=""> </div> <div class="content">  <h5><a href="#0"><span><a href="#0">{{model.created_time}}</a></span> <span>/</span> <span><a href="{{link}}"> <em>{{model.likes.count}}</em> </a></span></a></h5> <p>{{caption}}</p> <a href="{{link}}" class="more">Continue Reading<i class="fas fa-angle-right"></i></a> </div> </div>',
     filter: function(data) {
@@ -74,27 +75,27 @@ $(function() {
         y = date.getFullYear(),
         month_names = new Array();
 
-      month_names[month_names.length] = 'Jan';
-      month_names[month_names.length] = 'Feb';
-      month_names[month_names.length] = 'Mar';
-      month_names[month_names.length] = 'Apr';
-      month_names[month_names.length] = 'May';
-      month_names[month_names.length] = 'Jun';
-      month_names[month_names.length] = 'Jul';
-      month_names[month_names.length] = 'Aug';
-      month_names[month_names.length] = 'Sep';
-      month_names[month_names.length] = 'Oct';
-      month_names[month_names.length] = 'Nov';
-      month_names[month_names.length] = 'Dec';
+      month_names[month_names.length] = "Jan";
+      month_names[month_names.length] = "Feb";
+      month_names[month_names.length] = "Mar";
+      month_names[month_names.length] = "Apr";
+      month_names[month_names.length] = "May";
+      month_names[month_names.length] = "Jun";
+      month_names[month_names.length] = "Jul";
+      month_names[month_names.length] = "Aug";
+      month_names[month_names.length] = "Sep";
+      month_names[month_names.length] = "Oct";
+      month_names[month_names.length] = "Nov";
+      month_names[month_names.length] = "Dec";
 
-      data.created_time = month_names[m] + ' ' + d + ' ' + y;
+      data.created_time = month_names[m] + " " + d + " " + y;
       return true;
     },
-    target: 'instagram-carousel',
+    target: "instagram-carousel",
     limit: 9,
-    resolution: 'standard_resolution',
+    resolution: "standard_resolution",
     after: function() {
-      $('.blog .owl-carousel').owlCarousel({
+      $(".blog .owl-carousel").owlCarousel({
         loop: true,
         margin: 30,
         mouseDrag: false,
@@ -120,9 +121,9 @@ $(function() {
   // === End owl-carousel === //
 
   // magnificPopup
-  $('.gallery').magnificPopup({
-    delegate: '.popimg',
-    type: 'image',
+  $(".gallery").magnificPopup({
+    delegate: ".popimg",
+    type: "image",
     gallery: {
       enabled: true
     }
@@ -130,59 +131,59 @@ $(function() {
 });
 
 // === window When Loading === //
-$(window).on('load', function() {
+$(window).on("load", function() {
   var wind = $(window);
 
   // Preloader
-  $('.loading').fadeOut(500);
+  $(".loading").fadeOut(500);
 
   // stellar
   wind.stellar();
 
   // isotope
-  $('.gallery').isotope({
+  $(".gallery").isotope({
     // options
-    itemSelector: '.items'
+    itemSelector: ".items"
   });
 
-  var $gallery = $('.gallery').isotope({
+  var $gallery = $(".gallery").isotope({
     // options
   });
 
   // filter items on button click
-  $('.filtering').on('click', 'span', function() {
-    var filterValue = $(this).attr('data-filter');
+  $(".filtering").on("click", "span", function() {
+    var filterValue = $(this).attr("data-filter");
 
     $gallery.isotope({ filter: filterValue });
   });
 
-  $('.filtering').on('click', 'span', function() {
+  $(".filtering").on("click", "span", function() {
     $(this)
-      .addClass('active')
+      .addClass("active")
       .siblings()
-      .removeClass('active');
+      .removeClass("active");
   });
 
   // contact form validator
 
   // var APIURL = 'http://localhost:1314';
-  $('#contact-form').validator();
+  $("#contact-form").validator();
 
-  $.get(APIURL + '/request/reasons', function(res) {
+  $.get(APIURL + "/dayrlism-reasons", function(res) {
     $.each(res.reasons, function(index, value) {
-      $('#form_subject').append(
+      $("#form_subject").append(
         $(
           "<option value='" +
             value.reason_id +
             "'>" +
             value.reason +
-            '</option>'
+            "</option>"
         )
       );
     });
   });
 
-  $('#contact-form').on('submit', function(e) {
+  $("#contact-form").on("submit", function(e) {
     if (!e.isDefaultPrevented()) {
       // $.ajax({
       //     type: "POST",
@@ -200,17 +201,17 @@ $(window).on('load', function() {
       //     }
       // });
 
-      $.post(APIURL + '/lead/dayrlism/create', {
-        name: $('#form_name').val(),
-        email: $('#form_email').val(),
-        reason_id: $('#form_subject').val(),
-        mobile: $('#form_mobile').val(),
-        message: $('#form_message').val(),
+      $.post(APIURL + "/lead/dayrlism/create", {
+        name: $("#form_name").val(),
+        email: $("#form_email").val(),
+        reason_id: $("#form_subject").val(),
+        mobile: $("#form_mobile").val(),
+        message: $("#form_message").val(),
         sites_id: 6
       })
         .done(function(data) {
           console.log(data);
-          var messageAlert = 'alert-success';
+          var messageAlert = "alert-success";
           // var messageAlert = 'alert-' + data.type;
           var messageText = data.message;
 
@@ -219,17 +220,17 @@ $(window).on('load', function() {
             messageAlert +
             ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
             messageText +
-            '</div>';
+            "</div>";
           if (messageAlert && messageText) {
-            $('#contact-form')
-              .find('.messages')
+            $("#contact-form")
+              .find(".messages")
               .html(alertBox);
-            $('#contact-form')[0].reset();
+            $("#contact-form")[0].reset();
           }
         })
         .fail(function(err) {
           if (err) {
-            alert('Unhandled Error!');
+            alert("Unhandled Error!");
             window.location.reload(true);
           }
         });
@@ -237,12 +238,12 @@ $(window).on('load', function() {
     }
   });
 
-  $('#dayrlism-phone').on('click', function() {
-    window.open(' https://wa.me/60183663236', '_blank');
+  $("#dayrlism-phone").on("click", function() {
+    window.open(" https://wa.me/60183663236", "_blank");
   });
 });
 
-im90sTr('https://api.im90s.org', 6);
+im90sTr("https://api.im90s.org", 6);
 
 // const urlParams = new URLSearchParams(window.location.search);
 // const myParam = urlParams.get('halo');
