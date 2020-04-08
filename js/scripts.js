@@ -1,7 +1,7 @@
 var APIURL = "https://cms.im90s.org";
 // var APIURL = 'https://api.im90s.org';
 
-$(function() {
+$(function () {
   "use strict";
 
   var wind = $(window);
@@ -14,11 +14,11 @@ $(function() {
     scrollTime: 600, // how long (in ms) the animation takes
     activeClass: "active", // class given to the active nav element
     onPageChange: null, // function(pageIndex) that is called when page is changed
-    topOffset: -80 // offste (in px) for fixed top navigation
+    topOffset: -80, // offste (in px) for fixed top navigation
   });
 
   // navbar scrolling background
-  wind.on("scroll", function() {
+  wind.on("scroll", function () {
     var bodyScroll = wind.scrollTop(),
       navbar = $(".navbar"),
       logo = $(".navbar .logo> img");
@@ -33,14 +33,14 @@ $(function() {
   });
 
   // progress bar
-  wind.on("scroll", function() {
-    $(".skills-progress span").each(function() {
+  wind.on("scroll", function () {
+    $(".skills-progress span").each(function () {
       var bottom_of_object = $(this).offset().top + $(this).outerHeight();
       var bottom_of_window = $(window).scrollTop() + $(window).height();
       var myVal = $(this).attr("data-value");
       if (bottom_of_window > bottom_of_object) {
         $(this).css({
-          width: myVal
+          width: myVal,
         });
       }
     });
@@ -48,7 +48,7 @@ $(function() {
 
   // sections background image from data background
   var pageSection = $(".bg-img, section");
-  pageSection.each(function(indx) {
+  pageSection.each(function (indx) {
     if ($(this).attr("data-background")) {
       $(this).css(
         "background-image",
@@ -67,8 +67,8 @@ $(function() {
     accessToken: "248624218.a3a0a43.1e2a725cc2144f778281179f3714841f",
     sortBy: "most-liked",
     template:
-      '<div class="item"> <div class="post-img"> <img src="{{image}}" alt=""> </div> <div class="content">  <h5><a href="#0"><span><a href="#0">{{model.created_time}}</a></span> <span>/</span> <span><a href="{{link}}"> <em>{{model.likes.count}}</em> </a></span></a></h5> <p>{{caption}}</p> <a href="{{link}}" class="more">Continue Reading<i class="fas fa-angle-right"></i></a> </div> </div>',
-    filter: function(data) {
+      '<div class="item"> <div class="post-img"> <img src="{{image}}" alt="{{caption}}"> </div> <div class="content">  <h5><a href="#0"><span><a href="#0">{{model.created_time}}</a></span> <span>/</span> <span><a href="{{link}}"> <em>{{model.likes.count}}</em> </a></span></a></h5> <p>{{caption}}</p> <a href="{{link}}" class="more">Continue Reading<i class="fas fa-angle-right"></i></a> </div> </div>',
+    filter: function (data) {
       var date = new Date(data.created_time * 1000),
         m = date.getMonth(),
         d = date.getDate(),
@@ -94,7 +94,7 @@ $(function() {
     target: "instagram-carousel",
     limit: 9,
     resolution: "standard_resolution",
-    after: function() {
+    after: function () {
       $(".blog .owl-carousel").owlCarousel({
         loop: true,
         margin: 30,
@@ -104,17 +104,17 @@ $(function() {
         responsiveClass: true,
         responsive: {
           0: {
-            items: 1
+            items: 1,
           },
           700: {
-            items: 2
+            items: 2,
           },
           1000: {
-            items: 3
-          }
-        }
+            items: 3,
+          },
+        },
       });
-    }
+    },
   });
   feed.run();
 
@@ -125,13 +125,13 @@ $(function() {
     delegate: ".popimg",
     type: "image",
     gallery: {
-      enabled: true
-    }
+      enabled: true,
+    },
   });
 });
 
 // === window When Loading === //
-$(window).on("load", function() {
+$(window).on("load", function () {
   var wind = $(window);
 
   // Preloader
@@ -143,7 +143,7 @@ $(window).on("load", function() {
   // isotope
   $(".gallery").isotope({
     // options
-    itemSelector: ".items"
+    itemSelector: ".items",
   });
 
   var $gallery = $(".gallery").isotope({
@@ -151,17 +151,14 @@ $(window).on("load", function() {
   });
 
   // filter items on button click
-  $(".filtering").on("click", "span", function() {
+  $(".filtering").on("click", "span", function () {
     var filterValue = $(this).attr("data-filter");
 
     $gallery.isotope({ filter: filterValue });
   });
 
-  $(".filtering").on("click", "span", function() {
-    $(this)
-      .addClass("active")
-      .siblings()
-      .removeClass("active");
+  $(".filtering").on("click", "span", function () {
+    $(this).addClass("active").siblings().removeClass("active");
   });
 
   // contact form validator
@@ -169,8 +166,8 @@ $(window).on("load", function() {
   // var APIURL = 'http://localhost:1314';
   $("#contact-form").validator();
 
-  $.get(APIURL + "/dayrlism-reasons", function(res) {
-    $.each(res.reasons, function(index, value) {
+  $.get(APIURL + "/dayrlism-reasons", function (res) {
+    $.each(res.reasons, function (index, value) {
       $("#form_subject").append(
         $(
           "<option value='" +
@@ -183,7 +180,7 @@ $(window).on("load", function() {
     });
   });
 
-  $("#contact-form").on("submit", function(e) {
+  $("#contact-form").on("submit", function (e) {
     if (!e.isDefaultPrevented()) {
       // $.ajax({
       //     type: "POST",
@@ -207,9 +204,9 @@ $(window).on("load", function() {
         reason_id: $("#form_subject").val(),
         mobile: $("#form_mobile").val(),
         message: $("#form_message").val(),
-        sites_id: 6
+        sites_id: 6,
       })
-        .done(function(data) {
+        .done(function (data) {
           console.log(data);
           var messageAlert = "alert-success";
           // var messageAlert = 'alert-' + data.type;
@@ -222,13 +219,11 @@ $(window).on("load", function() {
             messageText +
             "</div>";
           if (messageAlert && messageText) {
-            $("#contact-form")
-              .find(".messages")
-              .html(alertBox);
+            $("#contact-form").find(".messages").html(alertBox);
             $("#contact-form")[0].reset();
           }
         })
-        .fail(function(err) {
+        .fail(function (err) {
           if (err) {
             alert("Unhandled Error!");
             window.location.reload(true);
@@ -238,7 +233,7 @@ $(window).on("load", function() {
     }
   });
 
-  $("#dayrlism-phone").on("click", function() {
+  $("#dayrlism-phone").on("click", function () {
     window.open(" https://wa.me/60183663236", "_blank");
   });
 });
