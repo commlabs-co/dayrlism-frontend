@@ -238,7 +238,7 @@ $(window).on("load", function () {
   });
 });
 
-im90sTr("https://api.im90s.org", 6);
+im90sTr("https://api.im90s.org", 11);
 
 // const urlParams = new URLSearchParams(window.location.search);
 // const myParam = urlParams.get('halo');
