@@ -167,13 +167,13 @@ $(window).on("load", function () {
   $("#contact-form").validator();
 
   $.get(APIURL + "/dayrlism-reasons", function (res) {
-    $.each(res.reasons, function (index, value) {
+    $.each(res, function (index, value) {
       $("#form_subject").append(
         $(
-          "<option value='" +
-            value.reason_id +
+          "<option style='text-transform:capitalize' value='" +
+            value.id +
             "'>" +
-            value.reason +
+            value.text +
             "</option>"
         )
       );
@@ -198,19 +198,19 @@ $(window).on("load", function () {
       //     }
       // });
 
-      $.post(APIURL + "/lead/dayrlism/create", {
+      $.post(APIURL + "/dayrlism-leads", {
         name: $("#form_name").val(),
         email: $("#form_email").val(),
-        reason_id: $("#form_subject").val(),
+        dayrlism_reason: $("#form_subject").val(),
         mobile: $("#form_mobile").val(),
         message: $("#form_message").val(),
-        sites_id: 6,
       })
         .done(function (data) {
           console.log(data);
           var messageAlert = "alert-success";
           // var messageAlert = 'alert-' + data.type;
-          var messageText = data.message;
+          var messageText =
+            "Hey thanks for reaching out, will reply you shortly.";
 
           var alertBox =
             '<div class="alert ' +
