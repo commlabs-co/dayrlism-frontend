@@ -1,5 +1,6 @@
 var APIURL = "https://cms.im90s.org";
 // var APIURL = 'https://api.im90s.org';
+const MAIL_URL = "https://mailer.im90s.org";
 
 $(function () {
   "use strict";
@@ -222,6 +223,12 @@ $(window).on("load", function () {
             $("#contact-form").find(".messages").html(alertBox);
             $("#contact-form")[0].reset();
           }
+
+          $.post(MAIL_URL + "/send-mail", {
+            host: `https://${window.location.hostname}`,
+            provider: "Dayrlism",
+            id: data.id,
+          });
         })
         .fail(function (err) {
           if (err) {
