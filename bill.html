@@ -2,6 +2,7 @@
 <html lang="zxx">
   <head>
     <!-- Metas -->
+
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta
@@ -56,7 +57,7 @@
       }
 
       .preloader:before {
-        content: '';
+        content: "";
         display: inline-block;
         vertical-align: middle;
         height: 100%;
@@ -186,7 +187,7 @@
               </div>
             </div>
           </li>
-          <li style="display:none">
+          <li style="display: none;">
             <a class="uk-accordion-title" href="#">Tenant Units</a>
             <div class="uk-accordion-content">
               <div class="uk-overflow-auto">
@@ -208,11 +209,14 @@
               </div>
             </div>
           </li>
-          <li style="display:none">
+          <li style="display: none;">
             <a class="uk-accordion-title" href="#">Tenant Price(RM)</a>
             <div class="uk-accordion-content">
               <div class="uk-overflow-auto">
-                <table id="o2-price-owe-table" class="uk-table uk-table-small uk-table-divider">
+                <table
+                  id="o2-price-owe-table"
+                  class="uk-table uk-table-small uk-table-divider"
+                >
                   <thead>
                     <tr>
                       <th>Room-1</th>
@@ -257,13 +261,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit-icons.min.js"></script>
     <script>
       var $win = $(window);
-      $win.on('load', function() {
-        $('#pageLoad').remove();
+      $win.on("load", function () {
+        $("#pageLoad").remove();
       });
 
-      var APIURL = 'https://o2dash.dayrlism.info';
+      var APIURL = "https://o2dash.dayrlism.info";
 
-      $.get(APIURL + '/electrictracks', function(res) {
+      $.get(APIURL + "/electrictracks", function (res) {
         var lastIndex = res.length - 1;
         var secondlastIndex = res.length - 2;
         var lastOutcome = res[lastIndex];
@@ -272,8 +276,8 @@
         var stack = calCulateUnitStacking(res);
         var price = calCulatePrice(stack);
 
-        $.each(res, function(index, value) {
-          $('#o2-price-table>tbody').append(
+        $.each(res, function (index, value) {
+          $("#o2-price-table>tbody").append(
             $(`
                         <tr>
                             <td>${value.R1Usage}</td>
@@ -286,7 +290,7 @@
           );
         });
 
-        $('#o2-tenant-units-table>tbody').append(
+        $("#o2-tenant-units-table>tbody").append(
           $(`
                     <tr>
                         <td>${stack.R1Usage}</td>
@@ -297,7 +301,7 @@
                     </tr>
                 `)
         );
-        $('#o2-price-owe-table>tbody').append(
+        $("#o2-price-owe-table>tbody").append(
           $(`
                     <tr>
                         <td>${price.R1Usage}</td>
@@ -308,7 +312,7 @@
                     </tr>
                 `)
         );
-        $('#o2-price-diff-table>tbody').append(
+        $("#o2-price-diff-table>tbody").append(
           $(`
                     <tr>
                         <td>${diff.R1UsageDiff}</td>
@@ -321,13 +325,15 @@
         );
       });
 
-      $.get(APIURL + '/bills', function (res) {
+      $.get(APIURL + "/bills", function (res) {
         console.log(res);
         $.each(res, function (index, value) {
-          $('#o2-bill-table>tbody').append(
+          $("#o2-bill-table>tbody").append(
             $(`
                         <tr>
-                            <td>${new Date(value.billdate).toLocaleDateString('en-GB')}</td>
+                            <td>${new Date(value.billdate).toLocaleDateString(
+                              "en-GB"
+                            )}</td>
                             <td>${value.amount}</td>
                             <td>${value.watt_usage}</td>
                         </tr>
@@ -336,14 +342,14 @@
         });
       });
 
-      $('#o2-submit-calculator').on('click', function() {
-        $('#o2-summary-dummy-hide').addClass('o2-summary-dummy-hide');
-        var houseUsage = Number($('#o2-home').val());
-        var roomUsage1 = Number($('#o2-room1').val());
-        var roomUsage2 = Number($('#o2-room2').val());
-        var roomUsage3 = Number($('#o2-room3').val());
-        var roomUsage4 = Number($('#o2-room4').val());
-        var roomUsage5 = Number($('#o2-room5').val());
+      $("#o2-submit-calculator").on("click", function () {
+        $("#o2-summary-dummy-hide").addClass("o2-summary-dummy-hide");
+        var houseUsage = Number($("#o2-home").val());
+        var roomUsage1 = Number($("#o2-room1").val());
+        var roomUsage2 = Number($("#o2-room2").val());
+        var roomUsage3 = Number($("#o2-room3").val());
+        var roomUsage4 = Number($("#o2-room4").val());
+        var roomUsage5 = Number($("#o2-room5").val());
 
         // var shareDivide = houseUsage - (roomUsage3 + roomUsage4);
         var housePaying = feeCalculate(houseUsage);
@@ -354,7 +360,7 @@
         var roomPaying3 = percentR3Price + shareDivide;
         var roomPaying4 = percentR4Price + shareDivide;
 
-        $('#o2-summary-board').append(
+        $("#o2-summary-board").append(
           $(`
                 <div class="uk-grid-small" uk-grid>
                         <div class="uk-width-expand" uk-leader="fill: -">House Total</div>
@@ -362,7 +368,7 @@
                 </div>
             `)
         );
-        $('#o2-summary-board').append(
+        $("#o2-summary-board").append(
           $(`
                 <div class="uk-grid-small" uk-grid>
                         <div class="uk-width-expand" uk-leader="fill: -">Room3 Total</div>
@@ -370,7 +376,7 @@
                 </div>
             `)
         );
-        $('#o2-summary-board').append(
+        $("#o2-summary-board").append(
           $(`
                 <div class="uk-grid-small" uk-grid>
                         <div class="uk-width-expand" uk-leader="fill: -">Room4 Total</div>
@@ -419,7 +425,7 @@
           R2UsageDiff: (obj1.R2Usage - obj2.R2Usage).toFixed(2),
           R3UsageDiff: (obj1.R3Usage - obj2.R3Usage).toFixed(2),
           R4UsageDiff: (obj1.R4Usage - obj2.R4Usage).toFixed(2),
-          R5UsageDiff: (obj1.R5Usage - obj2.R5Usage).toFixed(2)
+          R5UsageDiff: (obj1.R5Usage - obj2.R5Usage).toFixed(2),
         };
       }
 
@@ -429,7 +435,7 @@
           R3Usage = 0,
           R4Usage = 0,
           R5Usage = 0;
-        $.each(arr, function(index, value) {
+        $.each(arr, function (index, value) {
           var roomStatus = returnStatus(value.UsageStatus);
           // console.log(roomStatus)
           R1Usage = !roomStatus.R1UsageStatus
@@ -453,7 +459,7 @@
           R2Usage,
           R3Usage,
           R4Usage,
-          R5Usage
+          R5Usage,
         };
       }
 
@@ -463,19 +469,19 @@
           R2Usage: feeCalculate(stack.R2Usage).toFixed(2),
           R3Usage: feeCalculate(stack.R3Usage).toFixed(2),
           R4Usage: feeCalculate(stack.R4Usage).toFixed(2),
-          R5Usage: feeCalculate(stack.R5Usage).toFixed(2)
+          R5Usage: feeCalculate(stack.R5Usage).toFixed(2),
         };
       }
 
       function returnStatus(status) {
-        var roomStatus = status.split(',');
+        var roomStatus = status.split(",");
 
         return {
-          R1UsageStatus: roomStatus[0].split(':')[1] === 'true',
-          R2UsageStatus: roomStatus[1].split(':')[1] === 'true',
-          R3UsageStatus: roomStatus[2].split(':')[1] === 'true',
-          R4UsageStatus: roomStatus[3].split(':')[1] === 'true',
-          R5UsageStatus: roomStatus[4].split(':')[1] === 'true'
+          R1UsageStatus: roomStatus[0].split(":")[1] === "true",
+          R2UsageStatus: roomStatus[1].split(":")[1] === "true",
+          R3UsageStatus: roomStatus[2].split(":")[1] === "true",
+          R4UsageStatus: roomStatus[3].split(":")[1] === "true",
+          R5UsageStatus: roomStatus[4].split(":")[1] === "true",
         };
       }
     </script>
