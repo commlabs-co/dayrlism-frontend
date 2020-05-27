@@ -527,26 +527,32 @@ Assigned to: ThemeForest
           if (check == 0) {
             var formDetail = new FormData(targetForm[0]);
             formDetail.append("form_type", _this.attr("data-type"));
-            $.ajax({
-              method: "post",
-              url: "ajax.php",
-              data: formDetail,
-              cache: false,
-              contentType: false,
-              processData: false,
-            }).done(function (resp) {
-              if (resp == 1) {
+
+            $.post(APIURL + "/dayrlism-leads", {
+              name: $("#drl-name").val(),
+              mobile: $("#drl-mobile").val(),
+              email: $("#drl-email").val(),
+              dayrlism_reason: $("#drl-subject-select").val(),
+              message: $("#drl-comment").val(),
+            })
+              .done(function (resp) {
                 targetForm.find("input").val("");
                 targetForm.find("textarea").val("");
                 errroTarget.html(
                   '<p style="color:green;">Mail has been sent successfully.</p>'
                 );
-              } else {
+
+                $.post(MAIL_URL + "/send-mail", {
+                  host: `https://${window.location.hostname}`,
+                  provider: "Dayrlism",
+                  id: data.id,
+                });
+              })
+              .fail(function (err) {
                 errroTarget.html(
                   '<p style="color:red;">Something went wrong please try again latter.</p>'
                 );
-              }
-            });
+              });
           }
         });
       }
@@ -622,8 +628,8 @@ Assigned to: ThemeForest
     /*------------------------------------------------------------------*/
     //click to scroll
     scroll_contact: function () {
-      if ($("#redirect_contact").length > 0) {
-        $("#redirect_contact").on("click", function () {
+      if ($(".redirect_contact").length > 0) {
+        $(".redirect_contact").on("click", function () {
           $("html, body").animate(
             {
               scrollTop: $("#scroll_contact").offset().top,

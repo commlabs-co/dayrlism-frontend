@@ -55,6 +55,23 @@ service.map(({ title, des }, index) => {
 `)
   );
 });
+
+$.get(APIURL + "/dayrlism-reasons", function (res) {
+  $.each(res, function (index, value) {
+    $("#drl-subject-select").append(
+      $(
+        "<option style='text-transform:capitalize' value='" +
+          value.id +
+          "'>" +
+          value.text +
+          "</option>"
+      )
+    );
+  });
+});
+
+im90sTr("https://api.im90s.org", 11);
+
 //<div class="item"> <div class="post-img"> <img src="{{image}}" alt="{{caption}}"> </div> <div class="content">  <h5><a href="#0"><span><a href="#0">{{model.created_time}}</a></span> <span>/</span> <span><a href="{{link}}"> <em>{{model.likes.count}}</em> </a></span></a></h5> <p>{{caption}}</p> <a href="{{link}}" class="more">Continue Reading<i class="fas fa-angle-right"></i></a> </div> </div>
 // var feed = new Instafeed({
 //   get: "user",

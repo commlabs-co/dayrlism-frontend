@@ -780,7 +780,7 @@ ul {
 
 .port__social_box p {
   font-size: 16px;
-  color: #222222;
+  color: #31676b;
   -o-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   -webkit-transform: rotate(180deg);
@@ -857,7 +857,7 @@ ul {
 }
 
 .port_bannerbg_wrapper {
-  background: url(../images/banner_bg.png);
+  /* background: url(../images/banner_bg.png); */
   background-size: cover;
   -webkit-animation: moveup 50s linear infinite;
   -moz-animation: moveup 50s linear infinite;
@@ -3900,3 +3900,30 @@ h2.project_heading:after {
 }
 
 /*  ================== 20 End media query css ==================  */
+
+.drl-logo {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  margin-left: 5px;
+  background-image: url("../images/logo.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+@media (max-width: 992px) {
+  .drl-logo {
+    background-image: url("../images/logo_invert.png");
+    width: 65px;
+    height: 65px;
+  }
+}
+
+.drl-logo-menu {
+  width: 90px;
+  height: 90px;
+  background-image: url("../images/logo_main.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  margin: auto;
+}
