@@ -331,7 +331,7 @@ Assigned to: ThemeForest
             markerStyle: {
               initial: {
                 fill: "#123435",
-                stroke: "#556d91",
+                stroke: "#123435",
               },
               hover: {
                 stroke: "#123435",
@@ -585,9 +585,11 @@ Assigned to: ThemeForest
     //Single page scroll js
     page_scroll: function () {
       if ($(".port_navigation.index_navigation .nav_list li").length > 0) {
-        $(".port_navigation.index_navigation .nav_list li").on(
+        $(".port_navigation.index_navigation .nav_list li, .drl-logo-menu").on(
           "click",
           function (e) {
+            console.log("lol");
+
             $(".port_navigation .nav_list li").removeClass("active");
             $(this).addClass("active");
             var target = $("[data-scroll=" + $(this).attr("data-number") + "]");
