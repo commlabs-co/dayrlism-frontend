@@ -666,7 +666,7 @@ Assigned to: ThemeForest
   portfolio.init();
 
   $(window).on("load", function () {
-    // $(".status").fadeOut(1800);
-    // $(".preloader").delay(1000).fadeOut("slow");
+    $(".status").fadeOut(1800);
+    $(".preloader").delay(1000).fadeOut("slow");
   });
 })(jQuery);
