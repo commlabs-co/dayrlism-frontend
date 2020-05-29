@@ -65,7 +65,7 @@ $(function () {
   var feed = new Instafeed({
     get: "user",
     userId: 248624218,
-    accessToken: "248624218.a3a0a43.1e2a725cc2144f778281179f3714841f",
+    accessToken: "248624218.2a46ab3.d4fffdaea7ef45e2aec8fca6583d53a3",
     sortBy: "most-liked",
     template:
       '<div class="item"> <div class="post-img"> <img src="{{image}}" alt="{{caption}}"> </div> <div class="content">  <h5><a href="#0"><span><a href="#0">{{model.created_time}}</a></span> <span>/</span> <span><a href="{{link}}"> <em>{{model.likes.count}}</em> </a></span></a></h5> <p>{{caption}}</p> <a href="{{link}}" class="more">Continue Reading<i class="fas fa-angle-right"></i></a> </div> </div>',
