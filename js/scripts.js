@@ -64,32 +64,13 @@ $(function () {
 
   var feed = new Instafeed({
     get: "user",
-    userId: 248624218,
-    accessToken: "248624218.2a46ab3.d4fffdaea7ef45e2aec8fca6583d53a3",
+    // userId: 248624218,
+    accessToken: "IGQVJWZAVhPRDNGc3hUVmRnTUZA0VDVMWC1GU3JJcXYtTjVfVV9tczFJd1cwRFNUdlZAqek81SkhtNnBITUFnT0FEakxpWTEtNlV1X0w4T0w1ZAEpJX3lVdk9TZAVhrUVBwZAFpYRi1jakh3",
     sortBy: "most-liked",
     template:
-      '<div class="item"> <div class="post-img"> <img src="{{image}}" alt="{{caption}}"> </div> <div class="content">  <h5><a href="#0"><span><a href="#0">{{model.created_time}}</a></span> <span>/</span> <span><a href="{{link}}"> <em>{{model.likes.count}}</em> </a></span></a></h5> <p>{{caption}}</p> <a href="{{link}}" class="more">Continue Reading<i class="fas fa-angle-right"></i></a> </div> </div>',
+      '<div class="item"> <div class="post-img"> <img src="{{image}}" alt="{{caption}}"> </div> <div class="content">  <h5><a href="#0"><span><a href="#0">{{created_time}}</a></span> <span>/</span> <span><a href="{{link}}"> <em>{{model.likes.count}}</em> </a></span></a></h5> <p>{{caption}}</p> <a href="{{link}}" class="more">Continue Reading<i class="fas fa-angle-right"></i></a> </div> </div>',
     filter: function (data) {
-      var date = new Date(data.created_time * 1000),
-        m = date.getMonth(),
-        d = date.getDate(),
-        y = date.getFullYear(),
-        month_names = new Array();
-
-      month_names[month_names.length] = "Jan";
-      month_names[month_names.length] = "Feb";
-      month_names[month_names.length] = "Mar";
-      month_names[month_names.length] = "Apr";
-      month_names[month_names.length] = "May";
-      month_names[month_names.length] = "Jun";
-      month_names[month_names.length] = "Jul";
-      month_names[month_names.length] = "Aug";
-      month_names[month_names.length] = "Sep";
-      month_names[month_names.length] = "Oct";
-      month_names[month_names.length] = "Nov";
-      month_names[month_names.length] = "Dec";
-
-      data.created_time = month_names[m] + " " + d + " " + y;
+      data.created_time = formatGMTDate(data.timestamp);
       return true;
     },
     target: "instagram-carousel",
@@ -130,6 +111,14 @@ $(function () {
     },
   });
 });
+
+const formatGMTDate = (gmtDate) => {
+  // e.g. 27/12/2018, 10:00:00am
+  const date = new Date(gmtDate);
+  return `${date.toLocaleDateString("en-GB")}, ${date.toLocaleTimeString(
+    "en-US"
+  )}`;
+};
 
 // === window When Loading === //
 $(window).on("load", function () {
