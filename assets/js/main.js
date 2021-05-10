@@ -87,7 +87,7 @@ var feed = new Instafeed({
     });
   },
 });
-feed.run();
+// feed.run();
 const formatGMTDate = (e) => {
   const t = new Date(e);
   return `${t.toLocaleDateString("en-GB")}, ${t.toLocaleTimeString("en-US")}`;
