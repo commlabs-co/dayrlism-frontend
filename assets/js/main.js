@@ -60,6 +60,8 @@ const date = new Date(),
   thisYear = date.getFullYear(),
   myAge = thisYear - 1994,
   workSince = thisYear - 2014;
+console.log(myAge);
+console.log(workSince);
 $("#drl-age").append($(`<span> ${myAge} in ${thisYear}</span>`)),
   $("#drl-experience").append($(`<span> ${workSince}</span>`));
 
