@@ -1,5 +1,7 @@
 import React from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import AnimatedCursor from "react-animated-cursor";
+
 import Hero from "../../components/hero/HeroLight";
 import Index from "../../components/about/index";
 import Address from "../../components/Address";
@@ -7,15 +9,7 @@ import Portfolio from "../../components/portfolio/PortfolioLight";
 import Blog from "../../components/blog/BlogLight";
 import Contact from "../../components/Contact";
 import Social from "../../components/Social";
-import AnimatedCursor from "react-animated-cursor";
-
-const menuItem = [
-  { icon: "fa-home", menuName: "Home" },
-  { icon: "fa-user", menuName: "About" },
-  { icon: "fa-briefcase", menuName: "Portfolio" },
-  { icon: "fa-envelope-open", menuName: "Contact" },
-  { icon: "fa-comments", menuName: "Blog" },
-];
+import { menuItem, routes } from "../../helpers/consts";
 
 const HomeLight = () => {
   document.body.classList.add("light");
@@ -23,14 +17,14 @@ const HomeLight = () => {
   return (
     <div className="green">
       <div className="demo-sticker">
-        <a href="/home-dark">
+        <a href={routes.home}>
           <i className="fa fa-moon-o" aria-hidden="true"></i>
         </a>
       </div>
       <AnimatedCursor
         innerSize={8}
         outerSize={44}
-        color="114, 182, 38"
+        color="49, 103, 107"
         outerAlpha={0.3}
         innerScale={0.7}
         outerScale={1.2}

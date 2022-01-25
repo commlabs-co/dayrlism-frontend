@@ -1,8 +1,8 @@
 /*
-Template Name: Tunis
+Template Name: Dayrl
 Author: ib-themes
 Author URI: http://themeforest.net/user/ib-themes
-Description: Tunis - Personal Portfolio React Template
+Description: Dayrl - Personal Portfolio React Template
 Version: 1.0
 */
 
@@ -1875,7 +1875,7 @@ button:focus {
 .portfolio .slideshow a,
 .title-section h1 span,
 .blog-post .meta i {
-  color: #ffb400;
+  color: #70ffe1;
 }
 .box_inner.about {
   .pie,
@@ -1930,7 +1930,7 @@ button:focus {
   .c100.p98 .fill,
   .c100.p99 .fill,
   .c100.p100 .fill {
-    border: 0.08em solid #ffb400;
+    border: 0.08em solid #70ffe1;
   }
 }
 .portfolio-tab-list {
@@ -1947,7 +1947,7 @@ button:focus {
     transition: 0.3s;
     &:hover,
     &.react-tabs__tab--selected {
-      color: #ffb400;
+      color: #70ffe1;
     }
   }
 }
@@ -1990,7 +1990,7 @@ button:focus {
     &::before {
       content: "";
       position: absolute;
-      background: #ffb400;
+      background: #70ffe1;
       width: 100%;
       height: 100%;
       left: 0;

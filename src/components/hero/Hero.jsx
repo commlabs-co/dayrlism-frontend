@@ -1,18 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import Index from "../../components/about/index";
-
-const heroContent = {
-  heroImage: "img/hero/dark.jpg",
-  heroMobileImage: "img-mobile",
-  heroTitleName: "steve milner",
-  heroDesignation: "web designer",
-  heroDescriptions: `I'm a Tunisian based web designer & front‑end developer focused on
-  crafting clean & user‑friendly experiences, I am passionate about
-  building excellent software that improves the lives of those
-  around me.`,
-  heroBtn: "more about me",
-};
+import { heroContent } from "../../helpers/consts";
 
 const Hero = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +23,7 @@ const Hero = () => {
         <div className="col-12 col-lg-8 offset-lg-4 home-details  text-center text-lg-start">
           <div>
             <img
-              src={`img/hero/${heroContent.heroMobileImage}.jpg`}
+              src={`img/hero/${heroContent.heroMobileImage}`}
               className="img-fluid main-img-mobile d-sm-block d-lg-none"
               alt="hero man"
             />

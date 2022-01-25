@@ -8,19 +8,13 @@ import Blog from "../../components/blog/Blog";
 import Contact from "../../components/Contact";
 import Social from "../../components/Social";
 
-const menuItem = [
-  { icon: "fa-home", menuName: "Home" },
-  { icon: "fa-user", menuName: "About" },
-  { icon: "fa-briefcase", menuName: "Portfolio" },
-  { icon: "fa-envelope-open", menuName: "Contact" },
-  { icon: "fa-comments", menuName: "Blog" },
-];
+import { menuItem, routes } from "../../helpers/consts";
 
 const HomeDark = () => {
   return (
     <div className="yellow">
       <div className="demo-sticker">
-        <a href="/home-light">
+        <a href={routes.light}>
           <i className="fa fa-lightbulb-o" aria-hidden="true"></i>
         </a>
       </div>

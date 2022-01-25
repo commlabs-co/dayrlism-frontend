@@ -21,7 +21,7 @@ const Preview = () => {
     <div>
       <section className="banner text-center">
         <div className="content">
-          <h1>Tunis</h1>
+          <h1>Dayrl</h1>
           <h2>Personal Portfolio React Template</h2>
         </div>
       </section>
@@ -75,7 +75,7 @@ const Preview = () => {
             You are at the right step now
           </h6>
           <h3 data-aos="fade-up" data-aos-duration="1200" data-aos-delay="100">
-            Purchase Tunis & Build Your Super Fast{" "}
+            Purchase Dayrl & Build Your Super Fast{" "}
             <span className="theme-color">React</span> &amp;{" "}
             <span className="theme-color">Bootstrap 5 </span> Based Portfolio
             Template.
@@ -95,7 +95,7 @@ const Preview = () => {
         {/* End go_purchase */}
 
         <div className="text-center footer_copyright">
-          <h6>Tunis - Personal Portfolio React Template</h6>
+          <h6>Dayrl - Personal Portfolio React Template</h6>
           <h5>
             &copy; {new Date().getFullYear()} Designed with{" "}
             <span className="heart">&#10084;</span> by{" "}

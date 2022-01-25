@@ -1,5 +1,5 @@
 /* =================================================================== */
-/* YELLOW #ffb400
+/* YELLOW #70FFE1
 ====================================================================== */
 
 .home h1,
@@ -13,7 +13,7 @@ body.light #menu li.active a,
 .portfolio .slideshow a,
 .portfolio .grid figure:hover figcaption,
 .blog-post .meta i {
-  color: #ffb400;
+  color: #70ffe1;
 }
 .home .home-details h1:before,
 .about .resume-box .icon,
@@ -34,14 +34,14 @@ body.light.blog .page-item.active .page-link,
 .portfolio .slideshow .carousel-indicators li.active,
 .button:before,
 .button-icon {
-  background-color: #ffb400;
+  background-color: #70ffe1;
 }
 @media screen and (max-width: 991px) {
   .header ul.icon-menu li.icon-box.react-tabs__tab--selected,
   .header ul.icon-menu li.icon-box:hover,
   body.light .header ul.icon-menu li.icon-box.react-tabs__tab--selected,
   body.light .header ul.icon-menu li.icon-box:hover {
-    background: #ffb400 !important;
+    background: #70ffe1 !important;
   }
 }
 .contact .contactform input[type="text"]:focus,
@@ -55,10 +55,10 @@ body.light.contact .contactform textarea:focus,
 body.light.blog .page-item.active .page-link,
 body.light.blog .page-link:hover,
 .button {
-  border: 1px solid #ffb400;
+  border: 1px solid #70ffe1;
 }
 .blog .post-thumb {
-  border-bottom: 5px solid #ffb400;
+  border-bottom: 5px solid #70ffe1;
 }
 .pie,
 .c100 .bar,
@@ -112,5 +112,5 @@ body.light.blog .page-link:hover,
 .c100.p98 .fill,
 .c100.p99 .fill,
 .c100.p100 .fill {
-  border: 0.08em solid #ffb400;
+  border: 0.08em solid #70ffe1;
 }
