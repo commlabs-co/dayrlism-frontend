@@ -3,10 +3,11 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import Hero from "../../components/hero/Hero";
 import Index from "../../components/about/index";
 import Address from "../../components/Address";
-import Portfolio from "../../components/portfolio/Portfolio";
-import Blog from "../../components/blog/Blog";
+// import Portfolio from "../../components/portfolio/Portfolio";
+// import Blog from "../../components/blog/Blog";
 import Contact from "../../components/Contact";
 import Social from "../../components/Social";
+import Sponsor from "../../components/Sponsor";
 
 import { menuItem, routes } from "../../helpers/consts";
 
@@ -61,7 +62,7 @@ const HomeDark = () => {
           {/* About Content Ends */}
 
           {/* Portfolio Content Starts */}
-          <TabPanel className="portfolio professional">
+          {/* <TabPanel className="portfolio professional">
             <div
               className="title-section text-left text-sm-center"
               data-aos="fade-up"
@@ -72,7 +73,6 @@ const HomeDark = () => {
               </h1>
               <span className="title-bg">works</span>
             </div>
-            {/* End title */}
             <div
               className="container grid-gallery main-content"
               data-aos="fade-up"
@@ -81,8 +81,7 @@ const HomeDark = () => {
             >
               <Portfolio />
             </div>
-            {/* End grid gallery */}
-          </TabPanel>
+          </TabPanel> */}
           {/* Portfolio Content Ends */}
 
           {/* Contact Content Starts */}
@@ -115,9 +114,16 @@ const HomeDark = () => {
                   </p>
                   <Address />
                   {/* End Address */}
-
+                  <h3 className="text-uppercase custom-title mb-0 ft-wt-600 pb-1 pt-3">
+                    Follow Me
+                  </h3>
                   <Social />
                   {/* End Social */}
+                  <h3 className="text-uppercase custom-title mb-0 ft-wt-600 pb-1 pt-3">
+                    Buy Me a Coffee
+                  </h3>
+                  <Sponsor />
+                  {/* End Sponsor */}
                 </div>
                 {/* Left Side Ends */}
 
@@ -133,7 +139,7 @@ const HomeDark = () => {
           {/* Contact Content Ends */}
 
           {/* Blog Content Starts */}
-          <TabPanel className="blog">
+          {/* <TabPanel className="blog">
             <div
               className="title-section text-left text-sm-center "
               data-aos="fade-up"
@@ -149,13 +155,11 @@ const HomeDark = () => {
               data-aos="fade-up"
               data-aos-duration="1200"
             >
-              {/*  Articles Starts  */}
               <div className="row pb-50">
                 <Blog />
               </div>
-              {/* Articles Ends */}
             </div>
-          </TabPanel>
+          </TabPanel> */}
           {/* Blog Content Ends */}
         </div>
       </Tabs>
