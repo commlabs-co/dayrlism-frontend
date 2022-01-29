@@ -28,7 +28,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "commit": "npx cz"
+    "commit": "npx cz",
+    "deploy": "./scripts/deploy.sh"
   },
   "eslintConfig": {
     "extends": [
