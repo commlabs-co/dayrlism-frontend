@@ -5,7 +5,7 @@ ssh dayrlism@206.189.150.29 <<EOF
  git add --all
  git reset --hard
  git pull
- pnpm install
- pnpm build
+#  pnpm install
+#  pnpm build
  exit
 EOF
