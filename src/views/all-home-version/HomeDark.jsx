@@ -161,6 +161,50 @@ const HomeDark = () => {
             </div>
           </TabPanel> */}
           {/* Blog Content Ends */}
+          {/* Version Content Starts */}
+          <TabPanel className="version">
+            <div
+              className="title-section text-left text-sm-center "
+              data-aos="fade-up"
+              data-aos-duration="1200"
+            >
+              <h1>
+                Previous <span>version</span>
+              </h1>
+              <span className="title-bg">Changelog</span>
+            </div>
+            <div
+              className="container"
+              data-aos="fade-up"
+              data-aos-duration="1200"
+            >
+              <div className="row pb-50">
+                <h3 className="text-uppercase  mb-0 ft-wt-600 pb-3">
+                  Changelog
+                </h3>
+                <p className="open-sans-font mb-4">
+                  Latest version 8.0.0, 2022-01-29: <br />
+                  <a href="https://dayrlism.info">https://dayrlism.info</a>
+                </p>
+                <h3 className="text-uppercase  mb-0 ft-wt-600 pb-3">
+                  Older versions
+                </h3>
+                <p className="open-sans-font mb-4">
+                  Version 5.0.0, 2020-01-30: <br />
+                  <a href="https://v5.dayrlism.info">
+                    https://v5.dayrlism.info
+                  </a>
+                </p>
+                <p className="open-sans-font mb-4">
+                  Version 4.0.0, 2018-01-29: <br />
+                  <a href="https://v4.dayrlism.info">
+                    https://v4.dayrlism.info
+                  </a>
+                </p>
+              </div>
+            </div>
+          </TabPanel>
+          {/* Version Content Ends */}
         </div>
       </Tabs>
     </div>

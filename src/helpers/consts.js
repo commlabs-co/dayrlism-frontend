@@ -12,6 +12,7 @@ export const menuItem = [
   // { icon: "fa-briefcase", menuName: "Portfolio" },
   { icon: "fa-envelope-open", menuName: "Contact" },
   // { icon: "fa-comments", menuName: "Blog" },
+  { icon: "fa-terminal", menuName: "Version" },
 ];
 
 export const heroContent = {
