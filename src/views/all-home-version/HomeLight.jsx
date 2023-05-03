@@ -5,10 +5,11 @@ import AnimatedCursor from "react-animated-cursor";
 import Hero from "../../components/hero/HeroLight";
 import Index from "../../components/about/index";
 import Address from "../../components/Address";
-import Portfolio from "../../components/portfolio/PortfolioLight";
-import Blog from "../../components/blog/BlogLight";
+// import Portfolio from "../../components/portfolio/PortfolioLight";
+// import Blog from "../../components/blog/BlogLight";
 import Contact from "../../components/Contact";
 import Social from "../../components/Social";
+import Sponsor from "../../components/Sponsor";
 import { menuItem, routes } from "../../helpers/consts";
 
 const HomeLight = () => {
@@ -72,7 +73,7 @@ const HomeLight = () => {
           {/* About Content Ends */}
 
           {/* Portfolio Content Starts */}
-          <TabPanel className="portfolio">
+          {/* <TabPanel className="portfolio">
             <div
               className="title-section text-left text-sm-center"
               data-aos="fade-up"
@@ -83,7 +84,6 @@ const HomeLight = () => {
               </h1>
               <span className="title-bg">works</span>
             </div>
-            {/* End title */}
             <div
               className="container grid-gallery main-content"
               data-aos="fade-up"
@@ -92,8 +92,7 @@ const HomeLight = () => {
             >
               <Portfolio />
             </div>
-            {/* End grid gallery */}
-          </TabPanel>
+          </TabPanel> */}
           {/* Portfolio Content Ends */}
 
           {/* Contact Content Starts */}
@@ -126,9 +125,16 @@ const HomeLight = () => {
                   </p>
                   <Address />
                   {/* End Address */}
-
+                  <h3 className="text-uppercase custom-title mb-0 ft-wt-600 pb-1 pt-3">
+                    Follow Me
+                  </h3>
                   <Social />
                   {/* End Social */}
+                  <h3 className="text-uppercase custom-title mb-0 ft-wt-600 pb-1 pt-3">
+                    Buy Me a Coffee
+                  </h3>
+                  <Sponsor />
+                  {/* End Sponsor */}
                 </div>
                 {/* Left Side Ends */}
 
@@ -144,7 +150,7 @@ const HomeLight = () => {
           {/* Contact Content Ends */}
 
           {/* Blog Content Starts */}
-          <TabPanel className="blog">
+          {/* <TabPanel className="blog">
             <div
               className="title-section text-left text-sm-center "
               data-aos="fade-up"
@@ -160,13 +166,11 @@ const HomeLight = () => {
               data-aos="fade-up"
               data-aos-duration="1200"
             >
-              {/*  Articles Starts  */}
               <div className="row pb-50">
                 <Blog />
               </div>
-              {/* Articles Ends */}
             </div>
-          </TabPanel>
+          </TabPanel> */}
           {/* Blog Content Ends */}
         </div>
       </Tabs>

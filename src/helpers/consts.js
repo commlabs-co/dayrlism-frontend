@@ -9,9 +9,9 @@ export const routes = {
 export const menuItem = [
   { icon: "fa-home", menuName: "Home" },
   { icon: "fa-user", menuName: "About" },
-  { icon: "fa-briefcase", menuName: "Portfolio" },
+  // { icon: "fa-briefcase", menuName: "Portfolio" },
   { icon: "fa-envelope-open", menuName: "Contact" },
-  { icon: "fa-comments", menuName: "Blog" },
+  // { icon: "fa-comments", menuName: "Blog" },
 ];
 
 export const heroContent = {
@@ -135,5 +135,37 @@ export const educationContent = [
     degree: "Diploma In Software Engineer",
     institute: "Asia Pacific University",
     details: ``,
+  },
+];
+
+export const SocialShare = [
+  {
+    iconName: "fa fa-facebook",
+    link: "https://www.facebook.com/dayrl10",
+  },
+  {
+    iconName: "fa fa-instagram",
+    link: "https://www.instagram.com/dayrlism10",
+  },
+  { iconName: "fa fa-twitter", link: "https://twitter.com/dayrl10" },
+  { iconName: "fa fa-linkedin", link: "https://www.linkedin.com/in/dayrl10" },
+  { iconName: "fa fa-whatsapp", link: "https://wa.me/60183663236" },
+];
+
+export const SponsorShare = [
+  {
+    iconName: "fa fa-bitcoin",
+    token: "Bitcoin",
+    link: "bc1qpafyqx84jg5y5apznjvz8d54u8zy7zk90wr7l4",
+  },
+  {
+    iconName: "fa fa-usd",
+    token: "Ethereum ERC20 USDT",
+    link: "0xcd61bF0C222d9070fe264c98d5222152475997c0",
+  },
+  {
+    iconName: "fa fa-usd",
+    token: "Algorand USDT",
+    link: "JZXQQVLQDV7G7INSYIHJAC7EW3533QK2LPEKG5BWBJ5EHONV4PZ7NN3HIE",
   },
 ];

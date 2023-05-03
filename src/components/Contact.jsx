@@ -7,10 +7,27 @@ const Contact = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [successMsg, setSuccessMsg] = React.useState(false);
+  const [errMsg, setErrMsg] = React.useState();
 
-  const onSubmit = (data, e) => {
+  const onSubmit = async (data, e) => {
     e.target.reset();
     console.log("Message submited: " + JSON.stringify(data));
+
+    try {
+      const respond = await fetch(`${"https://cms.im90s.org"}/dayrlism-leads`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(respond);
+      setSuccessMsg(true);
+    } catch (err) {
+      setErrMsg(err);
+    }
   };
 
   return (
@@ -31,7 +48,6 @@ const Contact = () => {
             </div>
           </div>
           {/* End .col */}
-
           <div className="col-12 col-md-6">
             <div className="form-group">
               <input
@@ -56,8 +72,21 @@ const Contact = () => {
             </div>
           </div>
           {/* End .col */}
-
-          <div className="col-12 col-md-12">
+          <div className="col-12 col-md-6">
+            <div className="form-group">
+              <input
+                {...register("mobile", { required: true })}
+                type="text"
+                name="mobile"
+                placeholder="YOUR MOBILE"
+              />
+              {errors.mobile && (
+                <span className="invalid-feedback">Mobile is required.</span>
+              )}
+            </div>
+          </div>
+          {/* End .col */}
+          <div className="col-12 col-md-6">
             <div className="form-group">
               <input
                 {...register("subject", { required: true })}
@@ -71,7 +100,6 @@ const Contact = () => {
             </div>
           </div>
           {/* End .col */}
-
           <div className="col-12">
             <div className="form-group">
               <textarea
@@ -85,7 +113,6 @@ const Contact = () => {
             </div>
           </div>
           {/* End .col */}
-
           <div className="col-12">
             <button type="submit" className="button">
               <span className="button-text">Send Message</span>
@@ -93,6 +120,16 @@ const Contact = () => {
             </button>
           </div>
           {/* End .col */}
+          {successMsg && (
+            <span className="valid-feedback">Successfully Sent!</span>
+          )}
+          {errMsg && (
+            <span className="invalid-feedback">
+              Error, please reach out to Admin!
+              <br />
+              Message: {errMsg}
+            </span>
+          )}
         </div>
       </form>
 
