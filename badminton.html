@@ -136,9 +136,9 @@
           <button id="o2-submit-record" class="uk-button uk-button-primary">
             Submit
           </button>
-          <!-- <button disable id="o2-submit-record" class="uk-button uk-button-default">
+          <button disable id="o2-swap-player" class="uk-button uk-button-default">
             Players Swap
-          </button> -->
+          </button>
         </form>
 
         <h1 class="uk-heading-divider">Game Score Results <button id="o2-clear-record" class="uk-button uk-button-default">Clear Data</button></h1>
@@ -485,6 +485,18 @@
 
       $(document).on("click", "#o2-inser-credit", function () {
         UIkit.modal($('#o2-insert-credit-modal')).show();
+        return false;
+      })
+
+      $(document).on("click", "#o2-swap-player", function () {
+        let o2wp1 = $('#o2-wp1').val();
+        let o2wp2 = $('#o2-wp2').val();
+        let o2lp1 = $('#o2-lp1').val();
+        let o2lp2 = $('#o2-lp2').val();
+        document.getElementById('o2-wp1').value = o2lp1;
+        document.getElementById('o2-wp2').value = o2lp2;
+        document.getElementById('o2-lp1').value = o2wp1;
+        document.getElementById('o2-lp2').value = o2wp2;
         return false;
       })
 
