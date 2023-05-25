@@ -455,7 +455,7 @@
         let creditPlayer = $('#o2-credit-player').val();
         let creditInsert = $('#o2-credit-insert').val();
         let creditAction = $('#o2-credit-action').val();
-        const isInsertExpenses = creditAction=== 'drinks' || creditAction=== 'shuttlecock' || creditAction=== 'dinner' || creditAction=== 'add';
+        const isInsertExpenses = creditAction=== 'drinks' || creditAction=== 'shuttlecock' || creditAction=== 'dinner' || creditAction=== 'add credit';
   
         creditList.push({ name: creditPlayer , credit: isInsertExpenses ? Math.abs(creditInsert): -Math.abs(creditInsert), action: creditAction })
         localStorage.setItem(localStorageCreditName, JSON.stringify(creditList));
