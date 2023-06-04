@@ -15,7 +15,8 @@
     />
     <!-- Title  -->
     <title>Badminton Challenge</title>
-
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
+    <script src="https://unpkg.com/brain.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/css/uikit.min.css"
@@ -515,6 +516,63 @@
           <div class="dv-number-delimiter"> ${latestPoolStatus} </div>
         </div>
       `));
+
+      // const handicapList = [{ score:5, name: 'dayrl' }, { score:4.5, name: 'wei hao' }, { score:3, name: 'ben heng' }, { score:6, name: 'kok kuan' }, { score:3, name: 'bryan' }, { score:4.5, name: 'steve' }, { score:0, name: 'ren jie' }, { score:3, name: 'zi piao' }, { score:5, name: 'jac' }, { score:4.5, name: 'jeremy' }, { score:5, name: 'guest1' }, { score:5, name: 'guest2' }, { score:5, name: 'guest3' },]
+
+      // const { NeuralNetwork } = require('brain.js');
+
+        // Sample player scores (replace with your actual data)
+
+        // Sample player scores (replace with your actual data)
+        const playerScores = [
+          { player: 'John', score: 80 },
+          { player: 'Jane', score: 90 },
+          { player: 'Mark', score: 75 },
+          // ...
+        ];
+
+        // Prepare training data (replace with your actual data)
+        const trainingData = [
+          { input: [80, 90], output: { handicap: 20 } },
+          { input: [75, 80], output: { handicap: 25 } },
+          // ...
+        ];
+
+        // Create a new instance of the neural network
+        const net = new brain.NeuralNetwork({ inputSize: 2 });
+
+        // Train the network with your prepared training data
+        net.train(trainingData);
+
+        // Function to calculate the handicap for a player based on their past scores
+        function calculateHandicap(playerName) {
+          const playerData = playerScores.find(player => player.player === playerName);
+          if (!playerData) {
+            return 0; // Player not found, no handicap
+          }
+
+          // Get the player's past scores
+          const pastScores = getPlayerScores(playerName);
+          console.log(pastScores);
+          // Use the trained network to make a prediction
+          const predictedOutput = net.run([80,90]);
+
+          return predictedOutput.handicap;
+        }
+
+        // Function to retrieve a player's past scores
+        function getPlayerScores(playerName) {
+          const scores = playerScores
+            .filter(player => player.player === playerName)
+            .map(player => player.score);
+
+          return scores;
+        }
+
+        // Example usage
+        const playerName = 'John';
+        const handicap = calculateHandicap(playerName);
+        console.log(`Handicap for ${playerName}: ${handicap}`);
     </script>
   </body>
 </html>
