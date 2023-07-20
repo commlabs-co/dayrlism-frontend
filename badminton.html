@@ -142,7 +142,9 @@
           </button>
         </form>
 
-        <h1 class="uk-heading-divider">Game Score Results <button id="o2-clear-record" class="uk-button uk-button-default">Clear Data</button></h1>
+        <h1 class="uk-heading-divider">Game Score Results <button id="o2-clear-record" class="uk-button uk-button-default">Clear Data</button>
+          <!-- <button id="o2-export-pool" style="margin-left: 4px;" class="uk-button uk-button-default">Export</button><button id="o2-import-pool" style="margin-left: 4px;" class="uk-button uk-button-default">Import</button> -->
+        </h1>
         <div id="o2-summary-dummy-hide" class="uk-placeholder">
           Record score to show results
         </div>
@@ -154,7 +156,7 @@
         <!-- <button id="o2-accordion-open-all" class="uk-button uk-button-text">Collapse All</button> -->
         <ul uk-accordion="multiple: true">
           <li>
-            <a class="uk-accordion-title" href="#">Today</a>
+            <a id="o2-pool-total" class="uk-accordion-title" href="#">Today Total: </a>
             <div class="uk-accordion-content">
               <div class="uk-overflow-auto" id="o2-pool-result">
   
@@ -164,7 +166,7 @@
         </ul>
       </div>
       <div class="uk-container o2-section-padding">
-        <h1 class="uk-heading-divider">Credit History <button id="o2-inser-credit" class="uk-button uk-button-default">Insert Credit</button></h1>
+        <h1 class="uk-heading-divider">Credit History <button id="o2-inser-credit" class="uk-button uk-button-default">Insert Credit</button><button id="o2-export-credit" style="margin-left: 4px;" class="uk-button uk-button-default">Export</button><button id="o2-import-credit" style="margin-left: 4px;" class="uk-button uk-button-default">Import</button></h1>
         <!-- <button id="o2-accordion-open-all" class="uk-button uk-button-text">Collapse All</button> -->
         <ul uk-accordion="multiple: true">
           <li>
@@ -182,7 +184,7 @@
         <!-- <button id="o2-accordion-open-all" class="uk-button uk-button-text">Collapse All</button> -->
         <ul uk-accordion="multiple: true">
           <li>
-            <a class="uk-accordion-title" href="#">From Previous</a>
+            <a id="o2-accumulations" class="uk-accordion-title" href="#">Accumulations: </a>
             <div class="uk-accordion-content">
               <div class="uk-overflow-auto" id="o2-credit-result">
                
@@ -275,6 +277,45 @@
       
         </div>
       </div>
+
+      <div id="o2-import-credit-modal" class="uk-flex-top" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      
+          <button class="uk-modal-close-default" type="button" uk-close></button>
+      
+          <form>
+            <fieldset class="uk-fieldset">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="o2-loser-score">Credit Data</label>
+                <textarea id="o2-data-import-credit" class="uk-textarea" required> </textarea>
+              </div>
+            </fieldset>
+            <button id="o2-submit-import-credit" class="uk-button uk-button-primary">
+              Import
+            </button>
+          </form>
+      
+        </div>
+      </div>
+      <div id="o2-import-pool-modal" class="uk-flex-top" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      
+          <button class="uk-modal-close-default" type="button" uk-close></button>
+      
+          <form>
+            <fieldset class="uk-fieldset">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="o2-loser-score">Pool Data</label>
+                <textarea id="o2-data-import-pool" class="uk-textarea" required> </textarea>
+              </div>
+            </fieldset>
+            <button id="o2-submit-import-pool" class="uk-button uk-button-primary">
+              Import
+            </button>
+          </form>
+      
+        </div>
+      </div>
     </div>
 <div id="exports-record"></div>
 <div id="exports-credit"></div>
@@ -306,7 +347,7 @@
         $('#o2-summary-dummy-hide').addClass('o2-summary-dummy-hide');
         $.each(mkRecord, function (index, value) {
           $('#o2-score-board').append($(`
-            <div class="uk-grid-small" uk-grid> 
+            <div data-wp1="${value.winner.p1}" data-wp2="${value.winner.p2}" data-lp1="${value.loser.p1}" data-lp2="${value.loser.p2}" data-loser-score="${value.loserScore}" class="uk-grid-small o2-fill-players" uk-grid> 
               <div class="uk-width-expand" uk-leader="fill: -">Match ${index+1}: <br />${value.winner.p1}/${value.winner.p2}(winner) vs ${value.loser.p1}/${value.loser.p2}(loser)</div> 
               <div class="dv-number-delimiter">
                 <br />
@@ -339,12 +380,52 @@
           return Object.entries(mappingPool).map(([name, cash]) => ({ name, cash }));
         }
 
+        let poolTotal=0;
+
         mergePools(poolResults).map(res=>{
           $('#o2-pool-result').append(
-            $(` <div class="uk-grid-small" uk-grid> <div class="uk-width-expand" uk-leader="fill: -">${res.name}</div> <div class="dv-number-delimiter">${res.cash}</div> </div> `)
+            $(` <div data-cash="${res.cash}" data-name="${res.name}" class="o2-pool-candidate uk-grid-small" uk-grid> <div class="uk-width-expand" uk-leader="fill: -">${res.name}</div> <div class="dv-number-delimiter">${res.cash}</div> </div> `)
           );
+          poolTotal+=res.cash;
         })
+        
+
+         $('#o2-pool-total').append(
+          $(` <span>${poolTotal}</span> `)
+        );
       }
+
+
+
+      $(document).on("click", ".o2-pool-candidate", function () {
+          let name = this.getAttribute('data-name');
+          let cash = this.getAttribute('data-cash');
+
+          document.getElementById('o2-credit-player').value = name;
+          document.getElementById('o2-credit-action').value = 'badminton';
+          document.getElementById('o2-credit-insert').value = cash;
+
+          UIkit.modal($('#o2-insert-credit-modal')).show();
+          return false;
+        })
+
+      $(document).on("click", ".o2-fill-players", function () {
+          let dataWp1 = this.getAttribute('data-wp1');
+          let dataWp2 = this.getAttribute('data-wp2');
+          let dataLp1 = this.getAttribute('data-lp1');
+          let dataLp2 = this.getAttribute('data-lp2');
+          let dataLoserScore = this.getAttribute('data-loser-score');
+          
+
+          document.getElementById('o2-wp1').value = dataWp1;
+          document.getElementById('o2-wp2').value = dataWp2;
+          document.getElementById('o2-lp1').value = dataLp1;
+          document.getElementById('o2-lp2').value = dataLp2;
+          document.getElementById('o2-loser-score').value = dataLoserScore;
+
+          return false;
+        })
+
 
 
       $('#o2-submit-record').on('click', function () {
@@ -446,12 +527,25 @@
 
         mergeCredit(mkCredit).map(res => {
           $('#o2-credit-result').append(
-            $(` <div class="uk-grid-small" uk-grid> <div class="uk-width-expand" uk-leader="fill: -">${res.name}</div> <div class="dv-number-delimiter">${res.credit}</div> </div> `)
+            $(` <div data-credit="${res.credit}" data-name="${res.name}" class="o2-credit-sum-candidate uk-grid-small" uk-grid> <div class="uk-width-expand" uk-leader="fill: -">${res.name}</div> <div class="dv-number-delimiter">${res.credit}</div> </div> `)
           );
           if(res.credit<0) totalUncollectedCredit += Number(res.credit)
           if(res.credit>0) totalLiable += Number(res.credit)
         })
       }
+
+
+       $(document).on("click", ".o2-credit-sum-candidate", function () {
+          let name = this.getAttribute('data-name');
+          let credit = this.getAttribute('data-credit');
+          document.getElementById('o2-credit-player').value = name;
+          document.getElementById('o2-credit-action').value = 'add credit';
+
+          document.getElementById('o2-credit-insert').value = Math.abs(credit);
+
+          UIkit.modal($('#o2-insert-credit-modal')).show();
+          return false;
+        })
 
       $('#o2-submit-insert-credit').on('click', function () {
         let creditPlayer = $('#o2-credit-player').val();
@@ -480,8 +574,10 @@
       })
 
       $(document).on("click", "#o2-clear-record", function () {
-        localStorage.removeItem(localStorageName);
-        location.reload() 
+          if (confirm('Confirm to Clear?') == true) {
+            localStorage.removeItem(localStorageName);
+            location.reload() 
+        }
         return false;
       })
 
@@ -502,6 +598,28 @@
         return false;
       })
 
+      $(document).on("click", "#o2-export-credit", function () {
+        navigator.clipboard.writeText(localStorage.getItem(localStorageCreditName));
+     
+        return false;
+      })
+
+      $(document).on("click", "#o2-import-credit", function () {
+        UIkit.modal($('#o2-import-credit-modal')).show();
+        return false;
+      })
+        
+      $(document).on("click", "#o2-import-pool", function () {
+        UIkit.modal($('#o2-import-pool-modal')).show();
+        return false;
+      })
+      
+      $(document).on("click", "#o2-submit-import-credit", function () {
+        localStorage.setItem(localStorageCreditName, $('#o2-data-import-credit').val())
+        location.reload() 
+        return false;
+      })
+
       
       $('#o2-credit-status').append($(`
         <div class="uk-grid-small" uk-grid> 
@@ -517,6 +635,10 @@
           <div class="dv-number-delimiter"> ${latestPoolStatus} </div>
         </div>
       `));
+
+            $('#o2-accumulations').append(
+                $(` <span>${Math.abs(latestPoolStatus)}</span> `)
+              );
 
       // const handicapList = [{ score:5, name: 'dayrl' }, { score:4.5, name: 'wei hao' }, { score:3, name: 'ben heng' }, { score:6, name: 'kok kuan' }, { score:3, name: 'bryan' }, { score:4.5, name: 'steve' }, { score:0, name: 'ren jie' }, { score:3, name: 'zi piao' }, { score:5, name: 'jac' }, { score:4.5, name: 'jeremy' }, { score:5, name: 'guest1' }, { score:5, name: 'guest2' }, { score:5, name: 'guest3' },]
 
