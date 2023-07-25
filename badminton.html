@@ -143,7 +143,8 @@
         </form>
 
         <h1 class="uk-heading-divider">Game Score Results <button id="o2-clear-record" class="uk-button uk-button-default">Clear Data</button>
-          <!-- <button id="o2-export-pool" style="margin-left: 4px;" class="uk-button uk-button-default">Export</button><button id="o2-import-pool" style="margin-left: 4px;" class="uk-button uk-button-default">Import</button> -->
+          <!-- <button id="o2-export-pool" style="margin-left: 4px;" class="uk-button uk-button-default">Export</button> -->
+          <!-- <button id="o2-import-pool" style="margin-left: 4px;" class="uk-button uk-button-default">Import</button> -->
         </h1>
         <div id="o2-summary-dummy-hide" class="uk-placeholder">
           Record score to show results
@@ -428,6 +429,8 @@
 
 
 
+
+
       $('#o2-submit-record').on('click', function () {
           $('#o2-summary-dummy-hide').addClass('o2-summary-dummy-hide');
           
@@ -698,21 +701,48 @@
         console.log(`Handicap for ${playerName}: ${handicap}`);
 
         const SHEET_ID = '1GTfzkFT9imP3f4qfwIlgmzcIMzsLBhB9qS6AqDMVA4I'
-        const ACCESS_TOKEN = 'ya29.a0AbVbY6OavpYBU9xE631gVT3GDsz_PL1lZsNThViuH9FDa8SgfXbspJB5rj9twVl5slLBLNhyaONLWCpWBgJ2Jmz-Z5ZQk0amCYIW2-gcE4hXAxu8GyVK5Alb31l7hIXYC6_qdmAb9dkPASJzRSusjNUuHN5kdykaCgYKAZsSARESFQFWKvPlArLMa5_5IUICxsJTpg6_wg0166'
+        const ACCESS_TOKEN = 'ya29.a0AbVbY6M1wGsDciY472XLxvOuRkjOlvI9qAt9q5MbLM_my_iFljc6YbCJ2Ht1Un86NhP1Mt12KhMpGNg5MSKOw4wIIJpFOp7018GRBICdmhnsopXovTFh0RJftYf4Gf8PA8Sh9qBsKOL-7qbReG3s63GXE-7DaCgYKAScSARESFQFWKvPlX00skheuXl0Tt4hKmlj9xA0163'
+const refresh_token ='1//04TKomeZyN1jTCgYIARAAGAQSNwF-L9IrGLSNmtkAVPgveXtkjT3qa5IPG3c-s4eDqNl7hiRNMtGONwlT23Bbc30oRFlYsQOTicg'
 
-        // const updateSheetValues = () => {
-        //     fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/matches:append?valueInputOption=RAW`, {
-        //       method: "POST",
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //         //update this token with yours. 
-        //         Authorization: `Bearer ${ACCESS_TOKEN}`,
-        //       },
-        //       body: JSON.stringify({ "values": [["1", "2"]] })
+
+        // const fetchRefreshToken = (value) => {
+        //   fetch(`https://oauth2.googleapis.com/token`, {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       //update this token with yours. 
+        //       Authorization: `Bearer ${ACCESS_TOKEN}`,
+        //     },
+        //     body: JSON.stringify({
+        //       refresh_token,
+        //       token_uri:"https://oauth2.googleapis.com/token"
         //     })
-        //   }
+        //   })
+        // }
+        // fetchRefreshToken()
 
-        //   updateSheetValues();
+        const updateSheetValues = (value) => {
+            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/matches:append?valueInputOption=RAW`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                //update this token with yours. 
+                Authorization: `Bearer ${ACCESS_TOKEN}`,
+              },
+              body: JSON.stringify(value)
+            })
+          }
+
+          
+
+          $(document).on("click", "#o2-export-pool", function () {
+            const date = new Date();
+            $.each(mkRecord, function (index, value) {
+              updateSheetValues({ "values": [[value.winner.p1, value.winner.p2, value.loser.p1, value.loser.p2, value.loserScore, date]] });
+            });
+
+              return false;
+          })
 
           // const fetchPlayers = () => {
           //     return fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/players!A:A?majorDimension=COLUMNS`, {
