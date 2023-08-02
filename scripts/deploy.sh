@@ -1,7 +1,7 @@
 #!/bin/bash
 ssh commlabs-do-shared-server <<EOF
     sudo su -
-    cd /Code/dayrlism-frontend
+    cd /Code/dayrlism-frontends
     git add --all
     git reset --hard
     git pull
