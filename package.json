@@ -1,12 +1,14 @@
 {
-  "name": "tunis",
-  "version": "0.1.0",
+  "name": "dayrlism-frontend",
+  "version": "8.0.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "./scripts/clean.sh",
+    "deploy:prod": "./scripts/deploy.sh"
   },
   "dependencies": {
     "@emailjs/browser": "^3.9.1",
