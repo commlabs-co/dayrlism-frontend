@@ -1,5 +1,4 @@
 import React from "react";
-
 import { educationContent } from "../../helpers/consts";
 
 const Education = () => {

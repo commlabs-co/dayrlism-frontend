@@ -4,6 +4,9 @@ import Education from "./Education";
 import Experience from "./Experience";
 import PersonalInfo from "./PersonalInfo";
 import Skills from "./Skills";
+import cv from "../../../public/assets/img/cv.webp";
+import heroImgMobile from "../../../public/assets/img/hero/img-mobile.jpg";
+import Image from "next/image";
 
 const index = () => {
   return (
@@ -15,15 +18,15 @@ const index = () => {
           <div className="col-xl-6 col-lg-5 col-12">
             <div className="row">
               <div className="col-12">
-                <h3 className="text-uppercase custom-title mb-0 ft-wt-600">
+                <h3 className="mb-0 text-uppercase custom-title ft-wt-600">
                   personal infos
                 </h3>
               </div>
               {/* End .col */}
 
               <div className="col-12 d-block d-sm-none">
-                <img
-                  src="img/hero/men-mobile.png"
+                <Image
+                  src={heroImgMobile}
                   className="img-fluid main-img-mobile"
                   alt="about avatar"
                 />
@@ -35,7 +38,7 @@ const index = () => {
               </div>
               {/* End personal info */}
 
-              <div className="col-12 mt-1">
+              <div className="mt-1 col-12">
                 <a
                   className="button"
                   href="https://resume.dayrlism.info"
@@ -51,7 +54,7 @@ const index = () => {
           {/*  Personal Info Ends */}
 
           {/*  Boxes Starts */}
-          <div className="col-xl-6 col-lg-7 col-12 mt-5 mt-lg-0">
+          <div className="mt-5 col-xl-6 col-lg-7 col-12 mt-lg-0">
             <Achievements />
           </div>
           {/* Achievements Ends */}
@@ -63,7 +66,7 @@ const index = () => {
         {/* Skills Starts */}
         <div className="row">
           <div className="col-12">
-            <h3 className="text-uppercase pb-4 pb-sm-5 mb-3 mb-sm-0 text-left text-sm-center custom-title ft-wt-600">
+            <h3 className="pb-4 mb-3 text-uppercase pb-sm-5 mb-sm-0 text-start text-sm-center custom-title ft-wt-600">
               My Skills
             </h3>
           </div>
@@ -71,12 +74,12 @@ const index = () => {
         </div>
         {/* Skills Ends */}
 
-        <hr className="separator mt-1" />
+        <hr className="mt-1 separator" />
 
         {/* Experience & Education Starts */}
         <div className="row">
           <div className="col-12">
-            <h3 className="text-uppercase pb-5 mb-0 text-left text-sm-center custom-title ft-wt-600">
+            <h3 className="pb-5 mb-0 text-uppercase text-start text-sm-center custom-title ft-wt-600">
               Experience <span>&</span> Education
             </h3>
           </div>

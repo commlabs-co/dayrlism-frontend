@@ -3,7 +3,7 @@ import { SocialShare } from "../helpers/consts";
 
 const Social = () => {
   return (
-    <ul className="social list-unstyled pt-1 mb-5">
+    <ul className="pt-1 mb-5 social list-unstyled">
       {SocialShare.map((val, i) => (
         <li key={i}>
           <a href={val.link} target="_blank" rel="noreferrer">

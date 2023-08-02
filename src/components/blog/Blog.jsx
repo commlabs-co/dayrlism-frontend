@@ -1,349 +1,118 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import Modal from "react-modal";
+import cancelImg from "../../../public/assets/img/cancel.svg";
+import blogQuote from "../../../public/assets/img/blog/quote.svg";
+import UseData from "../../Hooks/UseData";
+import Image from "next/image";
 
-import ModalOneBlogContent from "./modal/ModalOneBlogContent";
-import ModalTwoBlogContent from "./modal/ModalTwoBlogContent";
-import ModalThreeBlogContent from "./modal/ModalThreeBlogContent";
-import ModalFourBlogContent from "./modal/ModalFourBlogContent";
-import ModalFiveBlogContent from "./modal/ModalFiveBlogContent";
-import ModalSixBlogContent from "./modal/ModalSixBlogContent";
-
-Modal.setAppElement("#root");
 
 const Blog = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOpen2, setIsOpen2] = useState(false);
-  const [isOpen3, setIsOpen3] = useState(false);
-  const [isOpen4, setIsOpen4] = useState(false);
-  const [isOpen5, setIsOpen5] = useState(false);
-  const [isOpen6, setIsOpen6] = useState(false);
-
-  function toggleModalOne() {
-    setIsOpen(!isOpen);
-  }
-  function toggleModalTwo() {
-    setIsOpen2(!isOpen2);
-  }
-  function toggleModalThree() {
-    setIsOpen3(!isOpen3);
-  }
-  function toggleModalFour() {
-    setIsOpen4(!isOpen4);
-  }
-  function toggleModalFive() {
-    setIsOpen5(!isOpen5);
-  }
-  function toggleModalSix() {
-    setIsOpen6(!isOpen6);
-  }
-
+  const { singleData, isOpen, setIsOpen, blogsData, handleBlogsData } = UseData();
+  const handleModle = (id) => {
+    handleBlogsData(id);
+  };
+  useEffect(() => {
+    Modal.setAppElement("#modal");
+  },[])
   return (
     <>
-      {/* Blog 1 Starts */}
-      <div className="col-12 col-md-6 col-lg-6 col-xl-4 mb-30">
-        <article className="post-container" onClick={toggleModalOne}>
-          <div className="post-thumb">
-            <div className="d-block position-relative overflow-hidden">
-              <img
-                src="img/blog/blog-post-1.jpg"
-                className="img-fluid"
-                alt="Blog Post"
-              />
-            </div>
-          </div>
-          {/* End .thumb */}
-          <div className="post-content">
-            <div className="entry-header">
-              <h3>How to Own Your Audience by Creating an Email List</h3>
-            </div>
-            <div className="entry-content open-sans-font">
-              <p>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                diam nonumy eirmod tempor invidunt ut labore...
-              </p>
-            </div>
-          </div>
-          {/* End .post-content */}
-        </article>
+      <div className="row" id="modal">
+        {blogsData.map((item) => (
+          <div
+            key={item.id}
+            className="col-12 col-md-6 col-lg-6 col-xl-4 mb-30"
+          >
+            <article
+              className="post-container"
+              onClick={() => handleModle(item?.id)}
+            >
+              <div className="post-thumb">
+                <div className="d-block position-relative overflow-hidden">
+                  <Image src={item?.img} className="img-fluid" alt="item.title" />
+                </div>
+              </div>
+              {/* End .thumb */}
+              <div className="post-content">
+                <div className="entry-header">
+                  <h3>{item?.title}</h3>
+                </div>
+                <div className="entry-content open-sans-font">
+                  <p>{item?.description1.slice(0, 100)}</p>
+                </div>
+              </div>
+              {/* End .post-content */}
+            </article>
 
-        {/* Start ModalOneBlogContent */}
-        <Modal
-          isOpen={isOpen}
-          onRequestClose={toggleModalOne}
-          contentLabel="My dialog"
-          className="custom-modal dark"
-          overlayClassName="custom-overlay dark"
-          closeTimeoutMS={500}
-        >
-          <div>
-            <button className="close-modal" onClick={toggleModalOne}>
-              <img src="/img/cancel.svg" alt="close icon" />
-            </button>
-            {/* End close icon */}
+            {/* Start ModalOneBlogContent */}
+            <Modal
+              isOpen={isOpen}
+              onRequestClose={() => setIsOpen(false)}
+              contentLabel="My dialog"
+              className="custom-modal dark"
+              overlayClassName="custom-overlay dark"
+              closeTimeoutMS={500}
+            >
+              <div>
+                <button
+                  className="close-modal"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Image src={cancelImg} alt="close icon" />
+                </button>
+                {/* End close icon */}
 
-            <div className="box_inner blog-post">
-              <ModalOneBlogContent />
-            </div>
+                <div className="box_inner blog-post">
+                  {/* Article Starts */}
+                  <article>
+                    <div className="title-section text-start text-sm-center">
+                      <h1>
+                        Post <span>Details</span>
+                      </h1>
+                      <span className="title-bg">posts</span>
+                    </div>
+                    {/* Meta Starts */}
+
+                    <div className="meta open-sans-font">
+                      <span>
+                        <i className="fa fa-user"></i> {singleData.commentor}
+                      </span>
+                      <span className="date">
+                        <i className="fa fa-calendar"></i> {singleData.date}
+                      </span>
+                      <span>
+                        <i className="fa fa-tags"></i> {singleData.tag}
+                      </span>
+                    </div>
+                    {/* Meta Ends */}
+                    {/* Article Content Starts */}
+
+                    <h1>{singleData?.title}</h1>
+                    <Image
+                      src={singleData?.img}
+                      className="img-fluid"
+                      alt="Blog"
+                    />
+                    <div className="blog-excerpt open-sans-font pb-5">
+                      <p>{singleData?.description1}</p>
+                      <div className="quotebox">
+                        <div className="icon">
+                          <Image src={blogQuote} alt="blog quote" />
+                        </div>
+                        <p>{singleData?.description2}</p>
+                      </div>
+                      <p>{singleData?.description3}</p>
+                      <p>{singleData?.description4}</p>
+                    </div>
+                    {/* Article Content Ends */}
+                  </article>
+                  {/* Article Ends */}
+                </div>
+              </div>
+            </Modal>
+            {/* End  ModalOneBlogContent */}
           </div>
-        </Modal>
-        {/* End  ModalOneBlogContent */}
+        ))}
       </div>
-      {/*  Blog 1 Ends */}
-
-      {/*  Blog 2 Starts */}
-      <div className="col-12 col-md-6 col-lg-6 col-xl-4 mb-30">
-        <article className="post-container" onClick={toggleModalTwo}>
-          <div className="post-thumb">
-            <div className="d-block position-relative overflow-hidden">
-              <img
-                src="img/blog/blog-post-2.jpg"
-                className="img-fluid"
-                alt="Blog Post"
-              />
-            </div>
-          </div>
-          {/* End .thumb */}
-          <div className="post-content">
-            <div className="entry-header">
-              <h3>Top 10 Toolkits for Deep Learning in 2020</h3>
-            </div>
-            <div className="entry-content open-sans-font">
-              <p>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                diam nonumy eirmod tempor invidunt ut labore...
-              </p>
-            </div>
-          </div>
-          {/* End .post-content */}
-        </article>
-
-        {/* Start ModalTwoBlogContent */}
-        <Modal
-          isOpen={isOpen2}
-          onRequestClose={toggleModalTwo}
-          contentLabel="My dialog"
-          className="custom-modal dark"
-          overlayClassName="custom-overlay dark"
-          closeTimeoutMS={500}
-        >
-          <div>
-            <button className="close-modal" onClick={toggleModalTwo}>
-              <img src="/img/cancel.svg" alt="close icon" />
-            </button>
-            {/* End close icon */}
-
-            <div className="box_inner blog-post">
-              <ModalTwoBlogContent />
-            </div>
-          </div>
-        </Modal>
-        {/* End  ModalTwoBlogContent */}
-      </div>
-      {/*  Blog 2 Ends */}
-
-      {/*  Blog 3 Starts */}
-      <div className="col-12 col-md-6 col-lg-6 col-xl-4 mb-30">
-        <article className="post-container" onClick={toggleModalThree}>
-          <div className="post-thumb">
-            <div className="d-block position-relative overflow-hidden">
-              <img
-                src="img/blog/blog-post-3.jpg"
-                className="img-fluid"
-                alt="Blog Post"
-              />
-            </div>
-          </div>
-          {/* End .thumb */}
-          <div className="post-content">
-            <div className="entry-header">
-              <h3>Everything You Need to Know About Web Accessibility</h3>
-            </div>
-            <div className="entry-content open-sans-font">
-              <p>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                diam nonumy eirmod tempor invidunt ut labore...
-              </p>
-            </div>
-          </div>
-          {/* End .post-content */}
-        </article>
-
-        {/* Start ModalThreeBlogContent */}
-        <Modal
-          isOpen={isOpen3}
-          onRequestClose={toggleModalThree}
-          contentLabel="My dialog"
-          className="custom-modal dark"
-          overlayClassName="custom-overlay dark"
-          closeTimeoutMS={500}
-        >
-          <div>
-            <button className="close-modal" onClick={toggleModalThree}>
-              <img src="/img/cancel.svg" alt="close icon" />
-            </button>
-            {/* End close icon */}
-
-            <div className="box_inner blog-post">
-              <ModalThreeBlogContent />
-            </div>
-          </div>
-        </Modal>
-        {/* End  ModalThreeBlogContent */}
-      </div>
-      {/* Blog 3 Ends */}
-
-      {/* Blog 4 Starts */}
-      <div className="col-12 col-md-6 col-lg-6 col-xl-4 mb-30">
-        <article className="post-container" onClick={toggleModalFour}>
-          <div className="post-thumb">
-            <div className="d-block position-relative overflow-hidden">
-              <img
-                src="img/blog/blog-post-4.jpg"
-                className="img-fluid"
-                alt="Blog Post"
-              />
-            </div>
-          </div>
-          {/* End .thumb */}
-          <div className="post-content">
-            <div className="entry-header">
-              <h3>How to Inject Humor & Comedy Into Your Brand</h3>
-            </div>
-            <div className="entry-content open-sans-font">
-              <p>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                diam nonumy eirmod tempor invidunt ut labore...
-              </p>
-            </div>
-          </div>
-          {/* End .post-content */}
-        </article>
-
-        {/* Start ModalFourBlogContent */}
-        <Modal
-          isOpen={isOpen4}
-          onRequestClose={toggleModalFour}
-          contentLabel="My dialog"
-          className="custom-modal dark"
-          overlayClassName="custom-overlay dark"
-          closeTimeoutMS={500}
-        >
-          <div>
-            <button className="close-modal" onClick={toggleModalFour}>
-              <img src="/img/cancel.svg" alt="close icon" />
-            </button>
-            {/* End close icon */}
-
-            <div className="box_inner blog-post">
-              <ModalFourBlogContent />
-            </div>
-          </div>
-        </Modal>
-        {/* End  ModalFourBlogContent */}
-      </div>
-      {/* Blog 4  Ends */}
-
-      {/*  Blog 5 Starts */}
-      <div className="col-12 col-md-6 col-lg-6 col-xl-4 mb-30">
-        <article className="post-container" onClick={toggleModalFive}>
-          <div className="post-thumb">
-            <div className="d-block position-relative overflow-hidden">
-              <img
-                src="img/blog/blog-post-5.jpg"
-                className="img-fluid"
-                alt="Blog Post"
-              />
-            </div>
-          </div>
-          {/* End .thumb */}
-          <div className="post-content">
-            <div className="entry-header">
-              <h3>Women in Web Design: How To Achieve Success</h3>
-            </div>
-            <div className="entry-content open-sans-font">
-              <p>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                diam nonumy eirmod tempor invidunt ut labore...
-              </p>
-            </div>
-          </div>
-          {/* End .post-content */}
-        </article>
-
-        {/* Start ModalFiveBlogContent */}
-        <Modal
-          isOpen={isOpen5}
-          onRequestClose={toggleModalFive}
-          contentLabel="My dialog"
-          className="custom-modal dark"
-          overlayClassName="custom-overlay dark"
-          closeTimeoutMS={500}
-        >
-          <div>
-            <button className="close-modal" onClick={toggleModalFive}>
-              <img src="/img/cancel.svg" alt="close icon" />
-            </button>
-            {/* End close icon */}
-
-            <div className="box_inner blog-post">
-              <ModalFiveBlogContent />
-            </div>
-          </div>
-        </Modal>
-        {/* End  ModalFiveBlogContent */}
-      </div>
-      {/*  Blog 5 Ends */}
-
-      {/* Blog 6 Starts */}
-      <div className="col-12 col-md-6 col-lg-6 col-xl-4 mb-30">
-        <article className="post-container" onClick={toggleModalSix}>
-          <div className="post-thumb">
-            <div className="d-block position-relative overflow-hidden">
-              <img
-                src="img/blog/blog-post-6.jpg"
-                className="img-fluid"
-                alt="Blog Post"
-              />
-            </div>
-          </div>
-          {/* End .thumb */}
-          <div className="post-content">
-            <div className="entry-header">
-              <h3>Evergreen versus topical content: An overview</h3>
-            </div>
-            <div className="entry-content open-sans-font">
-              <p>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                diam nonumy eirmod tempor invidunt ut labore...
-              </p>
-            </div>
-          </div>
-          {/* End .post-content */}
-        </article>
-
-        {/* Start ModalSixBlogContent */}
-        <Modal
-          isOpen={isOpen6}
-          onRequestClose={toggleModalSix}
-          contentLabel="My dialog"
-          className="custom-modal dark"
-          overlayClassName="custom-overlay dark"
-          closeTimeoutMS={500}
-        >
-          <div>
-            <button className="close-modal" onClick={toggleModalSix}>
-              <img src="/img/cancel.svg" alt="close icon" />
-            </button>
-            {/* End close icon */}
-
-            <div className="box_inner blog-post">
-              <ModalSixBlogContent />
-            </div>
-          </div>
-        </Modal>
-        {/* End  ModalSixBlogContent */}
-      </div>
-      {/* Blog 6 Ends */}
     </>
   );
 };

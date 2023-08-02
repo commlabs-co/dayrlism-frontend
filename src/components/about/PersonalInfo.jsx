@@ -1,5 +1,4 @@
 import React from "react";
-
 import { personalInfoContent } from "../../helpers/consts";
 
 const PersonalInfo = () => {
@@ -8,7 +7,9 @@ const PersonalInfo = () => {
       {personalInfoContent.map((val, i) => (
         <li key={i}>
           <span className="title">{val.meta}: </span>
-          <span className="value d-block d-sm-inline-block d-lg-block d-xl-inline-block">
+          <span
+            className={`value d-block d-sm-inline-block d-lg-block d-xl-inline-block ${val.hasColor}`}
+          >
             {val.metaInfo}
           </span>
         </li>

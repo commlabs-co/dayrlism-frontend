@@ -1,118 +1,105 @@
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useRef } from "react";
+import emailjs from "@emailjs/browser";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Contact = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const [successMsg, setSuccessMsg] = React.useState(false);
-  const [errMsg, setErrMsg] = React.useState();
+  const form = useRef();
 
-  const onSubmit = async (data, e) => {
-    e.target.reset();
-    console.log("Message submited: " + JSON.stringify(data));
-
-    try {
-      const respond = await fetch(`${"https://cms.im90s.org"}/dayrlism-leads`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+  const sendEmail = (e) => {
+    e.preventDefault();
+    emailjs
+      .sendForm(
+        "service_w0skd0s",
+        "template_kmovvxw",
+        form.current,
+        "s0IqbMHxQmRA_8mPS"
+      )
+      .then(
+        (result) => {
+          console.log(result);
+          toast.success("Message Sent Successfully!", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          document.getElementById("myForm").reset();
         },
-        body: JSON.stringify(data),
-      });
-      console.log(respond);
-      setSuccessMsg(true);
-    } catch (err) {
-      setErrMsg(err);
-    }
+        (error) => {
+          toast.error("Ops Message Not Sent!", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+      );
   };
 
   return (
     <>
-      <form className="contactform" onSubmit={handleSubmit(onSubmit)}>
+      <form id="myForm" className="contactform" ref={form} onSubmit={sendEmail}>
         <div className="row">
           <div className="col-12 col-md-6">
             <div className="form-group">
-              <input
-                {...register("name", { required: true })}
-                type="text"
-                name="name"
-                placeholder="YOUR NAME"
-              />
-              {errors.name && errors.name.type === "required" && (
-                <span className="invalid-feedback">Name is required</span>
-              )}
+              <input type="text" name="name" placeholder="YOUR NAME" required />
             </div>
           </div>
           {/* End .col */}
+
           <div className="col-12 col-md-6">
             <div className="form-group">
               <input
-                {...register(
-                  "email",
-                  {
-                    required: "Email is Required",
-                    pattern: {
-                      value: /\S+@\S+\.\S+/,
-                      message: "Entered value does not match email format",
-                    },
-                  },
-                  { required: true }
-                )}
                 type="email"
-                name="email"
+                name="user_email"
                 placeholder="YOUR EMAIL"
+                required
               />
-              {errors.email && (
-                <span className="invalid-feedback">{errors.email.message}</span>
-              )}
             </div>
           </div>
           {/* End .col */}
+
           <div className="col-12 col-md-6">
             <div className="form-group">
               <input
-                {...register("mobile", { required: true })}
                 type="text"
                 name="mobile"
                 placeholder="YOUR MOBILE"
+                required
               />
-              {errors.mobile && (
-                <span className="invalid-feedback">Mobile is required.</span>
-              )}
             </div>
           </div>
           {/* End .col */}
           <div className="col-12 col-md-6">
             <div className="form-group">
               <input
-                {...register("subject", { required: true })}
                 type="text"
                 name="subject"
                 placeholder="YOUR SUBJECT"
+                required
               />
-              {errors.subject && (
-                <span className="invalid-feedback">Message is required.</span>
-              )}
             </div>
           </div>
           {/* End .col */}
+
           <div className="col-12">
             <div className="form-group">
               <textarea
-                {...register("message", { required: true })}
                 name="message"
                 placeholder="YOUR MESSAGE"
+                required
               ></textarea>
-              {errors.message && (
-                <span className="invalid-feedback">Message is required.</span>
-              )}
             </div>
           </div>
           {/* End .col */}
+
           <div className="col-12">
             <button type="submit" className="button">
               <span className="button-text">Send Message</span>
@@ -120,20 +107,8 @@ const Contact = () => {
             </button>
           </div>
           {/* End .col */}
-          {successMsg && (
-            <span className="valid-feedback">Successfully Sent!</span>
-          )}
-          {errMsg && (
-            <span className="invalid-feedback">
-              Error, please reach out to Admin!
-              <br />
-              Message: {errMsg}
-            </span>
-          )}
         </div>
       </form>
-
-      {/* End contact */}
     </>
   );
 };

@@ -12,9 +12,11 @@ const Address = () => {
       <p className="open-sans-font custom-span-contact position-relative">
         <i className="fa fa-envelope-open position-absolute"></i>
         <span className="d-block">mail me</span>{" "}
-        <a href="mailto:steve@mail.com">halo@dayrlism.info</a>
+        <a href="mailto:dayrl.lee@corplabs.co">dayrl.lee@corplabs.co</a>
         <br />
-        <a href="mailto:steve@mail.com">dayrl.lee@im90s.org</a>
+        <a href="mailto:dayrl.lee@commlabs.co">dayrl.lee@commlabs.co</a>
+        <br />
+        <a href="mailto:halo@dayrlism.info">halo@dayrlism.info</a>
       </p>
       {/* End .custom-span-contact */}
 

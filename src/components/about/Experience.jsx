@@ -1,5 +1,4 @@
 import React from "react";
-
 import { experienceContent } from "../../helpers/consts";
 
 const Experience = () => {

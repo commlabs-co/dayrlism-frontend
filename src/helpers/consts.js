@@ -1,4 +1,5 @@
 import { getAge, getExperience } from "./tools";
+import heroImgMobile from "../../public/assets/img/hero/men-mobile.png";
 
 export const routes = {
   home: "/",
@@ -16,11 +17,11 @@ export const menuItem = [
 ];
 
 export const heroContent = {
-  heroImage: "img/hero/men.png",
-  heroMobileImage: "men-mobile.png",
+  heroImage: "/assets/img/hero/men.png",
+  heroMobileImage: heroImgMobile,
   heroTitleName: "dayrl lee",
   heroDesignation: "fullstack dev",
-  heroDescriptions: `I can develop a fully functional web application/mobile application from backend(NodeJS) to the frontend(ReactJS, HTML5, etc), CI/CD(Jenkins), and manipulating cloud(DO, Google Cloud) and I'm still improving to the extends of AI, Blockchain, Big data, etc.`,
+  heroDescriptions: `With a passion for delivering high-quality, user-friendly web and mobile applications, I offer expert full-stack development services. My expertise in technologies like Node.js, React.js, and HTML5, along with my proficiency in DevOps practices and cloud computing, enable me to bring your ideas to life. I am constantly pushing the boundaries of my abilities and exploring new technologies, including AI, Blockchain, and Big Data, to bring even more value to your project.`,
   heroBtn: "more about me",
 };
 
@@ -45,11 +46,11 @@ export const achievementsContent = [
 ];
 
 export const skillsContent = [
-  { skillClass: "p92", skillPercent: "92", skillName: "FRONTEND(TS, REACT)" },
-  { skillClass: "p85", skillPercent: "85", skillName: "BACKEND(TS, NODEJS)" },
+  { skillClass: "p95", skillPercent: "95", skillName: "FRONTEND(TS, REACT)" },
+  { skillClass: "p90", skillPercent: "90", skillName: "BACKEND(TS, NODEJS)" },
   {
-    skillClass: "p90",
-    skillPercent: "90",
+    skillClass: "p95",
+    skillPercent: "95",
     skillName: "INFRASTRUCTURE PLANNING",
   },
   { skillClass: "p85", skillPercent: "85", skillName: "DEVOPS" },
@@ -65,7 +66,7 @@ export const experienceContent = [
   {
     year: "5/2017-Present",
     position: "Senior Community Partner/Fullstack Software Engineer ",
-    compnayName: "IM90S",
+    compnayName: "Commlabs",
     details: ``,
   },
   {
