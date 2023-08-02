@@ -163,7 +163,10 @@ const HomeDark = () => {
                   </h3>
                   <p className="mb-4 open-sans-font">
                     Latest version 8.0.1, 2023-08-02: <br />
-                    <a style={{ color: "white" }} href="https://dayrlism.info">
+                    <a
+                      style={{ color: "#70ffe1" }}
+                      href="https://dayrlism.info"
+                    >
                       https://dayrlism.info
                     </a>
                   </p>
@@ -173,7 +176,7 @@ const HomeDark = () => {
                   <p className="mb-4 open-sans-font">
                     Version 5.0.0, 2020-01-30: <br />
                     <a
-                      style={{ color: "white" }}
+                      style={{ color: "#70ffe1" }}
                       href="https://v5.dayrlism.info"
                     >
                       https://v5.dayrlism.info
@@ -182,7 +185,7 @@ const HomeDark = () => {
                   <p className="mb-4 open-sans-font">
                     Version 4.0.0, 2018-01-29: <br />
                     <a
-                      style={{ color: "white" }}
+                      style={{ color: "#70ffe1" }}
                       href="https://v4.dayrlism.info"
                     >
                       https://v4.dayrlism.info
