@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import "../styles/index.scss";
 import dynamic from "next/dynamic";
 import ContextProvider from "../Context/ContextProvider";
+import { GoogleAnalytics } from "nextjs-google-analytics";
 
 const AnimatedCursor = dynamic(() => import("react-animated-cursor"), {
   ssr: false,
@@ -25,6 +26,7 @@ function MyApp({ Component, pageProps }) {
         outerScale={1.2}
       />
       <ContextProvider>
+        <GoogleAnalytics trackPageViews />
         <Component {...pageProps} />
       </ContextProvider>
     </>
