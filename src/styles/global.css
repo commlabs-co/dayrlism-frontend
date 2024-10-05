@@ -1,0 +1,9 @@
+
+/* .text-primary {
+    --bs-text-opacity: undefined;
+    color: #0F4C5C !important;
+} */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+

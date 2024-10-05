@@ -1,20 +1,25 @@
 import Aos from "aos";
 import { useEffect } from "react";
-import "../styles/index.scss";
+// import "../styles/index.scss";
+import "../styles/global.css";
 import dynamic from "next/dynamic";
 import ContextProvider from "../Context/ContextProvider";
 import { GoogleAnalytics } from "nextjs-google-analytics";
+import { useRouter } from "next/router";
 
 const AnimatedCursor = dynamic(() => import("react-animated-cursor"), {
   ssr: false,
 });
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
   useEffect(() => {
-    Aos.init({
-      duration: 1200,
-    });
-  }, []);
+    if (!router.pathname.startsWith("/resume")) {
+      import("../styles/index.scss");
+      // import("../styles/global.css");
+      Aos.init({ duration: 1200 });
+    }
+  }, [router.pathname]);
   return (
     <>
       <AnimatedCursor
