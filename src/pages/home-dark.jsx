@@ -4,15 +4,13 @@ import Hero from "../components/hero/Hero";
 import AboutMain from "../components/about";
 import Wrapper from "../layout/wrapper";
 import SEO from "../components/Seo";
-import Portfolio from "../components/portfolio/Portfolio";
 import Address from "../components/Address";
 import Social from "../components/Social";
 import Contact from "../components/Contact";
-import Blog from "../components/blog/Blog";
 import Sponsor from "../components/Sponsor";
 
 import SwitchDark from "../components/switch/SwitchDark";
-import { menuItem, routes } from "../helpers/consts";
+import { menuItem } from "../helpers/consts";
 
 const HomeDark = () => {
   useEffect(() => {
@@ -70,22 +68,6 @@ const HomeDark = () => {
               </div>
             </TabPanel>
             {/* About Content Ends */}
-
-            {/* Portfolio Content Starts */}
-            {/* <TabPanel className="portfolio professional">
-              <div
-                className="title-section text-start text-sm-center"
-                data-aos="fade-up"
-                data-aos-duration="1200"
-              >
-                <h1>
-                  my <span>portfolio</span>
-                </h1>
-                <span className="title-bg">works</span>
-              </div>
-              <Portfolio />
-            </TabPanel> */}
-            {/* Portfolio Content Ends */}
 
             {/* Contact Content Starts */}
             <TabPanel className="contact">

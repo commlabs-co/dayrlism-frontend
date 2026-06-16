@@ -2,7 +2,6 @@ import Aos from "aos";
 import { useEffect } from "react";
 import "../styles/index.scss";
 import dynamic from "next/dynamic";
-import ContextProvider from "../Context/ContextProvider";
 import { GoogleAnalytics } from "nextjs-google-analytics";
 
 const AnimatedCursor = dynamic(() => import("react-animated-cursor"), {
@@ -25,10 +24,8 @@ function MyApp({ Component, pageProps }) {
         innerScale={0.7}
         outerScale={1.2}
       />
-      <ContextProvider>
-        <GoogleAnalytics trackPageViews />
-        <Component {...pageProps} />
-      </ContextProvider>
+      <GoogleAnalytics trackPageViews />
+      <Component {...pageProps} />
     </>
   );
 }
