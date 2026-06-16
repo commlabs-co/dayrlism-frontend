@@ -1,6 +1,7 @@
 import Aos from "aos";
 import { useEffect } from "react";
 import "../styles/index.scss";
+import "../styles/tailwind.css";
 import dynamic from "next/dynamic";
 import { GoogleAnalytics } from "nextjs-google-analytics";
 

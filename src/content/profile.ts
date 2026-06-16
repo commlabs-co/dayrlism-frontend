@@ -1,0 +1,288 @@
+import type { Profile } from "./types";
+
+// Single source of truth for Dayrl Lee's profile, merged from the former
+// `dayrlism-frontend` portfolio (`consts.js`) and the `dayrlism-resume`
+// `details` object. Edit career facts here and they flow to both the
+// portfolio About section and the /resume page.
+export const profile: Profile = {
+  name: "Dayrl Lee",
+  fullName: "Dayrl Lee Pui Shin",
+  title: "Fullstack Developer",
+  headline: "Founder @ Corplabs · Fullstack Developer",
+  summary:
+    "Fullstack developer specializing in high-quality, user-friendly web and mobile applications — from Node.js/NestJS backends to React/React Native frontends — with strong DevOps and cloud experience, and a continual push into AI, blockchain, and big data.",
+  birthDate: "01/13/1994",
+  careerStartYear: 2014,
+  nationality: "Malaysian",
+  availability: "Available",
+  languagesSpoken: "English, Mandarin, Cantonese",
+
+  contact: {
+    email: "dayrl.lee@corplabs.co",
+    emailsAlt: ["halo@dayrlism.info"],
+    phone: "+60166727208",
+    location: "Kuala Lumpur, Malaysia",
+    website: "https://dayrlism.info",
+    linkedin: "https://www.linkedin.com/in/dayrl10",
+    telegram: "dayrl10",
+  },
+
+  skillBars: [
+    { name: "Frontend (TS, React)", level: 95 },
+    { name: "Backend (TS, Node.js)", level: 90 },
+    { name: "Infrastructure Planning", level: 95 },
+    { name: "DevOps", level: 85 },
+  ],
+
+  techSkills: [
+    "Node.js",
+    "React.js",
+    "React Native",
+    "TypeScript",
+    "JavaScript (ES5–ES2023)",
+    "HTML5",
+    "CSS3",
+    "Sass",
+    "Less",
+    "Vue.js",
+    "Gatsby.js",
+    "REST API",
+    "GraphQL",
+    "Webpack",
+    "Socket.IO",
+    "Bootstrap",
+    "Tailwind CSS",
+    "Lodash",
+  ],
+
+  skills: [
+    "Digital Ocean",
+    "Google Cloud",
+    "AWS",
+    "Headless CMS",
+    "MVC",
+    "OOP",
+    "Agile / Scrum",
+    "SDLC",
+    "Git Flow",
+    "Version Control",
+    "Jenkins",
+    "CI/CD",
+    "Micro Frontend",
+    "Micro Services",
+    "JWT",
+    "MySQL",
+    "MongoDB",
+    "SQLite",
+  ],
+
+  experience: [
+    {
+      title: "Founder & Fullstack Developer",
+      company: "Corplabs",
+      period: "1/2023 – Present",
+      country: "Malaysia",
+      achievements: [
+        "Founded Corplabs with a mission to help clients source, manage, and retain top-tier talent effectively.",
+        "Designed and built an internal SaaS product addressing real-world HR and ops challenges with scalability in mind.",
+        "Built product features using a modern stack: React.js, NestJS, Node.js, TypeScript, Strapi, and Tailwind CSS.",
+        "Led both frontend and backend development while contributing to product strategy and architecture.",
+        "Partnered with the co-founder to define requirements, design user flows, and align the roadmap with long-term goals.",
+      ],
+    },
+    {
+      title: "Senior Fullstack Developer",
+      company: "LottieFiles",
+      period: "3/2021 – 3/2023",
+      country: "Malaysia",
+      achievements: [
+        "Integrated the LottieFiles plugin into a variety of platforms (Google Workspace, Adobe production tools, and more).",
+        "Maintained and continuously enhanced the LottieFiles plugin framework.",
+        "Scheduled and published plugin releases.",
+      ],
+    },
+    {
+      title: "Senior Frontend Developer",
+      company: "Plus65 Interactive Pte Ltd",
+      period: "01/2020 – 2/2021",
+      country: "Singapore",
+      achievements: [
+        "Supported a range of projects: affiliates and corporate landing pages.",
+        "Handled multiple projects alongside the PM and team lead.",
+        "Scoped new requirements and developed new projects.",
+      ],
+    },
+    {
+      title: "Fullstack Developer",
+      company: "REA Group Ltd",
+      period: "1/2019 – 01/2020",
+      country: "Kuala Lumpur, Malaysia",
+      achievements: [
+        "Led customer-tooling frontend development with a vendor team in China, rebuilding a solid frontend team at the Malaysia HQ.",
+        "Built API endpoints as needed and a GraphQL layer connecting the API gateway and frontend.",
+      ],
+    },
+    {
+      title: "Senior Frontend Developer",
+      company: "Carsome Sdn Bhd",
+      period: "03/2018 – 01/2019",
+      country: "Selangor, Malaysia",
+      achievements: [
+        "Owned frontend scope across website, dashboard, and API widgets.",
+        "Developed and revamped the website and dashboard with virtual-DOM tech (React.js, Riot.js).",
+        "Worked closely with backend and product teams to ship features and releases.",
+      ],
+    },
+    {
+      title: "Software Engineer",
+      company: "Leet Entertainment Sdn Bhd",
+      period: "10/2017 – 11/2018",
+      country: "Selangor, Malaysia",
+      achievements: [
+        "Contributed to module requirement design and frontend/backend development.",
+        "Drove adoption of modern tooling (React) for future development.",
+        "Reviewed code and interviewed candidates as the company expanded.",
+      ],
+    },
+    {
+      title: "Senior Creative Developer",
+      company: "Inspired Mobile Sdn Bhd",
+      period: "06/2015 – 10/2017",
+      country: "Selangor, Malaysia",
+      achievements: [
+        "Built the backend of an in-house client chat-support platform using Socket.IO.",
+        "Worked with creative teams in Malaysia and the UK to build ad units to client campaign standards.",
+        "Developed ad units (banners, interstitials, expandables) with HTML5, CSS3, jQuery, and tracking libraries.",
+        "Deployed builds and generated client links via AWS S3.",
+      ],
+    },
+    {
+      title: "Mobile Web App Developer",
+      company: "Nettium Sdn Bhd",
+      period: "09/2014 – 06/2015",
+      country: "Kuala Lumpur, Malaysia",
+      achievements: [
+        "Developed client websites with ASP.NET MVC (C#).",
+        "Enhanced and maintained client pages and resolved reported issues.",
+      ],
+    },
+  ],
+
+  volunteer: [
+    {
+      title: "President",
+      company: "Carsome Sdn Bhd",
+      period: "05/2018 – 12/2018",
+      country: "Selangor, Malaysia",
+      achievements: [
+        "Helped organize company events to foster a positive working environment.",
+      ],
+    },
+    {
+      title: "Student Representative, Head of Sports Bureau",
+      company: "Asia Pacific University",
+      period: "07/2012 – 12/2013",
+      country: "Kuala Lumpur, Malaysia",
+      achievements: [
+        "Led a team managing one of the school's largest annual sports events.",
+      ],
+    },
+  ],
+
+  education: [
+    {
+      degree: "Diploma in Software Engineering",
+      institute: "Asia Pacific University",
+      period: "03/2012 – 07/2014",
+    },
+  ],
+
+  certificates: [
+    {
+      name: "Microsoft Certified Web Developer",
+      detail: "ASP.NET, HTML5, CSS3",
+      period: "2014",
+    },
+    {
+      name: "NGINX Fundamentals for Super Users",
+      detail: "NGINX",
+      period: "2021",
+    },
+    {
+      name: "Udemy: React.js, Redux",
+      detail: "Udemy",
+      period: "2018",
+    },
+    {
+      name: "SoloLearn: JavaScript, HTML5, C#, SQL",
+      detail: "SoloLearn",
+      period: "2016",
+    },
+  ],
+
+  languages: [
+    { name: "English", proficiency: "Full professional proficiency" },
+    { name: "Mandarin Chinese", proficiency: "Professional working proficiency" },
+    { name: "Cantonese", proficiency: "Professional working proficiency" },
+  ],
+
+  interests: [
+    "Technology",
+    "Sports",
+    "Building products",
+    "Blockchain",
+    "A.I.",
+    "Big data",
+  ],
+
+  projects: [
+    { name: "Portfolio", url: "https://dayrlism.info", period: "01/2014 – Present" },
+    { name: "Ashwatta Nepal", url: "https://nepal.im90s.org", period: "08/2019 – Present" },
+    { name: "The Auction Guys", url: "https://www.theauctionguys.com.my", period: "04/2019 – Present" },
+    { name: "BabySteps", url: "https://pungandco.im90s.org", period: "12/2019 – Present" },
+    { name: "Asia Gemological Laboratory", url: "https://www.asiagemlab.com", period: "05/2019 – Present" },
+    { name: "im90s", url: "https://im90s.org", period: "11/2018 – Present" },
+  ],
+
+  references: [
+    { name: "Rex Choo", role: "Senior Backend Developer", contact: "+60122377765" },
+    { name: "James Wong", role: "Senior Frontend Developer", contact: "+60129719418" },
+    {
+      name: "Alex John Suarez",
+      role: "Technical Lead",
+      contact: "+65905108916 · alexjohnsuarez@gmail.com",
+    },
+  ],
+
+  social: [
+    { icon: "fa fa-facebook", url: "https://www.facebook.com/dayrl10" },
+    { icon: "fa fa-instagram", url: "https://www.instagram.com/dayrlism10" },
+    { icon: "fa fa-twitter", url: "https://twitter.com/dayrl10" },
+    { icon: "fa fa-linkedin", url: "https://www.linkedin.com/in/dayrl10" },
+    { icon: "fa fa-whatsapp", url: "https://wa.me/60183663236" },
+  ],
+
+  crypto: [
+    {
+      icon: "fa fa-bitcoin",
+      label: "Bitcoin",
+      address: "bc1qpafyqx84jg5y5apznjvz8d54u8zy7zk90wr7l4",
+    },
+    {
+      icon: "fa fa-usd",
+      label: "Ethereum ERC20 USDT",
+      address: "0xcd61bF0C222d9070fe264c98d5222152475997c0",
+    },
+    {
+      icon: "fa fa-usd",
+      label: "Algorand USDT",
+      address: "JZXQQVLQDV7G7INSYIHJAC7EW3533QK2LPEKG5BWBJ5EHONV4PZ7NN3HIE",
+    },
+  ],
+
+  stats: [
+    { value: "97", label1: "completed", label2: "projects" },
+    { value: "81", label1: "happy", label2: "customers" },
+    { value: "53", label1: "skills", label2: "possessed" },
+  ],
+};
