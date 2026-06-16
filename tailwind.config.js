@@ -1,29 +1,36 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  // `tw-` prefix + disabled preflight/container so Tailwind can coexist with the
-  // existing Bootstrap/SCSS theme on the live portfolio without any class
-  // collisions. Once Bootstrap is removed (portfolio restyle phase) the prefix
-  // and these overrides can be dropped.
-  prefix: "tw-",
+  darkMode: "class",
   content: [
-    "./src/pages/**/*.{js,jsx,ts,tsx}",
-    "./src/components/**/*.{js,jsx,ts,tsx}",
+    "./src/app/**/*.{js,ts,jsx,tsx}",
+    "./src/components/**/*.{js,ts,jsx,tsx}",
     "./src/content/**/*.{js,ts}",
   ],
-  corePlugins: {
-    preflight: false,
-    container: false,
-  },
   theme: {
     extend: {
       colors: {
-        resume: {
-          primary: "#4DA6BD",
-          secondary: "#0F4C5C",
+        brand: {
+          DEFAULT: "#4DA6BD",
+          light: "#6FC7DC",
+          dark: "#0F4C5C",
+        },
+        ink: {
+          DEFAULT: "#0b1418",
+          soft: "#13242b",
         },
       },
       fontFamily: {
-        resume: ['"Roboto"', '"Helvetica"', '"Arial"', "sans-serif"],
+        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "ui-sans-serif", "system-ui", "sans-serif"],
+      },
+      keyframes: {
+        "fade-up": {
+          "0%": { opacity: "0", transform: "translateY(16px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        "fade-up": "fade-up 0.6s ease-out both",
       },
     },
   },
