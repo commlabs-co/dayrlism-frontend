@@ -2,6 +2,7 @@ import { FiCheckCircle } from "react-icons/fi";
 import { profile } from "@/content/profile";
 import { getAge, getExperience } from "@/lib/tools";
 import SectionHeading from "./SectionHeading";
+import Reveal from "./Reveal";
 
 export default function About() {
   const facts = [
@@ -24,7 +25,7 @@ export default function About() {
         <SectionHeading eyebrow="About me" title="A bit of background" />
 
         <div className="grid gap-12 md:grid-cols-2">
-          <div>
+          <Reveal>
             <p className="text-base leading-relaxed text-slate-600 dark:text-slate-300">
               {profile.summary}
             </p>
@@ -41,13 +42,13 @@ export default function About() {
                 </div>
               ))}
             </dl>
-          </div>
+          </Reveal>
 
-          <div className="grid grid-cols-2 gap-4">
+          <Reveal delay={120} className="grid grid-cols-2 gap-4">
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="rounded-2xl border border-slate-200 bg-white p-6 text-center dark:border-white/10 dark:bg-ink-soft"
+                className="rounded-2xl border border-slate-200 bg-white p-6 text-center transition hover:-translate-y-1 hover:border-brand/40 hover:shadow-lg dark:border-white/10 dark:bg-ink-soft"
               >
                 <p className="font-display text-3xl font-bold text-brand">{stat.value}</p>
                 <p className="mt-1 text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
@@ -55,7 +56,7 @@ export default function About() {
                 </p>
               </div>
             ))}
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

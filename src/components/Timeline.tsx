@@ -1,5 +1,6 @@
 import { profile } from "@/content/profile";
 import SectionHeading from "./SectionHeading";
+import Reveal from "./Reveal";
 
 export default function Timeline() {
   return (
@@ -9,7 +10,7 @@ export default function Timeline() {
 
         <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr]">
           {/* Experience */}
-          <div>
+          <Reveal>
             <ol className="relative border-l border-slate-200 dark:border-white/10">
               {profile.experience.map((job) => (
                 <li key={`${job.company}-${job.period}`} className="mb-9 ml-6">
@@ -32,10 +33,10 @@ export default function Timeline() {
                 </li>
               ))}
             </ol>
-          </div>
+          </Reveal>
 
           {/* Education & certificates */}
-          <div className="space-y-8">
+          <Reveal delay={120} className="space-y-8">
             <div>
               <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                 Education
@@ -75,7 +76,7 @@ export default function Timeline() {
                 ))}
               </ul>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

@@ -14,6 +14,23 @@ body {
   @apply bg-brand/30;
 }
 
+/* Subtle grid backdrop used behind the hero */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(148 163 184 / 0.10) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(148 163 184 / 0.10) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* Never trap content behind a reveal when motion is reduced */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 /* Résumé print styles */
 @media print {
   .no-print {

@@ -16,12 +16,31 @@ const links = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState("");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const sections = links
+      .map((link) => document.getElementById(link.href.slice(1)))
+      .filter((el): el is HTMLElement => el !== null);
+    if (sections.length === 0) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+    );
+    sections.forEach((el) => io.observe(el));
+    return () => io.disconnect();
   }, []);
 
   return (
@@ -41,7 +60,14 @@ export default function Navbar() {
           <ul className="flex items-center gap-7 text-sm font-medium text-slate-600 dark:text-slate-300">
             {links.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className="transition hover:text-brand">
+                <a
+                  href={link.href}
+                  className={`transition hover:text-brand ${
+                    active === link.href.slice(1)
+                      ? "text-brand"
+                      : ""
+                  }`}
+                >
                   {link.label}
                 </a>
               </li>

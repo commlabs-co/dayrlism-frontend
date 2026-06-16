@@ -8,6 +8,7 @@ import { profile } from "@/content/profile";
 import SectionHeading from "./SectionHeading";
 import Social from "./Social";
 import Sponsor from "./Sponsor";
+import Reveal from "./Reveal";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -52,7 +53,7 @@ export default function Contact() {
         <SectionHeading eyebrow="Get in touch" title="Let's work together" />
 
         <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr]">
-          <div className="space-y-8">
+          <Reveal className="space-y-8">
             <p className="text-slate-600 dark:text-slate-300">
               Feel free to reach out — I&apos;m open to discussing new projects, creative ideas, or
               being part of your vision.
@@ -93,8 +94,9 @@ export default function Contact() {
               </h3>
               <Sponsor />
             </div>
-          </div>
+          </Reveal>
 
+          <Reveal delay={120}>
           <form ref={formRef} onSubmit={onSubmit} className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <input className={inputClass} type="text" name="name" placeholder="Your name" required />
@@ -124,6 +126,7 @@ export default function Contact() {
               )}
             </div>
           </form>
+          </Reveal>
         </div>
       </div>
     </section>
