@@ -221,7 +221,7 @@ export default function ResumeView({ fontClass }: { fontClass: string }) {
       >
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, fontWeight: 700, fontSize: 19, letterSpacing: "-.02em" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/img/brand/logo-mark.png" alt="dayrlism" style={{ height: 20, width: "auto", display: "block" }} />
+          <img src="/assets/img/brand/logo-mark.png" alt="dayrlism" style={{ height: 24, width: "auto", display: "block", objectFit: "contain" }} />
           <span>dayrlism</span>
           <span className="dl-mono" style={{ fontSize: 11, color: "var(--muted)", alignSelf: "flex-end", marginBottom: 2 }}>
             / resume

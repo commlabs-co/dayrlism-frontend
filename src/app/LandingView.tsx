@@ -301,7 +301,7 @@ export default function LandingView({ fontClass }: { fontClass: string }) {
       >
         <a href="#home" style={{ display: "flex", alignItems: "center", gap: 10, fontWeight: 700, fontSize: 21, letterSpacing: "-.02em" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/img/brand/logo-mark.png" alt="dayrlism logo" style={{ height: 22, width: "auto", display: "block" }} />
+          <img src="/assets/img/brand/logo-mark.png" alt="dayrlism logo" style={{ height: 26, width: "auto", display: "block", objectFit: "contain" }} />
           <span>dayrlism</span>
         </a>
         <div className="dl-desktop-nav" style={{ display: "flex", alignItems: "center", gap: "clamp(14px,2.4vw,34px)" }}>
@@ -830,7 +830,7 @@ export default function LandingView({ fontClass }: { fontClass: string }) {
       <footer style={{ position: "relative", zIndex: 1, maxWidth: 1280, margin: "0 auto", padding: "46px clamp(20px,5vw,64px)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 9, fontWeight: 700, fontSize: 18, letterSpacing: "-.02em" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/img/brand/logo-mark.png" alt="" style={{ height: 18, width: "auto", display: "block" }} />
+          <img src="/assets/img/brand/logo-mark.png" alt="" style={{ height: 22, width: "auto", display: "block", objectFit: "contain" }} />
           dayrlism
         </div>
         <div className="dl-mono" style={{ fontSize: 11.5, color: "var(--muted)" }}>
