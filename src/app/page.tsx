@@ -1,27 +1,20 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Skills from "@/components/Skills";
-import Timeline from "@/components/Timeline";
-import Projects from "@/components/Projects";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-import BackToTop from "@/components/BackToTop";
+import { Bricolage_Grotesque, Space_Mono } from "next/font/google";
+import LandingView from "./LandingView";
+import "./home.css";
+
+const bricolage = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-bricolage",
+  display: "swap",
+});
+
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export default function Home() {
-  return (
-    <>
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <Skills />
-        <Timeline />
-        <Projects />
-        <Contact />
-      </main>
-      <Footer />
-      <BackToTop />
-    </>
-  );
+  return <LandingView fontClass={`${bricolage.variable} ${spaceMono.variable}`} />;
 }
