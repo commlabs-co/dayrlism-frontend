@@ -1,0 +1,151 @@
+/* ============================================================
+   Resume page — dayrlism editorial brand DNA
+   Ported from the Claude Design handoff (Resume.dc.html).
+   All custom rules are scoped under .dl-resume-root so nothing
+   leaks to the rest of the app (global CSS import).
+   ============================================================ */
+
+@keyframes dl-aurora {
+  0%   { transform: translate(-8%, -6%) rotate(0deg) scale(1.1); }
+  50%  { transform: translate(8%, 6%) rotate(180deg) scale(1.3); }
+  100% { transform: translate(-8%, -6%) rotate(360deg) scale(1.1); }
+}
+@keyframes dl-spin { to { transform: rotate(360deg); } }
+
+.dl-resume-root {
+  font-family: var(--font-bricolage), system-ui, sans-serif;
+}
+.dl-mono { font-family: var(--font-mono), "Space Mono", ui-monospace, monospace; }
+
+.dl-resume-root ::selection { background: #4df0c4; color: #06181c; }
+.dl-resume-root a { color: inherit; text-decoration: none; }
+
+/* scroll reveals */
+.dl-resume-root [data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.dl-resume-root [data-reveal].in { opacity: 1; transform: none; }
+
+/* animated underline links */
+.dl-link-u { position: relative; width: max-content; }
+.dl-link-u::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -2px;
+  height: 1px;
+  background: var(--accent);
+  transition: right 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.dl-link-u:hover::after { right: 0; }
+
+/* rotating seal */
+.dl-seal-img { animation: dl-spin 26s linear infinite; display: block; }
+
+/* hover affordances (replacing the prototype's style-hover attrs) */
+.dl-btn-accent { transition: transform 0.2s ease, box-shadow 0.3s ease; }
+.dl-btn-accent:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(77, 240, 196, 0.3); }
+.dl-btn-ghost { transition: background 0.3s, border-color 0.3s; }
+.dl-btn-ghost:hover { background: var(--accent-soft); border-color: var(--accent); }
+.dl-theme-btn { transition: transform 0.3s; }
+.dl-theme-btn:hover { transform: rotate(35deg); }
+.dl-proj { display: block; background: var(--bg); transition: background 0.3s ease; }
+.dl-proj:hover { background: var(--accent-soft); }
+
+/* layout grids */
+.dl-resume-grid {
+  display: grid;
+  grid-template-columns: 330px minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 60px);
+  align-items: start;
+}
+.dl-sidebar { position: sticky; top: 92px; }
+.dl-prof-grid {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 52px);
+  align-items: center;
+}
+@media (max-width: 880px) {
+  .dl-resume-grid { grid-template-columns: 1fr; }
+  .dl-sidebar { position: static; }
+}
+@media (max-width: 680px) {
+  .dl-prof-grid { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .dl-prof-grid .dl-link-u { margin-left: auto; margin-right: auto; }
+  .dl-prof-chips { justify-content: center !important; }
+  .dl-nav-back { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dl-resume-root [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .dl-aurora, .dl-seal-img { animation: none !important; }
+}
+
+/* ---------- PRINT : one page ---------- */
+@media print {
+  @page { margin: 7mm; size: A4 portrait; }
+  html, body { width: 100%; }
+  .dl-resume-root {
+    --bg: #fff !important;
+    --bg2: #fff !important;
+    --panel: #fff !important;
+    --text: #11353d !important;
+    --muted: #52646a !important;
+    --accent: #0e6e58 !important;
+    --accent-soft: rgba(14, 110, 88, 0.07) !important;
+    --line: rgba(12, 42, 48, 0.22) !important;
+    background: #fff !important;
+    color: #11353d !important;
+    font-size: 8px;
+  }
+  .dl-noprint { display: none !important; }
+  .dl-aurora, .dl-grain, .dl-seal { display: none !important; }
+  .dl-resume-root [data-reveal] { opacity: 1 !important; transform: none !important; }
+  * { box-shadow: none !important; animation: none !important; }
+  /* layout */
+  .dl-resume-root header { padding: 0 0 4px !important; }
+  .dl-resume-root main { padding: 0 !important; }
+  .dl-prof-grid { gap: 14px !important; }
+  .dl-resume-grid { grid-template-columns: 205px 1fr !important; gap: 16px !important; align-items: start !important; }
+  .dl-sidebar { position: static !important; }
+  .dl-resume-root section { padding: 0 !important; }
+  .dl-main-col { gap: 11px !important; }
+  /* header */
+  .dl-resume-root h1 { font-size: 17px !important; line-height: 0.95 !important; }
+  .dl-photo-wrap { width: 78px !important; height: 98px !important; }
+  .dl-kicker { font-size: 6.5px !important; margin-bottom: 5px !important; }
+  .dl-role-line { font-size: 8px !important; margin-top: 6px !important; }
+  .dl-summary { font-size: 7.5px !important; line-height: 1.3 !important; margin-top: 5px !important; max-width: none !important; }
+  .dl-prof-chips { gap: 6px !important; margin-top: 7px !important; }
+  .dl-prof-chips a { font-size: 7px !important; padding: 2px 7px !important; }
+  /* sidebar — borderless dense */
+  .dl-side-stack { gap: 5px !important; }
+  .dl-card { padding: 0 0 4px !important; border: none !important; border-radius: 0 !important; border-bottom: 1px solid var(--line) !important; background: transparent !important; }
+  .dl-side-stack .dl-card:last-child { border-bottom: none !important; }
+  .dl-card-label { margin-bottom: 3px !important; font-size: 7px !important; }
+  .dl-card > div { gap: 4px !important; }
+  .dl-chip { font-size: 7px !important; padding: 1px 5px !important; border-radius: 4px !important; }
+  /* experience */
+  .dl-section > div:first-child { margin-bottom: 6px !important; }
+  .dl-section h2 { font-size: 12px !important; }
+  .dl-exp { padding: 0 0 7px 11px !important; }
+  .dl-exp h3 { font-size: 10px !important; }
+  .dl-exp ul { margin-top: 4px !important; gap: 2px !important; }
+  .dl-exp li { font-size: 8px !important; line-height: 1.24 !important; padding-left: 10px !important; }
+  .dl-exp-meta span { font-size: 7.5px !important; }
+  /* projects */
+  .dl-proj-grid { grid-template-columns: repeat(3, 1fr) !important; }
+  .dl-proj { padding: 5px 8px !important; }
+  .dl-proj span { font-size: 8.5px !important; }
+  .dl-proj-meta { display: none !important; }
+  /* volunteer */
+  .dl-vol { padding: 8px 10px !important; }
+  .dl-vol > div:first-child { font-size: 9px !important; }
+  .dl-vol p { font-size: 7.5px !important; line-height: 1.3 !important; margin-top: 5px !important; }
+  .dl-exp, .dl-card, .dl-proj, .dl-vol { break-inside: avoid; page-break-inside: avoid; }
+}
