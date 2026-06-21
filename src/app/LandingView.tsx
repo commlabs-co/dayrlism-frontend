@@ -212,7 +212,8 @@ export default function LandingView({ fontClass }: { fontClass: string }) {
     { href: "#about", label: "About", n: "01" },
     { href: "#resume", label: "Resume", n: "02" },
     { href: "#versions", label: "Versions", n: "03" },
-    { href: "#contact", label: "Contact", n: "04" },
+    { href: "/blog", label: "Blog", n: "04" },
+    { href: "#contact", label: "Contact", n: "05" },
   ];
 
   const inputStyle: CSSProperties = {
