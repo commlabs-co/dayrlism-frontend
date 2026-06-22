@@ -50,12 +50,12 @@ const marqueeWords = [
 ];
 
 const versions = [
-  { tag: "v1", year: "2014", title: "The first site", note: "A diploma grad with something to prove. Hand-coded, scrappy, honest.", stack: "HTML · CSS · jQuery" },
-  { tag: "v2", year: "2017", title: "React era", note: "Rebuilt as a single-page app as the React habit took hold.", stack: "React · SASS" },
-  { tag: "v3", year: "2019", title: "Documentary", note: "Photography-led, the “there is a reason” voice arrives.", stack: "Gatsby · GraphQL" },
-  { tag: "v4", year: "2022", title: "Dark mode", note: "The teal & sun-switcher identity that still defines the brand.", stack: "Next.js · TS" },
-  { tag: "v5", year: "2024", title: "Resume split", note: "Landing and a dedicated resume dashboard, living separately.", stack: "Next · Gatsby" },
-  { tag: "v6", year: "2025", title: "Unified", note: "One home again — landing and resume merged into a single story.", stack: "React · NestJS" },
+  { tag: "v1", year: "2014", title: "The first site", note: "A diploma grad with something to prove. Hand-coded, scrappy, honest.", stack: "HTML · CSS · jQuery", url: "https://v1.dayrlism.info", current: false },
+  { tag: "v2", year: "2017", title: "React era", note: "Rebuilt as a single-page app as the React habit took hold.", stack: "React · SASS", url: "https://v2.dayrlism.info", current: false },
+  { tag: "v3", year: "2019", title: "Documentary", note: "Photography-led, the “there is a reason” voice arrives.", stack: "Gatsby · GraphQL", url: "https://v3.dayrlism.info", current: false },
+  { tag: "v4", year: "2022", title: "Dark mode", note: "The teal & sun-switcher identity that still defines the brand.", stack: "Next.js · TS", url: "https://v4.dayrlism.info", current: false },
+  { tag: "v5", year: "2024", title: "Resume split", note: "Landing and a dedicated resume dashboard, living separately.", stack: "Next · Gatsby", url: "https://v5.dayrlism.info", current: false },
+  { tag: "v6", year: "2025", title: "Unified", note: "One home again — landing and resume merged into a single story.", stack: "React · NestJS", url: "/", current: true },
 ];
 
 const liDisplay = (url: string) => url.replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/+$/, "");
@@ -491,7 +491,7 @@ export default function LandingView({
               </h1>
               <p style={{ maxWidth: 540, margin: "30px 0 0", fontSize: "clamp(16px,1.5vw,19px)", lineHeight: 1.6, color: "var(--muted)" }}>
                 I&apos;m <span style={{ color: "var(--text)", fontWeight: 600 }}>{profile.name}</span> — a fullstack developer who turns ideas into
-                fast, human, well-built web &amp; mobile products. Node, React, the cloud, and a stubbornly positive attitude that a good build can
+                fast, human, well-built web &amp; mobile products. Node, React, the cloud, and a stubbornly positive attitude — because a good build can
                 change everything.
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 14, marginTop: 38 }}>
@@ -589,10 +589,10 @@ export default function LandingView({
             <p style={{ margin: 0, fontSize: 17, lineHeight: 1.7, color: "var(--muted)" }}>
               From a diploma in software engineering to a decade across{" "}
               <span style={{ color: "var(--text)" }}>Carsome, REA Group, LottieFiles</span> and beyond — I&apos;ve shipped websites, dashboards, ad
-              units, plugins and platforms end-to-end.
+              units, plugins, and platforms end-to-end.
             </p>
             <p style={{ margin: 0, fontSize: 17, lineHeight: 1.7, color: "var(--muted)" }}>
-              Today I run <span style={{ color: "var(--text)" }}>corplabs</span>, building SaaS for talent &amp; ops with React, NestJS and TypeScript
+              Today I run <span style={{ color: "var(--text)" }}>Corplabs</span>, building SaaS for talent &amp; ops with React, NestJS, and TypeScript
               — and still chasing the edges: AI, blockchain, big data.
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 10 }}>
@@ -750,6 +750,21 @@ export default function LandingView({
               <div className="dl-mono" style={{ marginTop: 16, fontSize: 10.5, color: "var(--accent)", opacity: 0.8 }}>
                 {v.stack}
               </div>
+              {v.current ? (
+                <span className="dl-mono" style={{ display: "inline-block", marginTop: 14, fontSize: 11, color: "var(--muted)" }}>
+                  You&apos;re here
+                </span>
+              ) : (
+                <a
+                  className="dl-link-u dl-mono"
+                  href={v.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 14, fontSize: 11.5, fontWeight: 600, color: "var(--accent)" }}
+                >
+                  Visit {v.tag} ↗
+                </a>
+              )}
             </div>
           ))}
         </div>
