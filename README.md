@@ -1,34 +1,99 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# dayrlism
 
-## Getting Started
+Personal site of **Dayrl Lee** — a single Next.js app that hosts the landing page, a print-ready résumé, and a git-based blog, all sharing one dark editorial brand.
 
-First, run the development server:
+🔗 **Live:** [dayrlism.info](https://dayrlism.info) · [/resume](https://dayrlism.info/resume) · [/blog](https://dayrlism.info/blog)
 
-```bash
-npm run dev
-# or
-yarn dev
+## Stack
+
+- **Next.js 15** (App Router) · **React 19** · **TypeScript** (strict)
+- **Tailwind CSS** + CSS-variable theming (dark/light)
+- **Keystatic** — git-based CMS for the blog (Markdoc) and profile data
+- **EmailJS** — client-side contact form
+- Deployed on **Vercel** (Node 22+)
+
+## Routes
+
+| Route | Description |
+| --- | --- |
+| `/` | Landing page (hero, about, experience, versions, contact) |
+| `/resume` | Print-ready résumé (A4 print stylesheet) |
+| `/blog` | Blog index — tile grid with tag filtering |
+| `/blog/[slug]` | Statically generated post pages |
+| `/blog/rss.xml` | RSS feed |
+| `/keystatic` | Keystatic admin UI (edit blog + profile) |
+
+## Project structure
+
+```
+src/
+  app/
+    page.tsx, LandingView.tsx      # landing
+    resume/                        # /resume
+    blog/                          # /blog index, [slug], rss.xml, MarkdocContent
+    keystatic/, api/keystatic/     # Keystatic admin + API route
+    layout.tsx, globals.css        # root layout, metadata, fonts
+  content/
+    posts/*.mdoc                   # blog posts (Markdoc + front matter)
+    profile-data.yaml              # profile singleton (CMS source of truth)
+    profile.ts                     # typed fallback / default for the profile
+    types.ts                       # Profile type
+  lib/content.ts                   # the only module that reads Keystatic (reader, getProfile, getAllPosts…)
+keystatic.config.ts                # collections + singletons schema
+public/
+  images/blog/                     # post cover/body images
+  assets/img/brand/                # logo-mark, logo-seal, favicon
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The rest of the app never imports Keystatic directly — everything flows through `src/lib/content.ts`, so the CMS could be swapped without touching the pages.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Local development
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+```bash
+yarn install
+yarn dev          # http://localhost:3000
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Open **http://localhost:3000/keystatic** to edit content locally (zero setup — it writes straight to the files on disk, which you then commit).
 
-## Learn More
+### Scripts
 
-To learn more about Next.js, take a look at the following resources:
+| Script | What it does |
+| --- | --- |
+| `yarn dev` | Dev server on `:3000` |
+| `yarn build` | Production build |
+| `yarn start` | Serve the production build on `:3013` |
+| `yarn lint` | ESLint (`next lint`) |
+| `yarn typecheck` | `tsc --noEmit` |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Editing content
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **Blog posts** live as portable Markdoc files in `src/content/posts/*.mdoc`.
+- **Profile / résumé data** (bio, contact, experience, education, skills, etc.) lives in the `profile` singleton at `src/content/profile-data.yaml`. `getProfile()` layers it over the typed defaults in `profile.ts`, so the site still renders if the singleton is missing a field.
 
-## Deploy on Vercel
+Edit everything through the Keystatic UI at `/keystatic`; each save is a commit, and Vercel redeploys automatically.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Environment variables
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+# Contact form (EmailJS) — public by design
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=...
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=...
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=...
+
+# Google Analytics (optional)
+NEXT_PUBLIC_GA_MEASUREMENT_ID=...
+
+# Keystatic — only needed to enable editing on the *deployed* site (GitHub mode).
+# Without these, storage defaults to local (great for dev).
+NEXT_PUBLIC_KEYSTATIC_STORAGE=github
+KEYSTATIC_GITHUB_CLIENT_ID=...
+KEYSTATIC_GITHUB_CLIENT_SECRET=...   # secret — set in Vercel / .env.local, never commit
+KEYSTATIC_SECRET=...                 # secret — `openssl rand -hex 32`
+```
+
+## Deployment
+
+Pushing to `master` deploys to production on Vercel (`dayrlism.info`).
+
+> **Note:** because the Keystatic reader loads content files at request time, `next.config.js` uses `outputFileTracingIncludes` to bundle `src/content/**` into the serverless functions. Without it, dynamic routes (e.g. the blog index) read an empty content directory in production.

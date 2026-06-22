@@ -592,8 +592,8 @@ export default function LandingView({
               units, plugins, and platforms end-to-end.
             </p>
             <p style={{ margin: 0, fontSize: 17, lineHeight: 1.7, color: "var(--muted)" }}>
-              Today I run <span style={{ color: "var(--text)" }}>Corplabs</span>, building SaaS for talent &amp; ops with React, NestJS, and TypeScript
-              — and still chasing the edges: AI, blockchain, big data.
+              Today I&apos;m building two ventures — <span style={{ color: "var(--text)" }}>Corplabs</span> (SaaS for talent &amp; ops) and <span style={{ color: "var(--text)" }}>HiTerra</span> (an AI-powered
+              agri-tech &amp; carbon platform) — with React, NestJS, and TypeScript, still chasing the edges: AI, blockchain, big data.
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginTop: 10 }}>
               {stats.map((s) => (
