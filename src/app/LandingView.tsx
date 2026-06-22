@@ -483,11 +483,10 @@ export default function LandingView({
 
           <div className="dl-hero-grid">
             <div>
-              <h1 style={{ margin: 0, fontWeight: 300, lineHeight: 0.92, letterSpacing: "-.04em", fontSize: "clamp(52px,11vw,168px)" }}>
-                <span style={{ display: "block", color: "var(--text)" }}>There is</span>
-                <span style={{ display: "block" }}>
-                  a <span style={{ fontWeight: 700, fontStyle: "italic", color: "var(--accent)" }}>Reason</span>
-                </span>
+              <h1 style={{ margin: 0, fontWeight: 300, lineHeight: 0.92, letterSpacing: "-.04em", fontSize: "clamp(50px,10vw,150px)" }}>
+                <span style={{ display: "block", color: "var(--text)" }}>Dare.</span>
+                <span style={{ display: "block", fontWeight: 700, fontStyle: "italic", color: "var(--accent)" }}>Reason.</span>
+                <span style={{ display: "block", color: "var(--text)" }}>Build.</span>
               </h1>
               <p style={{ maxWidth: 540, margin: "30px 0 0", fontSize: "clamp(16px,1.5vw,19px)", lineHeight: 1.6, color: "var(--muted)" }}>
                 I&apos;m <span style={{ color: "var(--text)", fontWeight: 600 }}>{profile.name}</span> — a fullstack developer who turns ideas into
