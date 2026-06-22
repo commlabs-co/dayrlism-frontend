@@ -60,7 +60,7 @@ export default async function BlogIndex({
           )}
         </p>
       ) : (
-        <div style={{ display: "grid", gap: 18 }}>
+        <div className="dl-post-grid">
           {visible.map((post) => (
             <Link key={post.slug} href={`/blog/${post.slug}`} className="dl-post-card">
               {post.coverImage ? (
@@ -69,18 +69,29 @@ export default async function BlogIndex({
               ) : (
                 <div className="dl-post-cover" />
               )}
-              <div style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
+              <div className="dl-post-body">
                 <div className="dl-mono" style={{ fontSize: 11.5, color: "var(--muted)", letterSpacing: ".05em" }}>
                   {formatDate(post.publishedAt)}
                 </div>
-                <h2 style={{ margin: "7px 0 0", fontSize: "clamp(20px,2.6vw,26px)", fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.15 }}>
+                <h2 style={{ margin: "8px 0 0", fontSize: "clamp(19px,2vw,22px)", fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.18 }}>
                   {post.title}
                 </h2>
-                <p style={{ margin: "9px 0 0", color: "var(--muted)", fontSize: 15, lineHeight: 1.55 }}>
+                <p
+                  style={{
+                    margin: "9px 0 0",
+                    color: "var(--muted)",
+                    fontSize: 14.5,
+                    lineHeight: 1.55,
+                    display: "-webkit-box",
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                  }}
+                >
                   {post.summary}
                 </p>
                 {post.tags.length > 0 && (
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 14 }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: "auto", paddingTop: 16 }}>
                     {post.tags.map((t) => (
                       <span key={t} className="dl-chip" style={{ pointerEvents: "none" }}>
                         {t}

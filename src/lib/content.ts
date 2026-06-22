@@ -6,8 +6,27 @@
 // `getPost` unchanged.
 import { createReader } from "@keystatic/core/reader";
 import keystaticConfig from "../../keystatic.config";
+import { profile as staticProfile } from "@/content/profile";
+import type { Profile } from "@/content/types";
 
 export const reader = createReader(process.cwd(), keystaticConfig);
+
+/**
+ * Landing + résumé profile data, sourced from the Keystatic `profile` singleton
+ * and layered over the static `profile.ts` so the site renders correctly even
+ * if the singleton is missing or a field was never set in the CMS.
+ */
+export async function getProfile(): Promise<Profile> {
+  try {
+    const data = await reader.singletons.profile.read();
+    if (!data) return staticProfile;
+    // clone to plain mutable objects (the reader returns readonly views)
+    const cms = JSON.parse(JSON.stringify(data)) as Partial<Profile>;
+    return { ...staticProfile, ...cms } as Profile;
+  } catch {
+    return staticProfile;
+  }
+}
 
 const isProd = process.env.NODE_ENV === "production";
 

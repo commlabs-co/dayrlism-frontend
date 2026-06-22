@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { profile } from "@/content/profile";
+import type { Profile } from "@/content/types";
 import menPhoto from "../../../public/assets/img/hero/men.png";
 
 const DARK: Record<string, string> = {
@@ -91,7 +91,13 @@ function SectionHead({ n, title }: { n: string; title: string }) {
   );
 }
 
-export default function ResumeView({ fontClass }: { fontClass: string }) {
+export default function ResumeView({
+  fontClass,
+  profile,
+}: {
+  fontClass: string;
+  profile: Profile;
+}) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
 

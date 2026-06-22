@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Inter, Sora } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { profile } from "@/content/profile";
+import { getProfile } from "@/lib/content";
 import "./globals.css";
 
 const inter = Inter({
@@ -20,27 +20,30 @@ const sora = Sora({
 
 const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://dayrlism.info"),
-  title: {
-    default: `${profile.name} — ${profile.title}`,
-    template: `%s · ${profile.name}`,
-  },
-  description: profile.summary,
-  openGraph: {
-    title: `${profile.name} — ${profile.title}`,
+export async function generateMetadata(): Promise<Metadata> {
+  const profile = await getProfile();
+  return {
+    metadataBase: new URL("https://dayrlism.info"),
+    title: {
+      default: `${profile.name} — ${profile.title}`,
+      template: `%s · ${profile.name}`,
+    },
     description: profile.summary,
-    url: "https://dayrlism.info",
-    siteName: "Dayrlism",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${profile.name} — ${profile.title}`,
-    description: profile.summary,
-  },
-  icons: { icon: "/favicon.png" },
-};
+    openGraph: {
+      title: `${profile.name} — ${profile.title}`,
+      description: profile.summary,
+      url: "https://dayrlism.info",
+      siteName: "Dayrlism",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${profile.name} — ${profile.title}`,
+      description: profile.summary,
+    },
+    icons: { icon: "/favicon.png" },
+  };
+}
 
 // Set the theme before paint to avoid a flash. Defaults to dark.
 const themeScript = `(function(){try{var t=localStorage.getItem('theme');document.documentElement.classList.toggle('dark', t? t==='dark' : true);}catch(e){document.documentElement.classList.add('dark');}})();`;

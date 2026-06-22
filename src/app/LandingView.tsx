@@ -5,7 +5,7 @@ import type { CSSProperties, FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import emailjs from "@emailjs/browser";
-import { profile } from "@/content/profile";
+import type { Profile } from "@/content/types";
 import { getExperience } from "@/lib/tools";
 import menPhoto from "../../public/assets/img/hero/men.png";
 
@@ -61,7 +61,13 @@ const versions = [
 const liDisplay = (url: string) => url.replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/+$/, "");
 const shortProf = (p: string) => (/full/i.test(p) ? "full" : /professional working/i.test(p) ? "working" : "basic");
 
-export default function LandingView({ fontClass }: { fontClass: string }) {
+export default function LandingView({
+  fontClass,
+  profile,
+}: {
+  fontClass: string;
+  profile: Profile;
+}) {
   const rootRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [theme, setTheme] = useState<"dark" | "light">("dark");

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Space_Mono } from "next/font/google";
-import { profile } from "@/content/profile";
+import { getProfile } from "@/lib/content";
 import ResumeView from "./ResumeView";
 import "./resume.css";
 
@@ -17,11 +17,20 @@ const spaceMono = Space_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Résumé",
-  description: `Résumé of ${profile.fullName} — ${profile.title}.`,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const profile = await getProfile();
+  return {
+    title: "Résumé",
+    description: `Résumé of ${profile.fullName} — ${profile.title}.`,
+  };
+}
 
-export default function ResumePage() {
-  return <ResumeView fontClass={`${bricolage.variable} ${spaceMono.variable}`} />;
+export default async function ResumePage() {
+  const profile = await getProfile();
+  return (
+    <ResumeView
+      fontClass={`${bricolage.variable} ${spaceMono.variable}`}
+      profile={profile}
+    />
+  );
 }

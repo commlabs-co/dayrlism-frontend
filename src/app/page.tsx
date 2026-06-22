@@ -1,5 +1,6 @@
 import { Bricolage_Grotesque, Space_Mono } from "next/font/google";
 import LandingView from "./LandingView";
+import { getProfile } from "@/lib/content";
 import "./home.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -15,6 +16,12 @@ const spaceMono = Space_Mono({
   display: "swap",
 });
 
-export default function Home() {
-  return <LandingView fontClass={`${bricolage.variable} ${spaceMono.variable}`} />;
+export default async function Home() {
+  const profile = await getProfile();
+  return (
+    <LandingView
+      fontClass={`${bricolage.variable} ${spaceMono.variable}`}
+      profile={profile}
+    />
+  );
 }
