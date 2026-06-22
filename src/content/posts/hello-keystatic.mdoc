@@ -1,0 +1,32 @@
+---
+title: Hello, Keystatic
+publishedAt: 2026-06-21
+summary: Why this blog now runs on a git-based CMS — every post is a portable Markdoc file in the repo, edited through a clean UI at /keystatic.
+tags:
+  - announcement
+  - engineering
+coverImage: hello-keystatic-cover.png
+draft: false
+---
+
+## A blog that lives in the repo
+
+This post is a plain **Markdoc** file committed to the repository. There is no
+database and no external service in the request path — the content is version
+controlled alongside the code, and renders as a static page.
+
+### What that buys us
+
+- **Portability** — every post is a `.mdoc` file you fully own.
+- **Versioning** — edits arrive as commits, reviewable in a pull request.
+- **Speed** — pages are statically generated and served from the edge.
+
+> Editing happens in a clean UI at `/keystatic`, which commits straight to git.
+
+Here is a little inline `code` and a [link](https://keystatic.com) for good measure.
+
+1. Write in the editor.
+2. Hit save.
+3. A commit and a preview deploy appear.
+
+That's the whole loop.
