@@ -78,6 +78,19 @@ export const profile: Profile = {
 
   experience: [
     {
+      title: "Founder, Product Engineer & CETO",
+      company: "HiTerra",
+      period: "9/2024 – Present",
+      country: "Kuala Lumpur, Malaysia · Hybrid",
+      achievements: [
+        "Founded HiTerra and led an AI-powered agricultural platform from concept to production, owning product strategy, technical architecture, and team management.",
+        "Designed and built the full-stack ecosystem with React, NestJS, GraphQL, and MySQL, making infrastructure and API decisions that balanced speed, scalability, and team capability.",
+        "Built deep domain expertise in agri-tech, carbon markets, and MRV (Measurement, Reporting, Verification) systems, translating complex capabilities into practical solutions for farmers.",
+        "Led cross-functional teams through Agile sprints — from requirement gathering to QA — weighing technical debt against feature velocity.",
+        "Connected mobile apps, marketplaces, AI recommendations, and data platforms into one cohesive ecosystem serving everyone from individual farmers to enterprise accounts.",
+      ],
+    },
+    {
       title: "Founder & Fullstack Developer",
       company: "Corplabs",
       period: "1/2023 – Present",
