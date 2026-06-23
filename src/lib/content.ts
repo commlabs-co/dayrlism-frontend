@@ -97,6 +97,19 @@ export async function getRelatedPosts(
     .map((x) => x.post);
 }
 
+/** Chronological neighbours for prev/next navigation (posts are newest-first). */
+export async function getAdjacentPosts(
+  slug: string
+): Promise<{ newer: PostSummary | null; older: PostSummary | null }> {
+  const all = await getAllPosts();
+  const i = all.findIndex((p) => p.slug === slug);
+  if (i === -1) return { newer: null, older: null };
+  return {
+    newer: i > 0 ? all[i - 1] : null,
+    older: i < all.length - 1 ? all[i + 1] : null,
+  };
+}
+
 export async function getAllTags(): Promise<string[]> {
   const posts = await getAllPosts();
   const set = new Set<string>();

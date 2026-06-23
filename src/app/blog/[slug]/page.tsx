@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPost, getPostSlugs, getRelatedPosts, formatDate } from "@/lib/content";
+import { getPost, getPostSlugs, getRelatedPosts, getAdjacentPosts, formatDate } from "@/lib/content";
 import { MarkdocContent } from "../MarkdocContent";
 import { ReadingProgress } from "../ReadingProgress";
 import { TableOfContents } from "../TableOfContents";
 import { ShareButtons } from "../ShareButtons";
+import { PostEnhancements } from "../PostEnhancements";
+import { ViewCounter } from "../ViewCounter";
 
 export async function generateStaticParams() {
   return (await getPostSlugs()).map((slug) => ({ slug }));
@@ -46,6 +48,7 @@ export default async function PostPage({
   if (!post) notFound();
 
   const related = await getRelatedPosts(slug, post.tags);
+  const adjacent = await getAdjacentPosts(slug);
   const url = `https://dayrlism.info/blog/${slug}`;
 
   return (
@@ -61,6 +64,7 @@ export default async function PostPage({
         <header style={{ margin: "26px 0 30px" }}>
           <div className="dl-mono" style={{ fontSize: 12, color: "var(--accent)", letterSpacing: ".06em" }}>
             {formatDate(post.publishedAt)} · {post.readingTime} min read
+            <ViewCounter slug={slug} />
           </div>
           <h1 style={{ margin: "12px 0 0", fontSize: "clamp(30px,5vw,46px)", fontWeight: 700, letterSpacing: "-.03em", lineHeight: 1.06 }}>
             {post.title}
@@ -99,6 +103,7 @@ export default async function PostPage({
         <div className="dl-prose">
           <MarkdocContent node={post.node} />
         </div>
+        <PostEnhancements />
 
         <div style={{ marginTop: 44, borderTop: "1px solid var(--line)", paddingTop: 24 }}>
           <ShareButtons url={url} title={post.title} />
@@ -120,6 +125,27 @@ export default async function PostPage({
               ))}
             </div>
           </section>
+        )}
+
+        {(adjacent.newer || adjacent.older) && (
+          <nav className="dl-prevnext" aria-label="More posts">
+            {adjacent.older ? (
+              <Link href={`/blog/${adjacent.older.slug}`} className="dl-related-card">
+                <div className="dl-mono" style={{ fontSize: 11, color: "var(--muted)" }}>← OLDER</div>
+                <div style={{ fontWeight: 600, fontSize: 15, marginTop: 6, lineHeight: 1.25 }}>{adjacent.older.title}</div>
+              </Link>
+            ) : (
+              <span />
+            )}
+            {adjacent.newer ? (
+              <Link href={`/blog/${adjacent.newer.slug}`} className="dl-related-card" style={{ textAlign: "right" }}>
+                <div className="dl-mono" style={{ fontSize: 11, color: "var(--muted)" }}>NEWER →</div>
+                <div style={{ fontWeight: 600, fontSize: 15, marginTop: 6, lineHeight: 1.25 }}>{adjacent.newer.title}</div>
+              </Link>
+            ) : (
+              <span />
+            )}
+          </nav>
         )}
       </article>
     </>
