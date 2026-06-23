@@ -8,6 +8,7 @@ import { createReader } from "@keystatic/core/reader";
 import keystaticConfig from "../../keystatic.config";
 import { profile as staticProfile } from "@/content/profile";
 import type { Profile } from "@/content/types";
+import { readingMinutes, extractHeadings } from "./markdoc-utils";
 
 export const reader = createReader(process.cwd(), keystaticConfig);
 
@@ -37,6 +38,7 @@ export type PostSummary = {
   publishedAt: string | null;
   tags: readonly string[];
   coverImage: string | null;
+  readingTime: number;
 };
 
 export type FullPost = Awaited<ReturnType<typeof getPost>>;
@@ -59,17 +61,40 @@ function byNewest(a: PostSummary, b: PostSummary): number {
 
 export async function getAllPosts(): Promise<PostSummary[]> {
   const posts = await reader.collections.posts.all();
-  return posts
-    .filter((p) => !(isProd && p.entry.draft))
-    .map((p) => ({
-      slug: p.slug,
-      title: p.entry.title,
-      summary: p.entry.summary,
-      publishedAt: p.entry.publishedAt,
-      tags: p.entry.tags,
-      coverImage: resolveImage(p.entry.coverImage),
-    }))
-    .sort(byNewest);
+  const mapped = await Promise.all(
+    posts
+      .filter((p) => !(isProd && p.entry.draft))
+      .map(async (p) => {
+        const { node } = await p.entry.content();
+        return {
+          slug: p.slug,
+          title: p.entry.title,
+          summary: p.entry.summary,
+          publishedAt: p.entry.publishedAt,
+          tags: p.entry.tags,
+          coverImage: resolveImage(p.entry.coverImage),
+          readingTime: readingMinutes(node),
+        };
+      })
+  );
+  return mapped.sort(byNewest);
+}
+
+/** Other posts sharing the most tags with the given one (for "related"). */
+export async function getRelatedPosts(
+  slug: string,
+  tags: readonly string[],
+  limit = 3
+): Promise<PostSummary[]> {
+  const tagSet = new Set(tags);
+  const all = await getAllPosts();
+  return all
+    .filter((p) => p.slug !== slug)
+    .map((p) => ({ post: p, score: p.tags.filter((t) => tagSet.has(t)).length }))
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((x) => x.post);
 }
 
 export async function getAllTags(): Promise<string[]> {
@@ -96,6 +121,8 @@ export async function getPost(slug: string) {
     tags: entry.tags,
     coverImage: resolveImage(entry.coverImage),
     node,
+    readingTime: readingMinutes(node),
+    headings: extractHeadings(node),
   };
 }
 

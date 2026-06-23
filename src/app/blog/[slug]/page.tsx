@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPost, getPostSlugs, formatDate } from "@/lib/content";
+import { getPost, getPostSlugs, getRelatedPosts, formatDate } from "@/lib/content";
 import { MarkdocContent } from "../MarkdocContent";
+import { ReadingProgress } from "../ReadingProgress";
+import { TableOfContents } from "../TableOfContents";
+import { ShareButtons } from "../ShareButtons";
 
 export async function generateStaticParams() {
   return (await getPostSlugs()).map((slug) => ({ slug }));
@@ -42,53 +45,83 @@ export default async function PostPage({
   const post = await getPost(slug);
   if (!post) notFound();
 
+  const related = await getRelatedPosts(slug, post.tags);
+  const url = `https://dayrlism.info/blog/${slug}`;
+
   return (
-    <article style={{ maxWidth: 760, margin: "0 auto", padding: "clamp(32px,6vw,64px) clamp(20px,5vw,40px) 60px" }}>
-      <Link className="dl-link-u dl-mono" href="/blog" style={{ fontSize: 12.5, color: "var(--muted)" }}>
-        ← ALL POSTS
-      </Link>
+    <>
+      <ReadingProgress />
+      <TableOfContents headings={post.headings} />
 
-      <header style={{ margin: "26px 0 30px" }}>
-        <div className="dl-mono" style={{ fontSize: 12, color: "var(--accent)", letterSpacing: ".06em" }}>
-          {formatDate(post.publishedAt)}
-        </div>
-        <h1 style={{ margin: "12px 0 0", fontSize: "clamp(30px,5vw,46px)", fontWeight: 700, letterSpacing: "-.03em", lineHeight: 1.06 }}>
-          {post.title}
-        </h1>
-        <p style={{ margin: "16px 0 0", color: "var(--muted)", fontSize: 18, lineHeight: 1.55 }}>
-          {post.summary}
-        </p>
-        {post.tags.length > 0 && (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 18 }}>
-            {post.tags.map((t) => (
-              <Link key={t} className="dl-chip" href={`/blog?tag=${encodeURIComponent(t)}`}>
-                {t}
-              </Link>
-            ))}
+      <article style={{ maxWidth: 760, margin: "0 auto", padding: "clamp(32px,6vw,64px) clamp(20px,5vw,40px) 60px" }}>
+        <Link className="dl-link-u dl-mono" href="/blog" style={{ fontSize: 12.5, color: "var(--muted)" }}>
+          ← ALL POSTS
+        </Link>
+
+        <header style={{ margin: "26px 0 30px" }}>
+          <div className="dl-mono" style={{ fontSize: 12, color: "var(--accent)", letterSpacing: ".06em" }}>
+            {formatDate(post.publishedAt)} · {post.readingTime} min read
           </div>
+          <h1 style={{ margin: "12px 0 0", fontSize: "clamp(30px,5vw,46px)", fontWeight: 700, letterSpacing: "-.03em", lineHeight: 1.06 }}>
+            {post.title}
+          </h1>
+          <p style={{ margin: "16px 0 0", color: "var(--muted)", fontSize: 18, lineHeight: 1.55 }}>
+            {post.summary}
+          </p>
+          {post.tags.length > 0 && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 18 }}>
+              {post.tags.map((t) => (
+                <Link key={t} className="dl-chip" href={`/blog?tag=${encodeURIComponent(t)}`}>
+                  {t}
+                </Link>
+              ))}
+            </div>
+          )}
+        </header>
+
+        {post.coverImage && (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={post.coverImage}
+            alt=""
+            style={{
+              width: "100%",
+              aspectRatio: "1200 / 630",
+              objectFit: "cover",
+              borderRadius: 16,
+              border: "1px solid var(--line)",
+              display: "block",
+              marginBottom: 38,
+            }}
+          />
         )}
-      </header>
 
-      {post.coverImage && (
-        /* eslint-disable-next-line @next/next/no-img-element */
-        <img
-          src={post.coverImage}
-          alt=""
-          style={{
-            width: "100%",
-            aspectRatio: "1200 / 630",
-            objectFit: "cover",
-            borderRadius: 16,
-            border: "1px solid var(--line)",
-            display: "block",
-            marginBottom: 38,
-          }}
-        />
-      )}
+        <div className="dl-prose">
+          <MarkdocContent node={post.node} />
+        </div>
 
-      <div className="dl-prose">
-        <MarkdocContent node={post.node} />
-      </div>
-    </article>
+        <div style={{ marginTop: 44, borderTop: "1px solid var(--line)", paddingTop: 24 }}>
+          <ShareButtons url={url} title={post.title} />
+        </div>
+
+        {related.length > 0 && (
+          <section style={{ marginTop: 40 }}>
+            <div className="dl-mono" style={{ fontSize: 12, letterSpacing: ".18em", color: "var(--accent)", marginBottom: 18 }}>
+              RELATED
+            </div>
+            <div className="dl-related">
+              {related.map((r) => (
+                <Link key={r.slug} href={`/blog/${r.slug}`} className="dl-related-card">
+                  <div className="dl-mono" style={{ fontSize: 11, color: "var(--muted)" }}>
+                    {formatDate(r.publishedAt)} · {r.readingTime} min
+                  </div>
+                  <div style={{ fontWeight: 600, fontSize: 15.5, marginTop: 6, lineHeight: 1.25 }}>{r.title}</div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+      </article>
+    </>
   );
 }
