@@ -7,6 +7,7 @@ import { ReadingProgress } from "../ReadingProgress";
 import { TableOfContents } from "../TableOfContents";
 import { ShareButtons } from "../ShareButtons";
 import { PostEnhancements } from "../PostEnhancements";
+import { ViewCounter } from "../ViewCounter";
 
 export async function generateStaticParams() {
   return (await getPostSlugs()).map((slug) => ({ slug }));
@@ -63,6 +64,7 @@ export default async function PostPage({
         <header style={{ margin: "26px 0 30px" }}>
           <div className="dl-mono" style={{ fontSize: 12, color: "var(--accent)", letterSpacing: ".06em" }}>
             {formatDate(post.publishedAt)} · {post.readingTime} min read
+            <ViewCounter slug={slug} />
           </div>
           <h1 style={{ margin: "12px 0 0", fontSize: "clamp(30px,5vw,46px)", fontWeight: 700, letterSpacing: "-.03em", lineHeight: 1.06 }}>
             {post.title}
