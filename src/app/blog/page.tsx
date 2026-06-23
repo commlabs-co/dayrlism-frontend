@@ -71,7 +71,7 @@ export default async function BlogIndex({
               )}
               <div className="dl-post-body">
                 <div className="dl-mono" style={{ fontSize: 11.5, color: "var(--muted)", letterSpacing: ".05em" }}>
-                  {formatDate(post.publishedAt)}
+                  {formatDate(post.publishedAt)} · {post.readingTime} min
                 </div>
                 <h2 style={{ margin: "8px 0 0", fontSize: "clamp(19px,2vw,22px)", fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.18 }}>
                   {post.title}

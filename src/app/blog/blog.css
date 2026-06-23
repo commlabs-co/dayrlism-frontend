@@ -206,3 +206,115 @@
 .dl-prose th {
   background: var(--panel);
 }
+
+/* anchor offset so headings clear the sticky nav on jump */
+.dl-prose h2,
+.dl-prose h3 {
+  scroll-margin-top: 90px;
+}
+
+/* ---------- table of contents (desktop scroll-spy) ---------- */
+.dl-toc {
+  display: none;
+}
+@media (min-width: 1280px) {
+  .dl-toc {
+    display: block;
+    position: fixed;
+    top: 130px;
+    left: max(24px, calc((100vw - 760px) / 2 - 236px));
+    width: 212px;
+    max-height: 72vh;
+    overflow-y: auto;
+    z-index: 5;
+  }
+}
+.dl-toc-title {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.dl-toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.dl-toc-link {
+  display: block;
+  margin-left: -1px;
+  padding-left: 14px;
+  border-left: 2px solid transparent;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--muted);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.dl-toc-link[data-sub="true"] {
+  padding-left: 26px;
+  font-size: 12.5px;
+}
+.dl-toc-link:hover {
+  color: var(--text);
+}
+.dl-toc-link[data-active="true"] {
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+/* ---------- share ---------- */
+.dl-share {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.dl-share-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  margin-right: 4px;
+}
+.dl-share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.dl-share-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---------- related ---------- */
+.dl-related {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.dl-related-card {
+  display: block;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--bg2), transparent);
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+.dl-related-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
