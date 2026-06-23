@@ -1,0 +1,67 @@
+---
+title: MRV, Explained for Engineers
+publishedAt: 2026-06-23
+summary: "A carbon credit is only worth the system that proves it's real — so MRV (measurement, reporting, and verification) is less a climate problem than an engineering one: building data pipelines that survive an adversarial audit."
+tags:
+  - agritech
+  - climate
+  - engineering
+coverImage:
+draft: false
+---
+
+## A credit is a promise. MRV decides whether to believe it.
+
+A carbon credit represents one ton of CO2 either removed from the atmosphere or kept out of it. You buy one, you've funded a ton's worth of climate benefit. Simple.
+
+Except — how do you know the ton is real?
+
+That question is the entire ballgame, and it has a name: MRV — Measurement, Reporting, and Verification. It's the system that turns "we planted some trees" or "this farm changed how it tills its soil" into a number a buyer will pay for. When MRV is strong, a credit is trustworthy. When it's weak, the credit is worth nothing — and worse, it quietly discredits every other credit in the market.
+
+So carbon markets don't have a carbon problem. They have a trust problem. And once you look closely, the trust problem is an engineering problem.
+
+Let me make the case the way I'd want it made to me — as a systems problem.
+
+## MRV is a pipeline you already recognize
+
+Break the acronym apart and it stops being jargon:
+
+- **Measurement** — turn a physical reality (a farm, a forest, a field of soil) into data.
+- **Reporting** — structure that data into a standardized, defensible claim.
+- **Verification** — have an independent third party confirm the claim is true.
+
+Input, transform, audit. If you've built an ETL pipeline, you already understand the shape. The twist is the last stage: most pipelines you've built didn't end with an adversary reviewing every row, looking for reasons to reject it.
+
+That single difference — an audit at the end, run by someone whose job is to be skeptical — changes how you have to build everything upstream.
+
+## The hard part is the engineering, not the chemistry
+
+Here's what surprised me coming in as an engineer: the science of carbon is largely settled. We broadly know how much carbon a hectare of healthy soil or a stand of trees holds. The hard part is everything *around* the science.
+
+**You're measuring what you can't directly observe.** You can't dig up and weigh the carbon in ten thousand hectares of soil. You sample a little, then model the rest. Every number carries uncertainty, and you have to quantify and defend that uncertainty — not hide it.
+
+**The data comes from the physical world, so it's messy.** Sensors drop out. Satellite passes are cloudy. Smallholder farms — the ones that need this income most — often have no digital infrastructure at all. You're building on sparse, irregular, partially-missing inputs and still have to produce a defensible answer.
+
+**Every number has to be reproducible.** When a verifier challenges a claim, "trust me" is not an answer. You need provenance: which raw inputs, which model version, which assumptions, on which date, produced this exact figure. That's data lineage and versioning treated as a first-class requirement, not a nice-to-have. If you've ever had to reproduce a result from six months ago, you know the discipline this demands at the source.
+
+**And it has to resist gaming.** Carbon markets have been burned by inflated baselines, double-counted credits, and projects claiming benefit that would have happened anyway. A credible MRV system makes those failure modes hard by design — auditable trails, conservative defaults, no silent overwrites. You're not just building a pipeline; you're building one that holds up under adversarial pressure.
+
+Put it together: it looks like data plumbing, but it's plumbing where every value must survive an audit. That's a real engineering problem, and a genuinely interesting one.
+
+## Why software is the bottleneck
+
+If the science is understood, why isn't this solved?
+
+Because the traditional way of doing MRV is manual — consultants, site visits, spreadsheets, PDFs. It's slow, expensive, and it doesn't scale to millions of smallholder farms. The cost of verifying a credit can rival the value of the credit itself. That's the bottleneck, and it isn't a science bottleneck. It's a software one.
+
+Software is what makes verification cheap enough, fast enough, and consistent enough to work at scale. Remote sensing plus models replaces some of the site visits. A well-designed data layer makes an audit a query instead of an archaeology project. AI fills the gaps where ground data is thin.
+
+This is the part I find motivating. The blocker to moving real money toward real climate outcomes isn't a mystery of nature — it's tooling that doesn't exist yet, or doesn't exist well enough. That's a builder's problem. It's why I'm spending this decade on it, and it's the problem HiTerra exists to solve.
+
+## The takeaway
+
+MRV is the trust infrastructure of carbon markets. Strip away the climate vocabulary and what's underneath is a familiar engineering challenge: build a data pipeline whose every output is sparse-input-tolerant, reproducible, and able to survive an adversarial audit — at a cost low enough to scale.
+
+That's an engineering problem hiding inside a climate problem. If you can build verifiable data systems, you can move this market — and the market, in turn, moves carbon.
+
+I'll go a layer deeper in future posts — the actual stack, the model choices, the tradeoffs. For now, keep one thing: in carbon markets, the credibility of the whole system rests on the boring infrastructure underneath. Boring infrastructure is exactly what engineers are for.
