@@ -1,3 +1,5 @@
+import { rateLimit, clientIp } from "@/lib/ratelimit";
+
 export const dynamic = "force-dynamic";
 
 // Buttondown's current API. Override via env if the account is on the legacy
@@ -14,6 +16,12 @@ export async function POST(req: Request) {
     return Response.json({ ok: false, error: "Newsletter isn't configured yet." }, { status: 503 });
   }
 
+  // Tight cap: signups are rare per human, and this blocks using the form to
+  // email-bomb someone else's address via repeated confirmation mails.
+  if (!(await rateLimit("subscribe", clientIp(req), 5, 600))) {
+    return Response.json({ ok: false, error: "Too many attempts — please try again later." }, { status: 429 });
+  }
+
   let email = "";
   try {
     const body = await req.json();
@@ -21,7 +29,7 @@ export async function POST(req: Request) {
   } catch {
     return Response.json({ ok: false, error: "Invalid request." }, { status: 400 });
   }
-  if (!EMAIL_RE.test(email)) {
+  if (email.length > 254 || !EMAIL_RE.test(email)) {
     return Response.json({ ok: false, error: "Enter a valid email address." }, { status: 400 });
   }
 
