@@ -1,0 +1,13 @@
+# Known, accepted findings — picked up automatically by gitleaks.
+#
+# All five are Instagram feed tokens in assets/js/main.js of the pre-Next
+# template (2020–2021), a file deleted long ago and present only in git
+# history. They are inert: the Instagram Legacy API (248624218.* tokens) shut
+# down in June 2020 and the Basic Display API (IGQVJ… token) in December 2024,
+# so the tokens work against nothing and cannot be revoked or abused. Ignored
+# rather than rewriting history; anything NEW gitleaks finds still fails CI.
+81812922d1612ddcf3b4948743fa61dee2b0c26c:assets/js/main.js:generic-api-key:1
+11689527deac287eaf0d60738f5365c19a21fc65:assets/js/main.js:generic-api-key:1
+f7c8f4c533a1ef0f55142061f07890668137ba78:assets/js/main.js:generic-api-key:1
+23badf5617b2cfbcaf71c1c8d6f20493c926ea3c:assets/js/main.js:generic-api-key:1
+934b2a101fd7f7c087921d042d6abeabf35cfea4:assets/js/main.js:generic-api-key:79
