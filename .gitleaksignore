@@ -1,13 +1,37 @@
 # Known, accepted findings — picked up automatically by gitleaks.
-#
-# All five are Instagram feed tokens in assets/js/main.js of the pre-Next
-# template (2020–2021), a file deleted long ago and present only in git
-# history. They are inert: the Instagram Legacy API (248624218.* tokens) shut
-# down in June 2020 and the Basic Display API (IGQVJ… token) in December 2024,
-# so the tokens work against nothing and cannot be revoked or abused. Ignored
-# rather than rewriting history; anything NEW gitleaks finds still fails CI.
+# All of these live only in git history (the files are long deleted or belong
+# to archived site versions on protected/v* branches). Triage below; anything
+# NEW gitleaks finds still fails CI.
+
+# --- Instagram feed tokens, v2-v6 template era (2019-2021) -------------------
+# assets/js/main.js / js/scripts.js of the static-template sites. The
+# Instagram Legacy API (248624218.* tokens) shut down June 2020 and the Basic
+# Display API (IGQVJ… tokens) December 2024 — the tokens work against nothing
+# and cannot be revoked or abused.
 81812922d1612ddcf3b4948743fa61dee2b0c26c:assets/js/main.js:generic-api-key:1
 11689527deac287eaf0d60738f5365c19a21fc65:assets/js/main.js:generic-api-key:1
 f7c8f4c533a1ef0f55142061f07890668137ba78:assets/js/main.js:generic-api-key:1
 23badf5617b2cfbcaf71c1c8d6f20493c926ea3c:assets/js/main.js:generic-api-key:1
 934b2a101fd7f7c087921d042d6abeabf35cfea4:assets/js/main.js:generic-api-key:79
+7fce5314717189413d6fb58786f22f4f55affe79:assets/js/main.js:generic-api-key:62
+45d8bd389cffeabdd52dd17fb3ec50936c6da91e:js/scripts.js:generic-api-key:66
+8ce522fbfe5c0ebbe221c4d09c36282fbee0658a:js/scripts.js:generic-api-key:67
+5149cba00270dc250471a14541cf6e338f235df2:js/scripts.js:generic-api-key:68
+cf2481025cbb38875ea68e05c370a0d15d7ced17:js/scripts.js:generic-api-key:68
+
+# --- v1 React site, 2018 (protected/v1 lineage) ------------------------------
+# Same dead Instagram client id + token in source and recompiled into minified
+# bundles; a JWT whose audience was APIURL=http://localhost (dev-only, 8 years
+# stale); STEAM_CLIENT_ID is an OpenID identifier, not a secret; the .js.map
+# hit ("onKeyDown = …") is a minified-code false positive.
+f68cfbbeba80dcb8427601af675f71d66cb0b0be:.env:generic-api-key:2
+f68cfbbeba80dcb8427601af675f71d66cb0b0be:src/actions/iguser.js:generic-api-key:26
+b18a1422a48fd1c2a8d9584140333877202913ec:.env:jwt:1
+b18a1422a48fd1c2a8d9584140333877202913ec:src/actions/access.js:generic-api-key:26
+6f523db65ffbb9b0dfb42237c51b4ba0d54569f8:.env.development:generic-api-key:6
+6d8bb404ca45e6a16d8e02fe60b976c886f0fc18:public/assets/8.3cde869c.chunk.js:generic-api-key:1
+6d8bb404ca45e6a16d8e02fe60b976c886f0fc18:public/assets/main.f25239dc.js:generic-api-key:1
+6d8bb404ca45e6a16d8e02fe60b976c886f0fc18:public/assets/3.ee76479e.chunk.js.map:generic-api-key:1
+97cde68988c876f53885e1f8f6ba9849902bd982:public/assets/8.b81c7e05.chunk.js:generic-api-key:1
+97cde68988c876f53885e1f8f6ba9849902bd982:public/assets/main.160f3881.js:generic-api-key:1
+b4ce078db7d7f1bedb10635545f9494034f82e05:public/assets/main.256da3fb.js:generic-api-key:1
