@@ -49,13 +49,24 @@ const marqueeWords = [
   "CI/CD", "Micro Frontend", "React Native", "Strapi", "Tailwind", "Positive Attitude",
 ];
 
+// Every past build is kept on a protected/vN branch. The purely static ones are
+// vendored into public/vN and served from this same deployment; the app-based
+// ones (which would need their original, long-rotted toolchains to build) link
+// to their source instead. `live: false` renders a "Source ↗" CTA.
+const REPO = "https://github.com/commlabs-co/dayrlism-frontend";
+const archive = (tag: string) => `${REPO}/tree/protected/${tag}`;
+
 const versions = [
-  { tag: "v1", year: "2014", title: "The first site", note: "A diploma grad with something to prove. Hand-coded, scrappy, honest.", stack: "HTML · CSS · jQuery", url: "https://v1.dayrlism.info", current: false },
-  { tag: "v2", year: "2017", title: "React era", note: "Rebuilt as a single-page app as the React habit took hold.", stack: "React · SASS", url: "https://v2.dayrlism.info", current: false },
-  { tag: "v3", year: "2019", title: "Documentary", note: "Photography-led, the “there is a reason” voice arrives.", stack: "Gatsby · GraphQL", url: "https://v3.dayrlism.info", current: false },
-  { tag: "v4", year: "2022", title: "Dark mode", note: "The teal & sun-switcher identity that still defines the brand.", stack: "Next.js · TS", url: "https://v4.dayrlism.info", current: false },
-  { tag: "v5", year: "2024", title: "Resume split", note: "Landing and a dedicated resume dashboard, living separately.", stack: "Next · Gatsby", url: "https://v5.dayrlism.info", current: false },
-  { tag: "v6", year: "2025", title: "Unified", note: "One home again — landing and resume merged into a single story.", stack: "React · NestJS", url: "/", current: true },
+  { tag: "v1", year: "2019", title: "Server-rendered", note: "A full SSR React app — routes, nginx, pm2. Ambitious for a personal site.", stack: "React 16 · SSR · Sass", url: archive("v1"), live: false, current: false },
+  { tag: "v2", year: "2019", title: "One-pager", note: "Static single page: jQuery, Bootstrap, a carousel and a filterable grid.", stack: "HTML · jQuery · Bootstrap", url: "/v2/index.html", live: true, current: false },
+  { tag: "v3", year: "2019", title: "SPA attempt", note: "react-boilerplate and styled-components — the single-page experiment continued.", stack: "React 16 · styled-components", url: archive("v3"), live: false, current: false },
+  { tag: "v4", year: "2021", title: "Side projects", note: "The one-pager grown up, with Firebase messaging and stock & bill tools bolted on.", stack: "HTML · jQuery · Firebase", url: "/v4/index.html", live: true, current: false },
+  { tag: "v5", year: "2023", title: "Dashboard", note: "A denser, data-flavoured layout with Swiper decks and a vector map.", stack: "HTML · Bootstrap · Swiper", url: "/v5/index.html", live: true, current: false },
+  { tag: "v6", year: "2020", title: "Photographic", note: "Photography forward — Fancybox galleries and Slick sliders.", stack: "HTML · jQuery · Fancybox", url: "/v6/index.html", live: true, current: false },
+  { tag: "v7", year: "2022", title: "Motion", note: "A typed hero line, scroll-triggered reveals, popup case studies.", stack: "HTML · Typed.js · WOW", url: "/v7/index.html", live: true, current: false },
+  { tag: "v8", year: "2023", title: "Back to React", note: "Rebuilt as a React SPA on Bootstrap 5 and Sass.", stack: "React 17 · Bootstrap 5", url: archive("v8"), live: false, current: false },
+  { tag: "v9", year: "2023", title: "Next.js", note: "First Next build — the structure this site still stands on.", stack: "Next 13 · React 18", url: archive("v9"), live: false, current: false },
+  { tag: "v10", year: "2026", title: "Unified", note: "One home again — landing, résumé and blog in a single app, edited in-browser.", stack: "Next 15 · React 19 · Keystatic", url: "/", live: true, current: true },
 ];
 
 const liDisplay = (url: string) => url.replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/+$/, "");
@@ -759,9 +770,10 @@ export default function LandingView({
                   href={v.url}
                   target="_blank"
                   rel="noreferrer"
-                  style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 14, fontSize: 11.5, fontWeight: 600, color: "var(--accent)" }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 14, fontSize: 11.5, fontWeight: 600, color: v.live ? "var(--accent)" : "var(--muted)" }}
+                  title={v.live ? `Open the archived ${v.tag} site` : `${v.tag} needs its original toolchain to build — browse the source instead`}
                 >
-                  Visit {v.tag} ↗
+                  {v.live ? `Visit ${v.tag} ↗` : "Source ↗"}
                 </a>
               )}
             </div>

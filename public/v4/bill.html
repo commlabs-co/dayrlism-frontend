@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zxx">
+  <head>
+    <!-- Metas -->
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <meta name="author" content="Dayrl Lee" />
+    <meta
+      name="google-site-verification"
+      content="JM_SGf8vbt6iUqEPskbPOjWNUkZP1N_7z8_FvvunlM8"
+    />
+    <!-- Title  -->
+    <title>O2 Bill Calc</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/css/uikit.min.css"
+    />
+    <style>
+      #priceTable > div > span {
+        border: 1px solid black;
+      }
+      #priceDiff > div > span {
+        border: 1px solid black;
+      }
+      #tenantUnits > div > span {
+        border: 1px solid black;
+      }
+      #priceOweTable > div > span {
+        border: 1px solid black;
+      }
+      .o2-main-header {
+        margin: 40px auto;
+        text-align: center;
+      }
+      .o2-section-padding {
+        padding: 50px 20px;
+      }
+      .preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        white-space: nowrap;
+        text-align: center;
+        background: #f8f8f8;
+        z-index: 99;
+        -webkit-transition: all linear 0.3s;
+        transition: all linear 0.3s;
+        background-color: white;
+      }
+
+      .preloader:before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        height: 100%;
+        margin-right: -0.25em;
+      }
+
+      .preloader.loaded {
+        opacity: 0;
+        visibility: hidden;
+        z-index: -1;
+      }
+
+      .preloader .holder {
+        display: inline-block;
+        vertical-align: middle;
+        white-space: normal;
+      }
+
+      .o2-bullet-margin {
+        margin-bottom: 50px;
+      }
+      .o2-summary-dummy-hide {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!--Preload-->
+    <div class="preloader" id="pageLoad">
+      <span uk-spinner="ratio: 4.5"></span>
+    </div>
+
+    <h1 class="uk-heading-line uk-text-center o2-main-header">
+      <span>Oasis2 Utility Board</span>
+    </h1>
+    <div class="uk-section">
+      <div class="uk-container o2-section-padding">
+        <form>
+          <fieldset class="uk-fieldset">
+            <h1 class="uk-heading-bullet o2-bullet-margin">Bill Calculator</h1>
+
+            <div class="uk-margin">
+              <input
+                id="o2-home"
+                class="uk-input"
+                type="text"
+                placeholder="Home Usage(Watt)"
+                required
+              />
+            </div>
+            <div class="uk-margin">
+              <input
+                id="o2-room3"
+                class="uk-input"
+                type="text"
+                placeholder="Room-3 Usage(Watt)"
+                required
+              />
+            </div>
+            <div class="uk-margin">
+              <input
+                id="o2-room4"
+                class="uk-input"
+                type="text"
+                placeholder="Room-4 Usage(Watt)"
+                required
+              />
+            </div>
+          </fieldset>
+          <button id="o2-submit-calculator" class="uk-button uk-button-primary">
+            Submit
+          </button>
+        </form>
+        <h1 class="uk-heading-divider">Summary</h1>
+        <div id="o2-summary-dummy-hide" class="uk-placeholder uk-text-center">
+          Submit to show summaries
+        </div>
+        <div id="o2-summary-board"></div>
+      </div>
+      <hr class="uk-divider-icon" />
+      <div class="uk-container o2-section-padding">
+        <h1 class="uk-heading-bullet o2-bullet-margin">Bill Tables</h1>
+        <!-- <button id="o2-accordion-open-all" class="uk-button uk-button-text">Collapse All</button> -->
+        <ul uk-accordion="multiple: true">
+          <li>
+            <a class="uk-accordion-title" href="#">Tracking Record</a>
+            <div class="uk-accordion-content">
+              <div class="uk-overflow-auto">
+                <table
+                  id="o2-price-table"
+                  class="uk-table uk-table-small uk-table-divider"
+                >
+                  <thead>
+                    <tr>
+                      <th>Room-1</th>
+                      <th>Room-2</th>
+                      <th>Room-3</th>
+                      <th>Room-4</th>
+                      <th>Room-5</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </li>
+          <li>
+            <a class="uk-accordion-title" href="#">Last Record Differences</a>
+            <div class="uk-accordion-content">
+              <div class="uk-overflow-auto">
+                <table
+                  id="o2-price-diff-table"
+                  class="uk-table uk-table-small uk-table-divider"
+                >
+                  <thead>
+                    <tr>
+                      <th>Room-1</th>
+                      <th>Room-2</th>
+                      <th>Room-3</th>
+                      <th>Room-4</th>
+                      <th>Room-5</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </li>
+          <li style="display: none;">
+            <a class="uk-accordion-title" href="#">Tenant Units</a>
+            <div class="uk-accordion-content">
+              <div class="uk-overflow-auto">
+                <table
+                  id="o2-tenant-units-table"
+                  class="uk-table uk-table-small uk-table-divider"
+                >
+                  <thead>
+                    <tr>
+                      <th>Room-1</th>
+                      <th>Room-2</th>
+                      <th>Room-3</th>
+                      <th>Room-4</th>
+                      <th>Room-5</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </li>
+          <li style="display: none;">
+            <a class="uk-accordion-title" href="#">Tenant Price(RM)</a>
+            <div class="uk-accordion-content">
+              <div class="uk-overflow-auto">
+                <table
+                  id="o2-price-owe-table"
+                  class="uk-table uk-table-small uk-table-divider"
+                >
+                  <thead>
+                    <tr>
+                      <th>Room-1</th>
+                      <th>Room-2</th>
+                      <th>Room-3</th>
+                      <th>Room-4</th>
+                      <th>Room-5</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </li>
+          <li>
+            <a class="uk-accordion-title" href="#">Bills</a>
+            <div class="uk-accordion-content">
+              <div class="uk-overflow-auto">
+                <table
+                  id="o2-bill-table"
+                  class="uk-table uk-table-small uk-table-divider"
+                >
+                  <thead>
+                    <tr>
+                      <th>Bill Date</th>
+                      <th>Amount(RM)</th>
+                      <th>Watt(kwh/kw)</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="js/jquery-migrate-3.0.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit-icons.min.js"></script>
+    <script>
+      var $win = $(window);
+      $win.on("load", function () {
+        $("#pageLoad").remove();
+      });
+
+      var APIURL = "https://o2dash.dayrlism.info";
+
+      $.get(APIURL + "/electrictracks", function (res) {
+        var lastIndex = res.length - 1;
+        var secondlastIndex = res.length - 2;
+        var lastOutcome = res[lastIndex];
+        var secondlastOutcome = res[secondlastIndex];
+        var diff = calCulateDiff(lastOutcome, secondlastOutcome);
+        var stack = calCulateUnitStacking(res);
+        var price = calCulatePrice(stack);
+
+        $.each(res, function (index, value) {
+          $("#o2-price-table>tbody").append(
+            $(`
+                        <tr>
+                            <td>${value.R1Usage}</td>
+                            <td>${value.R2Usage}</td>
+                            <td>${value.R3Usage}</td>
+                            <td>${value.R4Usage}</td>
+                            <td>${value.R5Usage}</td>
+                        </tr>
+                    `)
+          );
+        });
+
+        $("#o2-tenant-units-table>tbody").append(
+          $(`
+                    <tr>
+                        <td>${stack.R1Usage}</td>
+                        <td>${stack.R2Usage}</td>
+                        <td>${stack.R3Usage}</td>
+                        <td>${stack.R4Usage}</td>
+                        <td>${stack.R5Usage}</td>
+                    </tr>
+                `)
+        );
+        $("#o2-price-owe-table>tbody").append(
+          $(`
+                    <tr>
+                        <td>${price.R1Usage}</td>
+                        <td>${price.R2Usage}</td>
+                        <td>${price.R3Usage}</td>
+                        <td>${price.R4Usage}</td>
+                        <td>${price.R5Usage}</td>
+                    </tr>
+                `)
+        );
+        $("#o2-price-diff-table>tbody").append(
+          $(`
+                    <tr>
+                        <td>${diff.R1UsageDiff}</td>
+                        <td>${diff.R2UsageDiff}</td>
+                        <td>${diff.R3UsageDiff}</td>
+                        <td>${diff.R4UsageDiff}</td>
+                        <td>${diff.R5UsageDiff}</td>
+                    </tr>
+                `)
+        );
+      });
+
+      $.get(APIURL + "/bills", function (res) {
+        console.log(res);
+        $.each(res, function (index, value) {
+          $("#o2-bill-table>tbody").append(
+            $(`
+                        <tr>
+                            <td>${new Date(value.billdate).toLocaleDateString(
+                              "en-GB"
+                            )}</td>
+                            <td>${value.amount}</td>
+                            <td>${value.watt_usage}</td>
+                        </tr>
+                    `)
+          );
+        });
+      });
+
+      $("#o2-submit-calculator").on("click", function () {
+        $("#o2-summary-dummy-hide").addClass("o2-summary-dummy-hide");
+        var houseUsage = Number($("#o2-home").val());
+        var roomUsage1 = Number($("#o2-room1").val());
+        var roomUsage2 = Number($("#o2-room2").val());
+        var roomUsage3 = Number($("#o2-room3").val());
+        var roomUsage4 = Number($("#o2-room4").val());
+        var roomUsage5 = Number($("#o2-room5").val());
+
+        // var shareDivide = houseUsage - (roomUsage3 + roomUsage4);
+        var housePaying = feeCalculate(houseUsage);
+        var percentR3Price = housePaying * (roomUsage3 / houseUsage);
+        var percentR4Price = housePaying * (roomUsage4 / houseUsage);
+        var shareDivide = (housePaying - (percentR3Price + percentR4Price)) / 2;
+
+        var roomPaying3 = percentR3Price + shareDivide;
+        var roomPaying4 = percentR4Price + shareDivide;
+
+        $("#o2-summary-board").append(
+          $(`
+                <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-expand" uk-leader="fill: -">House Total</div>
+                        <div>RM${housePaying.toFixed(2)}</div>
+                </div>
+            `)
+        );
+        $("#o2-summary-board").append(
+          $(`
+                <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-expand" uk-leader="fill: -">Room3 Total</div>
+                        <div>RM${roomPaying3.toFixed(2)}</div>
+                </div>
+            `)
+        );
+        $("#o2-summary-board").append(
+          $(`
+                <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-expand" uk-leader="fill: -">Room4 Total</div>
+                        <div>RM${roomPaying4.toFixed(2)}</div>
+                </div>
+                <hr class="uk-divider-icon" />
+            `)
+        );
+        return false;
+      });
+
+      function feeCalculate(usage) {
+        var rate100 = 0.218,
+          rate300 = 0.334,
+          rate600 = 0.516,
+          rate900 = 0.546;
+        var leftoverUsage = usage;
+
+        if (leftoverUsage <= 200) {
+          return rate100 * leftoverUsage;
+        }
+
+        if (leftoverUsage > 200 && leftoverUsage < 300) {
+          leftoverUsage = leftoverUsage - 200;
+
+          return 200 * rate100 + leftoverUsage * rate300;
+        } else if (leftoverUsage > 300 && leftoverUsage < 600) {
+          leftoverUsage = leftoverUsage - 300;
+
+          return 200 * rate100 + 100 * rate300 + leftoverUsage * rate600;
+        } else if (leftoverUsage > 600) {
+          leftoverUsage = leftoverUsage - 600;
+
+          return (
+            200 * rate100 +
+            100 * rate300 +
+            300 * rate600 +
+            leftoverUsage * rate900
+          );
+        }
+      }
+
+      function calCulateDiff(obj1, obj2) {
+        return {
+          R1UsageDiff: (obj1.R1Usage - obj2.R1Usage).toFixed(2),
+          R2UsageDiff: (obj1.R2Usage - obj2.R2Usage).toFixed(2),
+          R3UsageDiff: (obj1.R3Usage - obj2.R3Usage).toFixed(2),
+          R4UsageDiff: (obj1.R4Usage - obj2.R4Usage).toFixed(2),
+          R5UsageDiff: (obj1.R5Usage - obj2.R5Usage).toFixed(2),
+        };
+      }
+
+      function calCulateUnitStacking(arr) {
+        var R1Usage = 0,
+          R2Usage = 0,
+          R3Usage = 0,
+          R4Usage = 0,
+          R5Usage = 0;
+        $.each(arr, function (index, value) {
+          var roomStatus = returnStatus(value.UsageStatus);
+          // console.log(roomStatus)
+          R1Usage = !roomStatus.R1UsageStatus
+            ? R1Usage + value.R1Usage
+            : R1Usage;
+          R2Usage = !roomStatus.R2UsageStatus
+            ? R2Usage + value.R2Usage
+            : R2Usage;
+          R3Usage = !roomStatus.R3UsageStatus
+            ? R3Usage + value.R3Usage
+            : R3Usage;
+          R4Usage = !roomStatus.R4UsageStatus
+            ? R4Usage + value.R4Usage
+            : R4Usage;
+          R5Usage = !roomStatus.R5UsageStatus
+            ? R5Usage + value.R5Usage
+            : R5Usage;
+        });
+        return {
+          R1Usage,
+          R2Usage,
+          R3Usage,
+          R4Usage,
+          R5Usage,
+        };
+      }
+
+      function calCulatePrice(stack) {
+        return {
+          R1Usage: feeCalculate(stack.R1Usage).toFixed(2),
+          R2Usage: feeCalculate(stack.R2Usage).toFixed(2),
+          R3Usage: feeCalculate(stack.R3Usage).toFixed(2),
+          R4Usage: feeCalculate(stack.R4Usage).toFixed(2),
+          R5Usage: feeCalculate(stack.R5Usage).toFixed(2),
+        };
+      }
+
+      function returnStatus(status) {
+        var roomStatus = status.split(",");
+
+        return {
+          R1UsageStatus: roomStatus[0].split(":")[1] === "true",
+          R2UsageStatus: roomStatus[1].split(":")[1] === "true",
+          R3UsageStatus: roomStatus[2].split(":")[1] === "true",
+          R4UsageStatus: roomStatus[3].split(":")[1] === "true",
+          R5UsageStatus: roomStatus[4].split(":")[1] === "true",
+        };
+      }
+    </script>
+  </body>
+</html>
