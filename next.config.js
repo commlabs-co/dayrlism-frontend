@@ -30,6 +30,14 @@ const nextConfig = {
         destination: "/v:n/index.html",
         permanent: false,
       },
+      // Same for sub-pages of the exported builds (e.g. /v9/home-dark, written
+      // out as home-dark/index.html). Segments are matched without dots so that
+      // real asset requests (/v9/_next/…/main.abc123.js) never take this path.
+      {
+        source: "/v:n(\\d+)/:sub((?:[^/.]+/)*[^/.]+)",
+        destination: "/v:n/:sub/index.html",
+        permanent: false,
+      },
     ];
   },
   async headers() {

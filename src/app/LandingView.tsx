@@ -49,15 +49,20 @@ const marqueeWords = [
   "CI/CD", "Micro Frontend", "React Native", "Strapi", "Tailwind", "Positive Attitude",
 ];
 
-// Every past build is kept on a protected/vN branch. The purely static ones are
-// vendored into public/vN and served from this same deployment; the app-based
-// ones (which would need their original, long-rotted toolchains to build) link
-// to their source instead. `live: false` renders a "Source ↗" CTA.
+// Every past build is kept on a protected/vN branch and served from this same
+// deployment out of public/vN. The static ones were vendored as-is; v8 (CRA)
+// and v9 (Next 13) were built from source with their asset paths set to /v8
+// and /v9. v1 (server-rendered, node-sass 4) and v3 (react-boilerplate) don't
+// build on a current toolchain, so those two link to source — `live: false`
+// renders a "Source ↗" CTA instead of "Visit".
+//
+// v6 and v7 were throwaway template tests and are deliberately skipped, hence
+// the gap between v5 and v8.
 //
 // Years come from each branch's own commit history: v1 from when the repo (and
-// that build) began, the rest from when that version was last worked on. The
-// branches were partly archived in bulk, so the dates don't sort in version
-// order — v6 (2020) predates v4 (2021). Cards stay in version order regardless.
+// that build) began, the rest from when that version was last worked on. Some
+// branches were archived in bulk, so the dates don't sort strictly in version
+// order. Cards stay in version order regardless.
 const REPO = "https://github.com/commlabs-co/dayrlism-frontend";
 const archive = (tag: string) => `${REPO}/tree/protected/${tag}`;
 
@@ -67,10 +72,8 @@ const versions = [
   { tag: "v3", year: "2019", title: "SPA attempt", note: "react-boilerplate and styled-components — the single-page experiment continued.", stack: "React 16 · styled-components", url: archive("v3"), live: false, current: false },
   { tag: "v4", year: "2021", title: "Side projects", note: "The one-pager grown up, with Firebase messaging and stock & bill tools bolted on.", stack: "HTML · jQuery · Firebase", url: "/v4/index.html", live: true, current: false },
   { tag: "v5", year: "2023", title: "Dashboard", note: "A denser, data-flavoured layout with Swiper decks and a vector map.", stack: "HTML · Bootstrap · Swiper", url: "/v5/index.html", live: true, current: false },
-  { tag: "v6", year: "2020", title: "Photographic", note: "Photography forward — Fancybox galleries and Slick sliders.", stack: "HTML · jQuery · Fancybox", url: "/v6/index.html", live: true, current: false },
-  { tag: "v7", year: "2022", title: "Motion", note: "A typed hero line, scroll-triggered reveals, popup case studies.", stack: "HTML · Typed.js · WOW", url: "/v7/index.html", live: true, current: false },
-  { tag: "v8", year: "2023", title: "Back to React", note: "Rebuilt as a React SPA on Bootstrap 5 and Sass.", stack: "React 17 · Bootstrap 5", url: archive("v8"), live: false, current: false },
-  { tag: "v9", year: "2023", title: "Next.js", note: "First Next build — the structure this site still stands on.", stack: "Next 13 · React 18", url: archive("v9"), live: false, current: false },
+  { tag: "v8", year: "2023", title: "Back to React", note: "Rebuilt as a React SPA on Bootstrap 5 and Sass.", stack: "React 17 · Bootstrap 5", url: "/v8/index.html", live: true, current: false },
+  { tag: "v9", year: "2023", title: "Next.js", note: "First Next build — the structure this site still stands on.", stack: "Next 13 · React 18", url: "/v9/index.html", live: true, current: false },
   { tag: "v10", year: "2026", title: "Unified", note: "One home again — landing, résumé and blog in a single app, edited in-browser.", stack: "Next 15 · React 19 · Keystatic", url: "/", live: true, current: true },
 ];
 
