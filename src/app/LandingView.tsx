@@ -194,24 +194,43 @@ export default function LandingView({
     e.preventDefault();
     const form = formRef.current;
     if (!form) return;
-    const name = ((new FormData(form).get("name") as string) || "").trim();
+    const data = new FormData(form);
+    const name = ((data.get("name") as string) || "").trim();
+    const email = ((data.get("user_email") as string) || "").trim();
+    const message = ((data.get("message") as string) || "").trim();
     if (!name) return;
     const first = name.split(/\s+/)[0];
 
-    if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
-      // no email backend configured — acknowledge optimistically
-      setSenderName(first);
-      setStatus("sent");
-      form.reset();
-      return;
-    }
     setStatus("sending");
-    try {
-      await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form, { publicKey: PUBLIC_KEY });
+
+    // Notion is the system of record. EmailJS, when it's configured, is a
+    // best-effort notification on top of it — so a submission counts as
+    // delivered if either lands, and reports failure when neither does.
+    // Nothing here ever reports success without something being written.
+    const recorded = fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, message }),
+    })
+      .then((r) => r.ok)
+      .catch(() => false);
+
+    const notified =
+      SERVICE_ID && TEMPLATE_ID && PUBLIC_KEY
+        ? emailjs
+            .sendForm(SERVICE_ID, TEMPLATE_ID, form, { publicKey: PUBLIC_KEY })
+            .then(
+              () => true,
+              () => false,
+            )
+        : Promise.resolve(false);
+
+    const [stored, sent] = await Promise.all([recorded, notified]);
+    if (stored || sent) {
       setSenderName(first);
       setStatus("sent");
       form.reset();
-    } catch {
+    } else {
       setStatus("error");
     }
   };
