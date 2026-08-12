@@ -53,11 +53,16 @@ const marqueeWords = [
 // vendored into public/vN and served from this same deployment; the app-based
 // ones (which would need their original, long-rotted toolchains to build) link
 // to their source instead. `live: false` renders a "Source ↗" CTA.
+//
+// Years come from each branch's own commit history: v1 from when the repo (and
+// that build) began, the rest from when that version was last worked on. The
+// branches were partly archived in bulk, so the dates don't sort in version
+// order — v6 (2020) predates v4 (2021). Cards stay in version order regardless.
 const REPO = "https://github.com/commlabs-co/dayrlism-frontend";
 const archive = (tag: string) => `${REPO}/tree/protected/${tag}`;
 
 const versions = [
-  { tag: "v1", year: "2019", title: "Server-rendered", note: "A full SSR React app — routes, nginx, pm2. Ambitious for a personal site.", stack: "React 16 · SSR · Sass", url: archive("v1"), live: false, current: false },
+  { tag: "v1", year: "2018", title: "Server-rendered", note: "A full SSR React app — routes, nginx, pm2. Ambitious for a personal site.", stack: "React 16 · SSR · Sass", url: archive("v1"), live: false, current: false },
   { tag: "v2", year: "2019", title: "One-pager", note: "Static single page: jQuery, Bootstrap, a carousel and a filterable grid.", stack: "HTML · jQuery · Bootstrap", url: "/v2/index.html", live: true, current: false },
   { tag: "v3", year: "2019", title: "SPA attempt", note: "react-boilerplate and styled-components — the single-page experiment continued.", stack: "React 16 · styled-components", url: archive("v3"), live: false, current: false },
   { tag: "v4", year: "2021", title: "Side projects", note: "The one-pager grown up, with Firebase messaging and stock & bill tools bolted on.", stack: "HTML · jQuery · Firebase", url: "/v4/index.html", live: true, current: false },
