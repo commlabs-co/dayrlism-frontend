@@ -49,15 +49,16 @@ const marqueeWords = [
   "CI/CD", "Micro Frontend", "React Native", "Strapi", "Tailwind", "Positive Attitude",
 ];
 
-// Every past build is kept on a protected/vN branch and served from this same
-// deployment out of public/vN. The static ones were vendored as-is; v8 (CRA)
-// and v9 (Next 13) were built from source with their asset paths set to /v8
-// and /v9. v1 (server-rendered, node-sass 4) and v3 (react-boilerplate) don't
-// build on a current toolchain, so those two link to source — `live: false`
-// renders a "Source ↗" CTA instead of "Visit".
+// Every past build is kept on a protected/vN branch. The ones shown here are
+// served from this same deployment out of public/vN — v2 and v5 vendored as-is
+// (they're static), v9 static-exported from source with its asset paths set to
+// /v9. v1 (server-rendered, node-sass 4) and v3 (react-boilerplate) don't build
+// on a current toolchain, so those link to source instead: `live: false`
+// renders a "Source ↗" CTA rather than "Visit".
 //
-// v6 and v7 were throwaway template tests and are deliberately skipped, hence
-// the gap between v5 and v8.
+// The numbering gaps are deliberate. v6 and v7 were throwaway template tests;
+// v4 is visually indistinguishable from v2; v8 was the template v9 was built
+// from. All four remain on their protected/vN branches if ever wanted back.
 //
 // Years come from each branch's own commit history: v1 from when the repo (and
 // that build) began, the rest from when that version was last worked on. Some
@@ -70,9 +71,7 @@ const versions = [
   { tag: "v1", year: "2018", title: "Server-rendered", note: "A full SSR React app — routes, nginx, pm2. Ambitious for a personal site.", stack: "React 16 · SSR · Sass", url: archive("v1"), live: false, current: false },
   { tag: "v2", year: "2019", title: "One-pager", note: "Static single page: jQuery, Bootstrap, a carousel and a filterable grid.", stack: "HTML · jQuery · Bootstrap", url: "/v2/index.html", live: true, current: false },
   { tag: "v3", year: "2019", title: "SPA attempt", note: "react-boilerplate and styled-components — the single-page experiment continued.", stack: "React 16 · styled-components", url: archive("v3"), live: false, current: false },
-  { tag: "v4", year: "2021", title: "Side projects", note: "The one-pager grown up, with Firebase messaging and stock & bill tools bolted on.", stack: "HTML · jQuery · Firebase", url: "/v4/index.html", live: true, current: false },
   { tag: "v5", year: "2023", title: "Dashboard", note: "A denser, data-flavoured layout with Swiper decks and a vector map.", stack: "HTML · Bootstrap · Swiper", url: "/v5/index.html", live: true, current: false },
-  { tag: "v8", year: "2023", title: "Back to React", note: "Rebuilt as a React SPA on Bootstrap 5 and Sass.", stack: "React 17 · Bootstrap 5", url: "/v8/index.html", live: true, current: false },
   { tag: "v9", year: "2023", title: "Next.js", note: "First Next build — the structure this site still stands on.", stack: "Next 13 · React 18", url: "/v9/index.html", live: true, current: false },
   { tag: "v10", year: "2026", title: "Unified", note: "One home again — landing, résumé and blog in a single app, edited in-browser.", stack: "Next 15 · React 19 · Keystatic", url: "/", live: true, current: true },
 ];
