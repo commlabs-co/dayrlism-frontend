@@ -1,0 +1,73 @@
+---
+title: Why We Didn't Build Our AI Platform Around AI (Yet)
+publishedAt: 2026-08-14
+summary: >-
+  Every startup says "AI-powered" — here's the honest version: at HiTerra, AI is
+  a thin, deliberate layer on a boring, solid foundation, and the heaviest AI
+  work is deferred on purpose until we have data worth training on.
+tags:
+  - engineering
+  - ai
+  - agritech
+draft: true
+---
+## The confession
+
+HiTerra is an AI agri-tech platform. We didn't build it *around* AI — and that restraint is the most senior engineering decision we've made.
+
+Every startup deck leads with "AI-powered." Ours does too. But behind the label, the honest architecture is this: AI is a thin, deliberate layer sitting on top of the platform, and the heaviest AI work, we've deferred on purpose.
+
+In a gold rush, that sounds like heresy. It's the opposite. Knowing what *not* to build yet is the senior move. Here's that restraint, one decision at a time.
+
+## The boring spine everything rides on
+
+Every choice starts from the same constraint set. We're a small team. Our users are farmers, often logging data from fields with patchy connectivity across Malaysia and Indonesia. The carbon data we handle has to survive an independent audit. And nobody has spare hours to babysit infrastructure.
+
+That constraint set makes most of the decisions for you — and none of them are fashionable:
+
+- **One language, front to back.** TypeScript, strict, across the whole monorepo. Shared types are free correctness, and a small team can't afford the tax of context-switching between languages.
+- **Postgres as the system of record.** Settled, relational, auditable. Carbon data — farms, cycles, measurements, provenance — wants integrity and traceable relationships, not schemaless flexibility. (If you read [the MRV post](/blog/mrv-explained-for-engineers): audit-grade lineage has to be designed in from day one. Retrofitting it is brutal.)
+- **Containers that scale to zero.** Cheap, boring, no cluster to tend.
+- **Offline-first where it counts — the write path, not the whole app.** Field logging can't fail because a farmer lost signal, so data capture works offline and syncs later. Everything else stays online. Solve the real constraint, not the imagined one.
+
+Even the real-time features follow the rule. Instead of rebuilding the socket layer we used to run, we lean on primitives Postgres already gives us, plus a managed service for chat. Fewer moving parts we own at 2am.
+
+None of this wins a demo. All of it lets three people move like ten.
+
+## The AI we did build
+
+So where *is* the AI in "AI-powered"?
+
+Two places, both deliberately small.
+
+First, recommendations. We call an off-the-shelf frontier model from our own server functions to turn a farmer's real context — their crop, their conditions, their history — into guidance they can act on. It's grounded in farm data, not a chatbot bolted onto the side. The model is a component with a narrow job, not the thing the product is built around.
+
+Second, retrieval. To feed the model the right context, we use vector search — and we run it *inside the same Postgres* we already have, with pgvector, rather than standing up a separate vector database.
+
+That second choice is the whole thesis in one line: **use the fundamentals you already have before you add a new moving part.** A separate vector store is one more thing to run, secure, and reason about. Postgres already does the job — so Postgres does the job.
+
+AI as a component. Not AI as the architecture.
+
+## The AI we didn't build
+
+Here's the decision I'm proudest of, and it's a decision *not* to build something.
+
+We deferred the machine-learning service — the bespoke models, the Python stack around them, all of it. Not because we can't. Because we don't yet have the proprietary data that would make a custom model *honest*.
+
+A model is only as good as what it learns from. Train one on thin or borrowed data and you get a confident-sounding system that's really just theatre — an "AI feature" that impresses in a screenshot and misleads in a field. For a platform whose entire value is trustworthy numbers, that's not a shortcut. It's a liability.
+
+So the rule is simple: start where the problem actually is, and add AI only when it earns its place.
+
+To be clear — AI is coming to HiTerra. More of it, and deeper. The question was never *if*. It was whether we'd hop in now for the FOMO, or wait until we could do it wisely — on real data, pointed at a real problem. We chose wisely. When our first proprietary dataset lands, the ML work gets built on purpose, with something true to learn from.
+
+(That same discipline — a boring, consistent, strongly-typed codebase — is also what makes the rest of our rebuild legible to the coding agents doing much of the porting. But that's a post for another day.)
+
+## What restraint buys you
+
+Deferring the fashionable parts isn't the slow path. It's the fast one.
+
+Every moving part you *don't* add is one you don't have to secure, debug, or explain to the next engineer. The budget you save — attention, not just money — goes into the thing that actually matters: shipping a product farmers rely on, instead of a demo that photographs well. Even the guardrails are boring — a real test suite and a preview environment for every change — because velocity without a safety net is just speed toward the cliff.
+
+The takeaway: **"AI-powered" should describe where AI genuinely earns its keep — not where it's papering over a weak foundation.** Build the fundamentals first. Add intelligence when the problem asks for it, on data you can stand behind. Spend your risk budget on the problem, not the hype.
+
+If that's the kind of engineering you'd rather do — the boring, hard, real kind — we should talk.
