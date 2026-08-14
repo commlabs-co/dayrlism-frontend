@@ -1,32 +1,90 @@
 ---
-title: Hello, Keystatic
+title: Hello, Keystatic — and What This Blog Actually Costs
 publishedAt: 2026-06-21
-summary: Why this blog now runs on a git-based CMS — every post is a portable Markdoc file in the repo, edited through a clean UI at /keystatic.
+summary: >-
+  This began as a throwaway demo post to prove the CMS worked. I'm keeping it,
+  because what it was demonstrating turned out to be the most interesting thing
+  about the site: a blog with a database's worth of features and no database.
 tags:
-  - announcement
   - engineering
+  - architecture
+  - building-in-public
 coverImage: hello-keystatic-cover.png
 draft: false
 ---
+This post started as a throwaway. I wrote it to prove the CMS worked — a "hello world" with a heading, a list, and a link stuck in for good measure.
 
-## A blog that lives in the repo
+I'm keeping it, because the thing it was demonstrating turned out to be the most interesting thing about this site. Not Keystatic specifically. The shape underneath it.
 
-This post is a plain **Markdoc** file committed to the repository. There is no
-database and no external service in the request path — the content is version
-controlled alongside the code, and renders as a static page.
+This blog has comments, view counts, a newsletter, a contact form, full-text content management, and nine archived versions of itself going back to 2018. It has no database. Eighteen dependencies, no database client, no hosted-CMS SDK, no auth vendor. The marginal cost of every feature on this page is zero.
 
-### What that buys us
+That isn't frugality for its own sake. It's a structural choice, and it's worth explaining because the reasoning generalises well past blogs.
 
-- **Portability** — every post is a `.mdoc` file you fully own.
-- **Versioning** — edits arrive as commits, reviewable in a pull request.
-- **Speed** — pages are statically generated and served from the edge.
+## Content isn't a database problem
 
-> Editing happens in a clean UI at `/keystatic`, which commits straight to git.
+The default move for a blog is a database — or a hosted CMS, which is a database you rent with a nicer UI on top.
 
-Here is a little inline `code` and a [link](https://keystatic.com) for good measure.
+This one uses **Keystatic**, which is a CMS that writes to git. Every post is a `.mdoc` file in the repository. I edit at `/keystatic` in a clean editor; hitting save produces a commit, which triggers a build, which produces a static page. The editor is a view over the filesystem, not a front end for a service.
 
-1. Write in the editor.
-2. Hit save.
-3. A commit and a preview deploy appear.
+The consequences are larger than "no monthly bill":
 
-That's the whole loop.
+- **The content is portable.** These are Markdoc files. If Keystatic disappeared tomorrow the posts would be untouched, because the CMS was never holding them.
+- **Edits are reviewable.** A typo fix is a commit. A rewrite can be a pull request. My content history and my code history are the same history.
+- **There's nothing in the request path.** Pages are prerendered at build time and served from a CDN. A reader hitting this post is not waiting on my server to ask a database anything, because there is no query to make.
+
+The last one is the cost lever. Rendering is free when there's nothing to render.
+
+## Every stateful feature borrows someone else's free tier
+
+Not everything can be a file. View counts change without a deploy, comments arrive from strangers, subscribers need storing. That's genuine state, and state is where costs usually start.
+
+So instead of standing up a backend, each piece of state went somewhere that already solves it:
+
+| Feature | Where the state lives | Why it's free |
+| --- | --- | --- |
+| Comments | GitHub Discussions, via giscus | GitHub already hosts discussions; commenters sign in with their own accounts |
+| View counts | Upstash Redis | One counter per post — thousands of views is a rounding error against the free tier |
+| Rate limiting | The same Upstash instance | Reusing a store I already have beats adding a service |
+| Newsletter | Buttondown | Free below a subscriber threshold I haven't reached |
+| Contact form | A Notion database | I already live in Notion; enquiries land where I'd triage them anyway |
+| Old site versions | Static files in `public/` | They're frozen artifacts — no build, no domain, no separate project |
+
+None of this is clever. It's a repeated application of one question: *does this need to be mine?*
+
+Comments need identity, moderation, spam resistance, and storage. Building that is weeks of work and a permanent maintenance surface. GitHub has all four already, and my readers are engineers who have accounts there. The build-versus-borrow maths isn't close.
+
+## Keep the render static, delegate the state
+
+That's the whole pattern, and it survives contact with real features.
+
+Everything a reader *sees* is prerendered. The only code that runs per-request is a handful of tiny API routes — bump a view count, accept a subscription, record an enquiry — each a few dozen lines, each talking to a service that stores the result. The expensive part of a web app is usually the server that assembles pages on demand. Delete that and the cost curve flattens: traffic mostly consumes CDN bandwidth, not compute.
+
+The nine archived versions make the point almost too neatly. Every previous incarnation of this site since 2018 is preserved on its own branch. The static ones are served straight out of this deployment at `/v2`, `/v5`, `/v9` — no extra domains, no extra projects, no DNS. They cost megabytes, not dollars.
+
+## Everything is optional, which is why it's cheap
+
+There's a discipline that makes this hold together, and it took a while to arrive at: **no feature is allowed to be required.**
+
+Every integration reads its credentials from the environment and degrades gracefully when they're missing. No Upstash configured? The view counter renders nothing and the page is otherwise identical. No giscus keys? The comments section doesn't appear. No Notion token? The contact form returns a clear error instead of pretending.
+
+This matters more than it sounds. It means I can add a feature, ship it dark, and turn it on later — and it means a dead integration degrades to a missing feature rather than a broken page.
+
+I learned the sharp edge of that rule the hard way. The contact form used to *optimistically* report success when its email service wasn't configured — visitor sees a cheerful confirmation, form clears, message goes nowhere. That's the failure mode this discipline exists to prevent, and I'd written the bug myself. Graceful degradation has to mean *degrade*, not *pretend*.
+
+## Where this breaks
+
+I'd rather state the ceiling than oversell the pattern.
+
+Free tiers have limits, and mine are only comfortable because my traffic is small. A hundred times the readers means a real conversation about Redis commands and CDN bandwidth. Buttondown's free tier ends at a subscriber count I fully intend to pass.
+
+Some costs aren't financial. Comments via GitHub mean **you need a GitHub account to leave one** — I've traded reach for zero spam and zero moderation infrastructure. For an engineering blog that's a fine trade. For a general-audience one it would be a bad one.
+
+And the pattern has a hard boundary: it works because a blog is *read-mostly with small, isolated pieces of state*. An app with user accounts, permissions, and data that has to be queried in ways I can't precompute doesn't get to make these choices. Don't read this as an argument against databases. Read it as an argument against reaching for one before you've established you need it.
+
+## The takeaway
+
+The interesting question was never "how do I make this cheap?" It was "how much of this is genuinely my problem?"
+
+Content wasn't — that's a file. Identity and moderation weren't — that's GitHub. Storage for a handful of counters wasn't — that's a free Redis. What remained was small enough to be nearly free, and the near-zero bill is a *consequence* of that reasoning, not the goal of it.
+
+The version you're reading is the tenth iteration of this site. It's the first one that does more and costs less than the one before it.
