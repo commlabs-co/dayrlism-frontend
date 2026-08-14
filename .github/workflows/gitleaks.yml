@@ -1,0 +1,34 @@
+name: Secret scan
+
+# Runs gitleaks over the FULL git history on master pushes and every PR, so a
+# secret can't slip into the repo (or its past) unnoticed once it's public.
+# Known-inert historical findings are pinned in .gitleaksignore.
+#
+# Uses the gitleaks binary directly rather than gitleaks-action, because the
+# action requires a paid license key for organization-owned repos.
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history — leaks hide in old commits
+
+      - name: Install gitleaks (pinned + checksum-verified)
+        run: |
+          curl -sSfL -o gitleaks.tgz \
+            https://github.com/gitleaks/gitleaks/releases/download/v8.18.4/gitleaks_8.18.4_linux_x64.tar.gz
+          echo "ba6dbb656933921c775ee5a2d1c13a91046e7952e9d919f9bac4cec61d628e7d  gitleaks.tgz" | sha256sum -c -
+          tar -xzf gitleaks.tgz gitleaks
+
+      - name: Scan full history
+        run: ./gitleaks detect --source . --no-banner --redact --verbose

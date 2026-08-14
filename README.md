@@ -97,3 +97,34 @@ KEYSTATIC_SECRET=...                 # secret — `openssl rand -hex 32`
 Pushing to `master` deploys to production on Vercel (`dayrlism.info`).
 
 > **Note:** because the Keystatic reader loads content files at request time, `next.config.js` uses `outputFileTracingIncludes` to bundle `src/content/**` into the serverless functions. Without it, dynamic routes (e.g. the blog index) read an empty content directory in production.
+
+## Licensing
+
+The **code** in this repository is released under the [MIT License](LICENSE).
+The **content** — blog posts and other material in `src/content/`, and the
+images and personal branding in `public/` — is © Dayrl Lee Pui Shin, all
+rights reserved.
+
+> The committed `.env` intentionally contains only `NEXT_PUBLIC_*` values
+> (GA measurement ID, EmailJS browser keys) — these ship to the client bundle
+> and are public by design. Real secrets live in Vercel env vars and
+> `.env.local` (gitignored), and CI runs a gitleaks scan on every push.
+
+## Contact form → Notion
+
+The landing contact form posts to `/api/contact`, which writes one row per
+enquiry into a Notion database. Set in Vercel:
+
+```
+NOTION_TOKEN=secret_...        # internal integration secret
+NOTION_CONTACT_DB_ID=...       # the Contact Submissions database id
+```
+
+Create the integration at <https://www.notion.so/my-integrations>, then share
+the database with it (••• → Connections → your integration) — without that
+step Notion answers `object_not_found`.
+
+While unset the route returns a clear 503 and the form shows an error; it
+never reports success without something being written. EmailJS, if its
+`NEXT_PUBLIC_EMAILJS_*` vars are present, still fires as a best-effort
+notification alongside the Notion write.

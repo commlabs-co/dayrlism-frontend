@@ -8,6 +8,8 @@ import { TableOfContents } from "../TableOfContents";
 import { ShareButtons } from "../ShareButtons";
 import { PostEnhancements } from "../PostEnhancements";
 import { ViewCounter } from "../ViewCounter";
+import { NewsletterSignup } from "../NewsletterSignup";
+import { Comments } from "../Comments";
 
 export async function generateStaticParams() {
   return (await getPostSlugs()).map((slug) => ({ slug }));
@@ -109,6 +111,8 @@ export default async function PostPage({
           <ShareButtons url={url} title={post.title} />
         </div>
 
+        <NewsletterSignup />
+
         {related.length > 0 && (
           <section style={{ marginTop: 40 }}>
             <div className="dl-mono" style={{ fontSize: 12, letterSpacing: ".18em", color: "var(--accent)", marginBottom: 18 }}>
@@ -147,6 +151,8 @@ export default async function PostPage({
             )}
           </nav>
         )}
+
+        <Comments />
       </article>
     </>
   );

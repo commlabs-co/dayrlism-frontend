@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zxx">
+  <head>
+    <!-- Metas -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <meta name="author" content="Dayrl Lee" />
+    <meta
+      name="google-site-verification"
+      content="JM_SGf8vbt6iUqEPskbPOjWNUkZP1N_7z8_FvvunlM8"
+    />
+    <!-- Title  -->
+    <title>Badminton Challenge</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
+    <script src="https://unpkg.com/brain.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/css/uikit.min.css"
+    />
+    <style>
+      #priceTable > div > span {
+        border: 1px solid black;
+      }
+      #priceDiff > div > span {
+        border: 1px solid black;
+      }
+      #tenantUnits > div > span {
+        border: 1px solid black;
+      }
+      #priceOweTable > div > span {
+        border: 1px solid black;
+      }
+      .o2-main-header {
+        margin: 40px auto;
+        text-align: center;
+      }
+      .o2-section-padding {
+        padding: 50px 20px;
+      }
+      .preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        white-space: nowrap;
+        text-align: center;
+        background: #f8f8f8;
+        z-index: 99;
+        -webkit-transition: all linear 0.3s;
+        transition: all linear 0.3s;
+        background-color: white;
+      }
+
+      .preloader:before {
+        content: '';
+        display: inline-block;
+        vertical-align: middle;
+        height: 100%;
+        margin-right: -0.25em;
+      }
+
+      .preloader.loaded {
+        opacity: 0;
+        visibility: hidden;
+        z-index: -1;
+      }
+
+      .preloader .holder {
+        display: inline-block;
+        vertical-align: middle;
+        white-space: normal;
+      }
+
+      .o2-bullet-margin {
+        margin-bottom: 50px;
+      }
+      .o2-summary-dummy-hide {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!--Preload-->
+    <div class="preloader" id="pageLoad">
+      <span uk-spinner="ratio: 4.5"></span>
+    </div>
+
+    <h1 class="uk-heading-line uk-text-center o2-main-header">
+      <span>MK Badminton Squad</span>
+    </h1>
+    <div class="uk-section">
+      <div class="uk-container">
+        <form>
+          <fieldset class="uk-fieldset">
+            <h1 class="uk-heading-bullet o2-bullet-margin">Winner Team</h1>
+            <div class="uk-margin">
+              <label class="uk-form-label" for="o2-wp1">Player 1</label>
+              <div class="uk-form-controls">
+                <select class="uk-select" id="o2-wp1"><option value="undefined">Please select player</option></select>
+              </div>
+            </div>
+            <div class="uk-margin">
+              <label class="uk-form-label" for="o2-wp2">Player 2</label>
+              <div class="uk-form-controls">
+                <select class="uk-select" id="o2-wp2"><option value="undefined">Please select player</option></select>
+              </div>
+            </div>
+            <h1 class="uk-heading-bullet o2-bullet-margin">Loser Team</h1>
+            <div class="uk-margin">
+              <label class="uk-form-label" for="o2-lp1">Player 1</label>
+              <div class="uk-form-controls">
+                <select class="uk-select" id="o2-lp1"><option value="undefined">Please select player</option></select>
+              </div>
+            </div>
+            <div class="uk-margin">
+              <label class="uk-form-label" for="o2-lp2">Player 2</label>
+              <div class="uk-form-controls">
+                <select class="uk-select" id="o2-lp2"><option value="undefined">Please select player</option></select>
+              </div>
+            </div>
+            <div class="uk-margin">
+              <label class="uk-form-label" for="o2-loser-score">Loser Score</label>
+              <input
+                id="o2-loser-score"
+                class="uk-input"
+                type="number"
+                required
+              />
+            </div>
+          </fieldset>
+          <button id="o2-submit-record" class="uk-button uk-button-primary">
+            Submit
+          </button>
+          <button disable id="o2-swap-player" class="uk-button uk-button-default">
+            Players Swap
+          </button>
+        </form>
+
+        <h1 class="uk-heading-divider">Game Score Results <button id="o2-clear-record" class="uk-button uk-button-default">Clear Data</button>
+          <!-- <button id="o2-export-pool" style="margin-left: 4px;" class="uk-button uk-button-default">Export</button> -->
+          <!-- <button id="o2-import-pool" style="margin-left: 4px;" class="uk-button uk-button-default">Import</button> -->
+        </h1>
+        <div id="o2-summary-dummy-hide" class="uk-placeholder">
+          Record score to show results
+        </div>
+        <div id="o2-score-board"></div>
+      </div>
+      <hr class="uk-divider-icon" />
+      <div class="uk-container o2-section-padding">
+        <h1 class="uk-heading-divider">Game Pool Results</h1>
+        <!-- <button id="o2-accordion-open-all" class="uk-button uk-button-text">Collapse All</button> -->
+        <ul uk-accordion="multiple: true">
+          <li>
+            <a id="o2-pool-total" class="uk-accordion-title" href="#">Today Total: </a>
+            <div class="uk-accordion-content">
+              <div class="uk-overflow-auto" id="o2-pool-result">
+  
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="uk-container o2-section-padding">
+        <h1 class="uk-heading-divider">Credit History <button id="o2-inser-credit" class="uk-button uk-button-default">Insert Credit</button><button id="o2-export-credit" style="margin-left: 4px;" class="uk-button uk-button-default">Export</button><button id="o2-import-credit" style="margin-left: 4px;" class="uk-button uk-button-default">Import</button></h1>
+        <!-- <button id="o2-accordion-open-all" class="uk-button uk-button-text">Collapse All</button> -->
+        <ul uk-accordion="multiple: true">
+          <li>
+            <a class="uk-accordion-title" href="#">Lists</a>
+            <div class="uk-accordion-content">
+              <div class="uk-overflow-auto" id="o2-credit-history">
+      
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="uk-container o2-section-padding">
+        <h1 class="uk-heading-divider">Credit Summary</h1>
+        <!-- <button id="o2-accordion-open-all" class="uk-button uk-button-text">Collapse All</button> -->
+        <ul uk-accordion="multiple: true">
+          <li>
+            <a id="o2-accumulations" class="uk-accordion-title" href="#">Accumulations: </a>
+            <div class="uk-accordion-content">
+              <div class="uk-overflow-auto" id="o2-credit-result">
+               
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="uk-container o2-section-padding">
+        <h1 class="uk-heading-divider">Credit Status</h1>
+        <!-- <button id="o2-accordion-open-all" class="uk-button uk-button-text">Collapse All</button> -->
+        <ul uk-accordion="multiple: true">
+          <li>
+            <a class="uk-accordion-title" href="#">Outcome</a>
+            <div class="uk-accordion-content">
+              <div class="uk-overflow-auto" id="o2-credit-status">
+      
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div id="o2-required-modal" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+          <h2 class="uk-modal-title">Required</h2>
+          <p>Please key all required input field</p>
+          <p class="uk-text-right">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">OK</button>
+          </p>
+        </div>
+      </div>
+      <div id="o2-err-modal" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+          <h2 class="uk-modal-title">Err</h2>
+          <p>Loser Score cannot be more than 30</p>
+          <p class="uk-text-right">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">OK</button>
+          </p>
+        </div>
+      </div>
+      <div id="o2-err-same-player-modal" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+          <h2 class="uk-modal-title">Err</h2>
+          <p>Four Player must be Different</p>
+          <p class="uk-text-right">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">OK</button>
+          </p>
+        </div>
+      </div>
+      <div id="o2-insert-credit-modal" class="uk-flex-top" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      
+          <button class="uk-modal-close-default" type="button" uk-close></button>
+      
+          <form>
+            <fieldset class="uk-fieldset">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="o2-credit-player">Players</label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" id="o2-credit-player">
+                    <option value="undefined">Please select player</option>
+                  </select>
+                </div>
+              </div>
+              <div class="uk-margin">
+                <label class="uk-form-label" for="o2-credit-action">Action</label>
+                <div class="uk-form-controls">
+                  <select class="uk-select" id="o2-credit-action">
+                    <option value="undefined">Please select action</option>
+                    <option >add credit</option>
+                    <option >minus credit</option>
+                    <option >badminton</option>
+                    <option >basketball</option>
+                    <option >drinks</option>
+                    <option >shuttlecock</option>
+                    <option >dinner</option>
+                    <option >penalty</option>
+                  </select>
+                </div>
+              </div>
+              <div class="uk-margin">
+                <label class="uk-form-label" for="o2-loser-score">Credit</label>
+                <input id="o2-credit-insert" class="uk-input" type="number" required />
+              </div>
+            </fieldset>
+            <button id="o2-submit-insert-credit" class="uk-button uk-button-primary">
+              Insert
+            </button>
+          </form>
+      
+        </div>
+      </div>
+
+      <div id="o2-import-credit-modal" class="uk-flex-top" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      
+          <button class="uk-modal-close-default" type="button" uk-close></button>
+      
+          <form>
+            <fieldset class="uk-fieldset">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="o2-loser-score">Credit Data</label>
+                <textarea id="o2-data-import-credit" class="uk-textarea" required> </textarea>
+              </div>
+            </fieldset>
+            <button id="o2-submit-import-credit" class="uk-button uk-button-primary">
+              Import
+            </button>
+          </form>
+      
+        </div>
+      </div>
+      <div id="o2-import-pool-modal" class="uk-flex-top" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      
+          <button class="uk-modal-close-default" type="button" uk-close></button>
+      
+          <form>
+            <fieldset class="uk-fieldset">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="o2-loser-score">Pool Data</label>
+                <textarea id="o2-data-import-pool" class="uk-textarea" required> </textarea>
+              </div>
+            </fieldset>
+            <button id="o2-submit-import-pool" class="uk-button uk-button-primary">
+              Import
+            </button>
+          </form>
+      
+        </div>
+      </div>
+    </div>
+<div id="exports-record"></div>
+<div id="exports-credit"></div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit-icons.min.js"></script>
+    <script>
+      var $win = $(window);
+      $win.on('load', function () {
+        $('#pageLoad').remove();
+      });
+      let users=[{name:'dayrl'}, { name: 'wei hao' }, { name: 'ben heng' }, { name: 'kok kuan' }, { name: 'bryan' }, { name: 'steve' }, { name: 'ren jie' }, { name: 'zi piao' }, { name: 'jac' }, { name: 'jeremy' }, { name: 'yong' }, { name: 'guest1' }, { name: 'guest2' }, { name: 'guest3' },{name:'guest4'}]
+      $.each(users, function (index, value) {
+        $('#o2-wp1').append( $(` <option>${value.name}</option> `) );
+        $('#o2-wp2').append( $(` <option>${value.name}</option> `) );
+        $('#o2-lp1').append( $(` <option>${value.name}</option> `) );
+        $('#o2-lp2').append( $(` <option>${value.name}</option> `) );
+        $('#o2-credit-player').append( $(` <option>${value.name}</option> `) );
+      });
+
+      const localStorageName = 'mk-record'
+      const mkRecord = JSON.parse(localStorage.getItem(localStorageName));
+      let poolResults=[]
+
+      const penalty ={t1:70, t2:50, t3:30}
+
+      if(mkRecord){
+        $('#o2-summary-dummy-hide').addClass('o2-summary-dummy-hide');
+        $.each(mkRecord, function (index, value) {
+          $('#o2-score-board').append($(`
+            <div data-wp1="${value.winner.p1}" data-wp2="${value.winner.p2}" data-lp1="${value.loser.p1}" data-lp2="${value.loser.p2}" data-loser-score="${value.loserScore}" class="uk-grid-small o2-fill-players" uk-grid> 
+              <div class="uk-width-expand" uk-leader="fill: -">Match ${index+1}: <br />${value.winner.p1}/${value.winner.p2}(winner) vs ${value.loser.p1}/${value.loser.p2}(loser)</div> 
+              <div class="dv-number-delimiter">
+                <br />
+                ${value.loserScore >= 21 ?Number(value.loserScore)+2:21}-${value.loserScore}
+                | <button id="o2-delete-record" index="${index}" class="uk-button uk-button-text">Delete</button>
+              </div>
+            </div>
+          `));
+
+          const price = Number(value.loserScore)>=15? penalty.t3:(Number(value.loserScore)>=10?penalty.t2:penalty.t1)
+
+          poolResults.push({name: value.loser.p1  ,cash: (price / 2) })
+          poolResults.push({name: value.loser.p2  ,cash: (price / 2) })
+        });
+       
+        const mergePools = ()=>{
+           const mappingPool = {};
+
+          // Iterate through the array and sum up the cash values for each name
+          poolResults.forEach(item => {
+            const { name, cash } = item;
+            if (name in mappingPool) {
+              mappingPool[name] += cash;
+            } else {
+              mappingPool[name] = cash;
+            }
+          });
+
+          // Create a new array with the summed up cash values for each name
+          return Object.entries(mappingPool).map(([name, cash]) => ({ name, cash }));
+        }
+
+        let poolTotal=0;
+
+        mergePools(poolResults).map(res=>{
+          $('#o2-pool-result').append(
+            $(` <div data-cash="${res.cash}" data-name="${res.name}" class="o2-pool-candidate uk-grid-small" uk-grid> <div class="uk-width-expand" uk-leader="fill: -">${res.name}</div> <div class="dv-number-delimiter">${res.cash}</div> </div> `)
+          );
+          poolTotal+=res.cash;
+        })
+        
+
+         $('#o2-pool-total').append(
+          $(` <span>${poolTotal}</span> `)
+        );
+      }
+
+
+
+      $(document).on("click", ".o2-pool-candidate", function () {
+          let name = this.getAttribute('data-name');
+          let cash = this.getAttribute('data-cash');
+
+          document.getElementById('o2-credit-player').value = name;
+          document.getElementById('o2-credit-action').value = 'badminton';
+          document.getElementById('o2-credit-insert').value = cash;
+
+          UIkit.modal($('#o2-insert-credit-modal')).show();
+          return false;
+        })
+
+      $(document).on("click", ".o2-fill-players", function () {
+          let dataWp1 = this.getAttribute('data-wp1');
+          let dataWp2 = this.getAttribute('data-wp2');
+          let dataLp1 = this.getAttribute('data-lp1');
+          let dataLp2 = this.getAttribute('data-lp2');
+          let dataLoserScore = this.getAttribute('data-loser-score');
+          
+
+          document.getElementById('o2-wp1').value = dataWp1;
+          document.getElementById('o2-wp2').value = dataWp2;
+          document.getElementById('o2-lp1').value = dataLp1;
+          document.getElementById('o2-lp2').value = dataLp2;
+          document.getElementById('o2-loser-score').value = dataLoserScore;
+
+          return false;
+        })
+
+
+
+
+
+      $('#o2-submit-record').on('click', function () {
+          $('#o2-summary-dummy-hide').addClass('o2-summary-dummy-hide');
+          
+          let record=[]
+          
+          if(mkRecord) record= mkRecord;
+
+          let o2wp1 = $('#o2-wp1').val();
+          let o2wp2 = $('#o2-wp2').val();
+          let o2lp1 = $('#o2-lp1').val();
+          let o2lp2 = $('#o2-lp2').val();
+          let loserScore = $('#o2-loser-score').val();
+  
+          const validation= o2wp1 && o2wp2 && o2lp1 && o2lp2 && loserScore;
+
+
+          if(!validation){
+            UIkit.modal($('#o2-required-modal')).show();
+            return false
+          }
+
+
+          if (loserScore > 30) {
+            UIkit.modal($('#o2-err-modal')).show();
+            return false
+          }
+
+          const isWinnerSamePlayer =  o2wp1=== o2wp2;
+          const isLoserSamePlayer =  o2lp1=== o2lp2;
+          const isWinnerPlayer1InLoserTeam =  o2wp1 === o2lp1|| o2wp1 === o2lp2;
+          const isWinnerPlayer2InLoserTeam =  o2wp2 === o2lp1|| o2wp2 === o2lp2;
+
+          if (isWinnerSamePlayer|| isLoserSamePlayer|| isWinnerPlayer1InLoserTeam|| isWinnerPlayer2InLoserTeam) {
+            UIkit.modal($('#o2-err-same-player-modal')).show();
+            return false
+          }
+
+          record.push({winner:{p1: o2wp1 ,p2: o2wp2,}, loser: { p1: o2lp1, p2: o2lp2, }, loserScore })
+          localStorage.setItem(localStorageName,  JSON.stringify(record));
+          $('#o2-score-board').append($(`
+            <div class="uk-grid-small" uk-grid> 
+              <div class="uk-width-expand" uk-leader="fill: -">Match ${index + 1}: <br />${o2wp1}/${o2wp2}(winner) vs ${o2lp1}/${o2lp2}(loser)</div> 
+              <div class="dv-number-delimiter">
+              <br />${loserScore >= 21 ? Number(loserScore) + 2 : 21}-${loserScore}</div>
+              | <button id="o2-delete-record"  class="uk-button uk-button-text">Delete</button> 
+            </div>
+          `));
+
+
+         
+          return false;
+        });
+
+      const localStorageCreditName = 'mk-credit'
+      const mkCredit = JSON.parse(localStorage.getItem(localStorageCreditName));
+      let creditList = []
+      if (mkCredit) creditList = mkCredit;
+      let totalLiable=0;
+      let totalUncollectedCredit=0;
+      let latestPoolStatus=0;
+
+      if (mkCredit) {
+        $.each(mkCredit, function (index, value) {
+          $('#o2-credit-history').append($(`
+          <div class="uk-grid-small" uk-grid> 
+            <div class="uk-width-expand" uk-leader="fill: -">${value.name}, ${value.action}</div> 
+            <div class="dv-number-delimiter">
+              ${value.credit}
+              | <button id="o2-delete-credit" index="${index}" class="uk-button uk-button-text">Delete</button>
+            </div>
+          </div>
+          `));
+          // const isExpenses= value.action==='drinks'|| value.action === 'shuttlecock' || value.action === 'dinner'|| value.action === 'add';
+          // const isCredit = !isExpenses 
+          // totalExpenses+= Number(value.credit)
+          // if(isCredit)
+          
+          latestPoolStatus += Number(value.credit)
+
+        });
+        const mergeCredit = () => {
+          const mappingPool = {};
+
+          // Iterate through the array and sum up the cash values for each name
+          mkCredit.forEach(item => {
+            const { name, credit } = item;
+            if (name in mappingPool) {
+              mappingPool[name] += Number(credit);
+            } else {
+              mappingPool[name] = Number(credit);
+            }
+          });
+
+          // Create a new array with the summed up credit values for each name
+          return Object.entries(mappingPool).map(([name, credit]) => ({ name, credit }));
+        }
+
+        mergeCredit(mkCredit).map(res => {
+          $('#o2-credit-result').append(
+            $(` <div data-credit="${res.credit}" data-name="${res.name}" class="o2-credit-sum-candidate uk-grid-small" uk-grid> <div class="uk-width-expand" uk-leader="fill: -">${res.name}</div> <div class="dv-number-delimiter">${res.credit}</div> </div> `)
+          );
+          if(res.credit<0) totalUncollectedCredit += Number(res.credit)
+          if(res.credit>0) totalLiable += Number(res.credit)
+        })
+      }
+
+
+       $(document).on("click", ".o2-credit-sum-candidate", function () {
+          let name = this.getAttribute('data-name');
+          let credit = this.getAttribute('data-credit');
+          document.getElementById('o2-credit-player').value = name;
+          document.getElementById('o2-credit-action').value = 'add credit';
+
+          document.getElementById('o2-credit-insert').value = Math.abs(credit);
+
+          UIkit.modal($('#o2-insert-credit-modal')).show();
+          return false;
+        })
+
+      $('#o2-submit-insert-credit').on('click', function () {
+        let creditPlayer = $('#o2-credit-player').val();
+        let creditInsert = $('#o2-credit-insert').val();
+        let creditAction = $('#o2-credit-action').val();
+        const isInsertExpenses = creditAction=== 'drinks' || creditAction=== 'shuttlecock' || creditAction=== 'dinner' || creditAction=== 'add credit';
+  
+        creditList.push({ name: creditPlayer , credit: isInsertExpenses ? Math.abs(creditInsert): -Math.abs(creditInsert), action: creditAction })
+        localStorage.setItem(localStorageCreditName, JSON.stringify(creditList));
+        console.log(creditList);
+      });
+
+      
+      $(document).on("click", "#o2-delete-record", function () {
+        mkRecord.splice($(this).attr("index"), 1)
+        localStorage.setItem(localStorageName, JSON.stringify(mkRecord));
+        location.reload() 
+        return false;
+      })
+
+      $(document).on("click", "#o2-delete-credit", function () {
+          mkCredit.splice($(this).attr("index"), 1)
+          localStorage.setItem(localStorageCreditName, JSON.stringify(mkCredit));
+          location.reload()
+          return false;
+      })
+
+      $(document).on("click", "#o2-clear-record", function () {
+          if (confirm('Confirm to Clear?') == true) {
+            localStorage.removeItem(localStorageName);
+            location.reload() 
+        }
+        return false;
+      })
+
+      $(document).on("click", "#o2-inser-credit", function () {
+        UIkit.modal($('#o2-insert-credit-modal')).show();
+        return false;
+      })
+
+      $(document).on("click", "#o2-swap-player", function () {
+        let o2wp1 = $('#o2-wp1').val();
+        let o2wp2 = $('#o2-wp2').val();
+        let o2lp1 = $('#o2-lp1').val();
+        let o2lp2 = $('#o2-lp2').val();
+        document.getElementById('o2-wp1').value = o2lp1;
+        document.getElementById('o2-wp2').value = o2lp2;
+        document.getElementById('o2-lp1').value = o2wp1;
+        document.getElementById('o2-lp2').value = o2wp2;
+        return false;
+      })
+
+      $(document).on("click", "#o2-export-credit", function () {
+        navigator.clipboard.writeText(localStorage.getItem(localStorageCreditName));
+     
+        return false;
+      })
+
+      $(document).on("click", "#o2-import-credit", function () {
+        UIkit.modal($('#o2-import-credit-modal')).show();
+        return false;
+      })
+        
+      $(document).on("click", "#o2-import-pool", function () {
+        UIkit.modal($('#o2-import-pool-modal')).show();
+        return false;
+      })
+      
+      $(document).on("click", "#o2-submit-import-credit", function () {
+        localStorage.setItem(localStorageCreditName, $('#o2-data-import-credit').val())
+        location.reload() 
+        return false;
+      })
+
+      
+      $('#o2-credit-status').append($(`
+        <div class="uk-grid-small" uk-grid> 
+          <div class="uk-width-expand" uk-leader="fill: -">Total Liability</div> 
+          <div class="dv-number-delimiter">${totalLiable} </div>
+        </div>
+        <div class="uk-grid-small" uk-grid> 
+          <div class="uk-width-expand" uk-leader="fill: -">Total Uncollected Pool</div> 
+          <div class="dv-number-delimiter">${totalUncollectedCredit} </div>
+        </div>
+        <div class="uk-grid-small" uk-grid> 
+          <div class="uk-width-expand" uk-leader="fill: -">Latest Pool Status</div> 
+          <div class="dv-number-delimiter"> ${latestPoolStatus} </div>
+        </div>
+      `));
+
+            $('#o2-accumulations').append(
+                $(` <span>${Math.abs(latestPoolStatus)}</span> `)
+              );
+
+      // const handicapList = [{ score:5, name: 'dayrl' }, { score:4.5, name: 'wei hao' }, { score:3, name: 'ben heng' }, { score:6, name: 'kok kuan' }, { score:3, name: 'bryan' }, { score:4.5, name: 'steve' }, { score:0, name: 'ren jie' }, { score:3, name: 'zi piao' }, { score:5, name: 'jac' }, { score:4.5, name: 'jeremy' }, { score:5, name: 'guest1' }, { score:5, name: 'guest2' }, { score:5, name: 'guest3' },]
+
+      // const { NeuralNetwork } = require('brain.js');
+
+        // Sample player scores (replace with your actual data)
+
+        // Sample player scores (replace with your actual data)
+        const playerScores = [
+          { player: 'John', score: 80 },
+          { player: 'Jane', score: 90 },
+          { player: 'Mark', score: 75 },
+          // ...
+        ];
+
+        // Prepare training data (replace with your actual data)
+        const trainingData = [
+          { input: [80, 90], output: { handicap: 20 } },
+          { input: [75, 80], output: { handicap: 25 } },
+          // ...
+        ];
+
+        // Create a new instance of the neural network
+        const net = new brain.NeuralNetwork({ inputSize: 2 });
+
+        // Train the network with your prepared training data
+        net.train(trainingData);
+
+        // Function to calculate the handicap for a player based on their past scores
+        function calculateHandicap(playerName) {
+          const playerData = playerScores.find(player => player.player === playerName);
+          if (!playerData) {
+            return 0; // Player not found, no handicap
+          }
+
+          // Get the player's past scores
+          const pastScores = getPlayerScores(playerName);
+          console.log(pastScores);
+          // Use the trained network to make a prediction
+          const predictedOutput = net.run([80,90]);
+
+          return predictedOutput.handicap;
+        }
+
+        // Function to retrieve a player's past scores
+        function getPlayerScores(playerName) {
+          const scores = playerScores
+            .filter(player => player.player === playerName)
+            .map(player => player.score);
+
+          return scores;
+        }
+
+        // Example usage
+        const playerName = 'John';
+        const handicap = calculateHandicap(playerName);
+        console.log(`Handicap for ${playerName}: ${handicap}`);
+
+        const SHEET_ID = '1GTfzkFT9imP3f4qfwIlgmzcIMzsLBhB9qS6AqDMVA4I'
+        const ACCESS_TOKEN = 'ya29.a0AbVbY6M1wGsDciY472XLxvOuRkjOlvI9qAt9q5MbLM_my_iFljc6YbCJ2Ht1Un86NhP1Mt12KhMpGNg5MSKOw4wIIJpFOp7018GRBICdmhnsopXovTFh0RJftYf4Gf8PA8Sh9qBsKOL-7qbReG3s63GXE-7DaCgYKAScSARESFQFWKvPlX00skheuXl0Tt4hKmlj9xA0163'
+const refresh_token ='1//04TKomeZyN1jTCgYIARAAGAQSNwF-L9IrGLSNmtkAVPgveXtkjT3qa5IPG3c-s4eDqNl7hiRNMtGONwlT23Bbc30oRFlYsQOTicg'
+
+
+        // const fetchRefreshToken = (value) => {
+        //   fetch(`https://oauth2.googleapis.com/token`, {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       //update this token with yours. 
+        //       Authorization: `Bearer ${ACCESS_TOKEN}`,
+        //     },
+        //     body: JSON.stringify({
+        //       refresh_token,
+        //       token_uri:"https://oauth2.googleapis.com/token"
+        //     })
+        //   })
+        // }
+        // fetchRefreshToken()
+
+        const updateSheetValues = (value) => {
+            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/matches:append?valueInputOption=RAW`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                //update this token with yours. 
+                Authorization: `Bearer ${ACCESS_TOKEN}`,
+              },
+              body: JSON.stringify(value)
+            })
+          }
+
+          
+
+          $(document).on("click", "#o2-export-pool", function () {
+            const date = new Date();
+            $.each(mkRecord, function (index, value) {
+              updateSheetValues({ "values": [[value.winner.p1, value.winner.p2, value.loser.p1, value.loser.p2, value.loserScore, date]] });
+            });
+
+              return false;
+          })
+
+          // const fetchPlayers = () => {
+          //     return fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/players!A:A?majorDimension=COLUMNS`, {
+          //       method: "GET",
+          //       headers: {
+          //         "Content-Type": "application/json",
+          //         //update this token with yours. 
+          //         Authorization: `Bearer ${ACCESS_TOKEN}`,
+          //       },
+           
+          //     })
+          //   }
+
+          //   fetchPlayers()
+
+          //     const fetchMatches = () => {
+          //         fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/matches!A:A?majorDimension=COLUMNS`, {
+          //           method: "GET",
+          //           headers: {
+          //             "Content-Type": "application/json",
+          //             //update this token with yours. 
+          //             Authorization: `Bearer ${ACCESS_TOKEN}`,
+          //           },
+
+          //         })
+          //       }
+
+          //       fetchMatches()
+                // console.log(localStorage.getItem(localStorageCreditName));
+                // $('#exports-record').append($(` <div>${localStorage.getItem(localStorageName) }</div> `));
+                // $('#exports-credit').append($(` <div>${localStorage.getItem(localStorageCreditName) }</div> `));
+
+                // localStorage.setItem(localStorageName, JSON.stringify(record));
+                // localStorage.setItem(localStorageCreditName, JSON.stringify([{ "name": "bryan", "credit": -29, "action": "minus credit" }, { "name": "wei hao", "credit": -140, "action": "minus credit" }, { "name": "jac", "credit": -210, "action": "minus credit" }, { "name": "ren jie", "credit": -100, "action": "minus credit" }, { "name": "jeremy", "credit": -150, "action": "minus credit" }, { "name": "dayrl", "credit": 553, "action": "add credit" }, { "name": "dayrl", "credit": 30, "action": "drinks" }, { "name": "dayrl", "credit": -70, "action": "badminton" }, { "name": "zi piao", "credit": -105, "action": "badminton" }, { "name": "wei hao", "credit": -70, "action": "badminton" }, { "name": "ren jie", "credit": -70, "action": "badminton" }, { "name": "ben heng", "credit": -65, "action": "badminton" }, { "name": "jeremy", "credit": -50, "action": "penalty" }, { "name": "jac", "credit": -50, "action": "penalty" }, { "name": "steve", "credit": -50, "action": "penalty" }, { "name": "ren jie", "credit": 200, "action": "add credit" }, { "name": "wei hao", "credit": 100, "action": "add credit" }, { "name": "zi piao", "credit": 105, "action": "add credit" }, { "name": "ben heng", "credit": 70, "action": "add credit" }, { "name": "dayrl", "credit": -475, "action": "minus credit" }, { "name": "dayrl", "credit": 140, "action": "dinner" }, { "name": "dayrl", "credit": 85, "action": "shuttlecock" }, { "name": "ben heng", "credit": -30, "action": "badminton" }, { "name": "wei hao", "credit": -120, "action": "badminton" }, { "name": "bryan", "credit": -75, "action": "badminton" }, { "name": "steve", "credit": -75, "action": "badminton" }, { "name": "guest1", "credit": -15, "action": "badminton" }, { "name": "dayrl", "credit": -45, "action": "badminton" }, { "name": "jac", "credit": -40, "action": "badminton" }, { "name": "zi piao", "credit": -100, "action": "badminton" }, { "name": "ren jie", "credit": -50, "action": "badminton" }, { "name": "weihao", "credit": -30, "action": "basketball" }, { "name": "dayrl", "credit": -30, "action": "basketball" }, { "name": "ben heng", "credit": -30, "action": "basketball" }, { "name": "wei hao", "credit": 110, "action": "add credit" }, { "name": "zi piao", "credit": 100, "action": "add credit" }, { "name": "ben heng", "credit": 55, "action": "add credit" }, { "name": "guest1", "credit": 15, "action": "add credit" }, { "name": "steve", "credit": 130, "action": "add credit" }, { "name": "dayrl", "credit": 115, "action": "dinner" }, { "name": "bryan", "credit": 33, "action": "drinks" }, { "name": "dayrl", "credit": -410, "action": "minus credit" }, { "name": "bryan", "credit": 71, "action": "add credit" }, { "name": "dayrl", "credit": -71, "action": "minus credit" }, { "name": "jac", "credit": 300, "action": "add credit" }, { "name": "dayrl", "credit": -300, "action": "minus credit" }, { "name": "dayrl", "credit": 30, "action": "drinks" }, { "name": "dayrl", "credit": 85, "action": "shuttlecock" }, { "name": "ben heng", "credit": -15, "action": "basketball" }, { "name": "kok kuan", "credit": -15, "action": "basketball" }, { "name": "dayrl", "credit": -40, "action": "basketball" }, { "name": "wei hao", "credit": -40, "action": "basketball" }, { "name": "ren jie", "credit": -40, "action": "basketball" }, { "name": "jac", "credit": -40, "action": "basketball" }, { "name": "bryan", "credit": -60, "action": "basketball" }, { "name": "dayrl", "credit": -105, "action": "badminton" }, { "name": "bryan", "credit": -100, "action": "badminton" }, { "name": "wei hao", "credit": -100, "action": "badminton" }, { "name": "guest1", "credit": -65, "action": "badminton" }, { "name": "kok kuan", "credit": -30, "action": "badminton" }, { "name": "ben heng", "credit": -25, "action": "badminton" }, { "name": "jac", "credit": -40, "action": "badminton" }, { "name": "ren jie", "credit": -30, "action": "badminton" }, { "name": "wei hao", "credit": 200, "action": "add credit" }, { "name": "dayrl", "credit": -200, "action": "minus credit" }, { "name": "ben heng", "credit": 40, "action": "add credit" }, { "name": "dayrl", "credit": -40, "action": "minus credit" }, { "name": "guest1", "credit": 65, "action": "add credit" }, { "name": "ren jie", "credit": 90, "action": "add credit" }, { "name": "dayrl", "credit": -90, "action": "minus credit" }, { "name": "kok kuan", "credit": 45, "action": "add credit" }, { "name": "dayrl", "credit": -45, "action": "minus credit" }, { "name": "dayrl", "credit": 406, "action": "dinner" }, { "name": "steve", "credit": 16, "action": "add credit" }, { "name": "yong", "credit": -50, "action": "penalty" }, { "name": "dayrl", "credit": 27, "action": "drinks" }, { "name": "dayrl", "credit": 85, "action": "shuttlecock" }, { "name": "bryan", "credit": 160, "action": "add credit" }, { "name": "kok kuan", "credit": -30, "action": "badminton" }, { "name": "ben heng", "credit": -60, "action": "badminton" }, { "name": "jac", "credit": -60, "action": "badminton" }, { "name": "dayrl", "credit": -30, "action": "badminton" }, { "name": "wei hao", "credit": -30, "action": "badminton" }, { "name": "wei hao", "credit": 100, "action": "add credit" }, { "name": "dayrl", "credit": -100, "action": "minus credit" }, { "name": "kok kuan", "credit": 30, "action": "add credit" }, { "name": "ben heng", "credit": 60, "action": "add credit" }, { "name": "dayrl", "credit": -90, "action": "minus credit" }, { "name": "dayrl", "credit": 89, "action": "dinner" }, { "name": "yong", "credit": 50, "action": "add credit" }, { "name": "dayrl", "credit": -50, "action": "minus credit" }, { "name": "dayrl", "credit": 40, "action": "drinks" }, { "name": "dayrl", "credit": 85, "action": "shuttlecock" }, { "name": "wei hao", "credit": -60, "action": "badminton" }, { "name": "yong", "credit": -60, "action": "badminton" }, { "name": "guest2", "credit": -40, "action": "badminton" }, { "name": "dayrl", "credit": -40, "action": "badminton" }, { "name": "dayrl", "credit": -40, "action": "badminton" }, { "name": "zi piao", "credit": -40, "action": "badminton" }, { "name": "bryan", "credit": -75, "action": "badminton" }, { "name": "steve", "credit": -40, "action": "badminton" }, { "name": "jac", "credit": -75, "action": "badminton" }, { "name": "guest1", "credit": -15, "action": "badminton" }, { "name": "ren jie", "credit": -40, "action": "badminton" }, { "name": "kok kuan", "credit": -60, "action": "badminton" }, { "name": "ben heng", "credit": -55, "action": "badminton" }, { "name": "guest3", "credit": -30, "action": "badminton" }, { "name": "wei hao", "credit": 100, "action": "add credit" }, { "name": "kok kuan", "credit": 60, "action": "add credit" }, { "name": "benheng", "credit": 55, "action": "add credit" }, { "name": "yong", "credit": 60, "action": "add credit" }, { "name": "guest1", "credit": 15, "action": "add credit" }, { "name": "bryan", "credit": 75, "action": "add credit" }, { "name": "steve", "credit": 19, "action": "add credit" }, { "name": "zi piao", "credit": 40, "action": "add credit" }, { "name": "dayrl", "credit": -424, "action": "minus credit" }, { "name": "dayrl", "credit": 562, "action": "dinner" }, { "name": "dayrl", "credit": 180, "action": "shuttlecock" }, { "name": "dayrl", "credit": 30, "action": "drinks" }, { "name": "guest2", "credit": 40, "action": "add credit" }, { "name": "guest3", "credit": 30, "action": "add credit" }, { "name": "ren jie", "credit": -70, "action": "minus credit" }, { "name": "wei hao", "credit": -55, "action": "badminton" }, { "name": "kok kuan", "credit": -45, "action": "badminton" }, { "name": "steve", "credit": -45, "action": "badminton" }, { "name": "zi piao", "credit": -45, "action": "badminton" }, { "name": "dayrl", "credit": -45, "action": "badminton" }, { "name": "bryan", "credit": -105, "action": "badminton" }, { "name": "guest1", "credit": -95, "action": "badminton" }, { "name": "guest2", "credit": -45, "action": "badminton" }, { "name": "guest3", "credit": -70, "action": "badminton" }, { "name": "jac", "credit": -35, "action": "badminton" }, { "name": "ben heng", "credit": -25, "action": "badminton" }, { "name": "wei hao", "credit": 35, "action": "add credit" }, { "name": "dayrl", "credit": -35, "action": "minus credit" }, { "name": "jac", "credit": 200, "action": "add credit" }, { "name": "dayrl", "credit": 225, "action": "dinner" }, { "name": "zi piao", "credit": 45, "action": "add credit" }, { "name": "ben heng", "credit": 25, "action": "add credit" }, { "name": "steve", "credit": 45, "action": "add credit" }, { "name": "kok kuan", "credit": 45, "action": "add credit" }, { "name": "guest1", "credit": 95, "action": "add credit" }, { "name": "guest2", "credit": 45, "action": "add credit" }, { "name": "dayrl", "credit": -530, "action": "minus credit" }, { "name": "guest3", "credit": 70, "action": "add credit" }, { "name": "dayrl", "credit": 170, "action": "shuttlecock" }, { "name": "dayrl", "credit": 35, "action": "drinks" }, { "name": "steve", "credit": -50, "action": "penalty" }, { "name": "ren jie", "credit": -50, "action": "penalty" }, { "name": "zi piao", "credit": -50, "action": "penalty" }, { "name": "yong", "credit": -50, "action": "penalty" }, { "name": "dayrl", "credit": -70, "action": "badminton" }, { "name": "bryan", "credit": -40, "action": "badminton" }, { "name": "wei hao", "credit": -45, "action": "badminton" }, { "name": "kok kuan", "credit": -45, "action": "badminton" }, { "name": "guest1", "credit": -30, "action": "badminton" }, { "name": "ben heng", "credit": -45, "action": "badminton" }, { "name": "jac", "credit": -15, "action": "badminton" }, { "name": "wei hao", "credit": -50, "action": "basketball" }, { "name": "bryan", "credit": -50, "action": "basketball" }, { "name": "dayrl", "credit": -50, "action": "basketball" }, { "name": "guest2", "credit": -50, "action": "basketball" }, { "name": "ben heng", "credit": -50, "action": "basketball" }, { "name": "bryan", "credit": -50, "action": "basketball" }, { "name": "wei hao", "credit": -50, "action": "basketball" }, { "name": "guest2", "credit": -50, "action": "basketball" }, { "name": "wei hao", "credit": 100, "action": "add credit" }, { "name": "dayrl", "credit": -100, "action": "minus credit" }, { "name": "dayrl", "credit": -50, "action": "badminton" }, { "name": "bryan", "credit": -35, "action": "badminton" }, { "name": "jac", "credit": -15, "action": "badminton" }, { "name": "dayrl", "credit": 199, "action": "dinner" }]));
+    </script>
+  </body>
+</html>

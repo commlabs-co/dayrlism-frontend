@@ -1,0 +1,13 @@
+# gitleaks config — extends the default ruleset.
+# Picked up automatically by `gitleaks detect` from the repo root.
+
+[extend]
+useDefault = true
+
+# NEXT_PUBLIC_* values are compiled into the client bundle and are public by
+# design (GA measurement ID, EmailJS browser keys). Without this allowlist the
+# generic-api-key rule can flag them and fail CI on a non-secret.
+[allowlist]
+description = "NEXT_PUBLIC_* env values are shipped to the browser — not secrets"
+regexTarget = "line"
+regexes = ['''NEXT_PUBLIC_[A-Z0-9_]+''']

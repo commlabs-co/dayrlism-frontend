@@ -368,6 +368,108 @@
   border-color: var(--accent);
 }
 
+/* ---------- newsletter ---------- */
+.dl-news {
+  margin-top: 40px;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--bg2), transparent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.dl-news-copy {
+  min-width: 0;
+}
+.dl-news-title {
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+.dl-news-sub {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.5;
+  max-width: 44ch;
+}
+.dl-news-form {
+  display: flex;
+  gap: 8px;
+  flex: 1 1 280px;
+  max-width: 360px;
+}
+.dl-news-input {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.dl-news-input:focus {
+  border-color: var(--accent);
+}
+.dl-news-input::placeholder {
+  color: var(--muted);
+}
+.dl-news-btn {
+  height: 40px;
+  padding: 0 18px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+.dl-news-btn:hover {
+  opacity: 0.88;
+}
+.dl-news-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.dl-news-ok {
+  margin: 0;
+  color: var(--accent);
+  font-size: 13.5px;
+  flex: 1 1 280px;
+  max-width: 360px;
+}
+.dl-news-err {
+  flex-basis: 100%;
+  margin: 0;
+  color: #ff8f8f;
+  font-size: 12.5px;
+}
+@media (max-width: 560px) {
+  .dl-news {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .dl-news-form,
+  .dl-news-ok {
+    max-width: none;
+  }
+}
+
+/* ---------- comments (giscus) ---------- */
+.dl-giscus {
+  min-height: 150px;
+}
+
 /* ---------- prev / next ---------- */
 .dl-prevnext {
   margin-top: 16px;

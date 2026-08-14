@@ -49,13 +49,31 @@ const marqueeWords = [
   "CI/CD", "Micro Frontend", "React Native", "Strapi", "Tailwind", "Positive Attitude",
 ];
 
+// Every past build is kept on a protected/vN branch. The ones shown here are
+// served from this same deployment out of public/vN — v2 and v5 vendored as-is
+// (they're static), v9 static-exported from source with its asset paths set to
+// /v9. v1 (server-rendered, node-sass 4) and v3 (react-boilerplate) don't build
+// on a current toolchain, so those link to source instead: `live: false`
+// renders a "Source ↗" CTA rather than "Visit".
+//
+// The numbering gaps are deliberate. v6 and v7 were throwaway template tests;
+// v4 is visually indistinguishable from v2; v8 was the template v9 was built
+// from. All four remain on their protected/vN branches if ever wanted back.
+//
+// Years come from each branch's own commit history: v1 from when the repo (and
+// that build) began, the rest from when that version was last worked on. Some
+// branches were archived in bulk, so the dates don't sort strictly in version
+// order. Cards stay in version order regardless.
+const REPO = "https://github.com/commlabs-co/dayrlism-frontend";
+const archive = (tag: string) => `${REPO}/tree/protected/${tag}`;
+
 const versions = [
-  { tag: "v1", year: "2014", title: "The first site", note: "A diploma grad with something to prove. Hand-coded, scrappy, honest.", stack: "HTML · CSS · jQuery", url: "https://v1.dayrlism.info", current: false },
-  { tag: "v2", year: "2017", title: "React era", note: "Rebuilt as a single-page app as the React habit took hold.", stack: "React · SASS", url: "https://v2.dayrlism.info", current: false },
-  { tag: "v3", year: "2019", title: "Documentary", note: "Photography-led, the “there is a reason” voice arrives.", stack: "Gatsby · GraphQL", url: "https://v3.dayrlism.info", current: false },
-  { tag: "v4", year: "2022", title: "Dark mode", note: "The teal & sun-switcher identity that still defines the brand.", stack: "Next.js · TS", url: "https://v4.dayrlism.info", current: false },
-  { tag: "v5", year: "2024", title: "Resume split", note: "Landing and a dedicated resume dashboard, living separately.", stack: "Next · Gatsby", url: "https://v5.dayrlism.info", current: false },
-  { tag: "v6", year: "2025", title: "Unified", note: "One home again — landing and resume merged into a single story.", stack: "React · NestJS", url: "/", current: true },
+  { tag: "v1", year: "2018", title: "Server-rendered", note: "A full SSR React app — routes, nginx, pm2. Ambitious for a personal site.", stack: "React 16 · SSR · Sass", url: archive("v1"), live: false, current: false },
+  { tag: "v2", year: "2019", title: "One-pager", note: "Static single page: jQuery, Bootstrap, a carousel and a filterable grid.", stack: "HTML · jQuery · Bootstrap", url: "/v2/index.html", live: true, current: false },
+  { tag: "v3", year: "2019", title: "SPA attempt", note: "react-boilerplate and styled-components — the single-page experiment continued.", stack: "React 16 · styled-components", url: archive("v3"), live: false, current: false },
+  { tag: "v5", year: "2023", title: "Dashboard", note: "A denser, data-flavoured layout with Swiper decks and a vector map.", stack: "HTML · Bootstrap · Swiper", url: "/v5/index.html", live: true, current: false },
+  { tag: "v9", year: "2023", title: "Next.js", note: "First Next build — the structure this site still stands on.", stack: "Next 13 · React 18", url: "/v9/index.html", live: true, current: false },
+  { tag: "v10", year: "2026", title: "Unified", note: "One home again — landing, résumé and blog in a single app, edited in-browser.", stack: "Next 15 · React 19 · Keystatic", url: "/", live: true, current: true },
 ];
 
 const liDisplay = (url: string) => url.replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/+$/, "");
@@ -176,24 +194,43 @@ export default function LandingView({
     e.preventDefault();
     const form = formRef.current;
     if (!form) return;
-    const name = ((new FormData(form).get("name") as string) || "").trim();
+    const data = new FormData(form);
+    const name = ((data.get("name") as string) || "").trim();
+    const email = ((data.get("user_email") as string) || "").trim();
+    const message = ((data.get("message") as string) || "").trim();
     if (!name) return;
     const first = name.split(/\s+/)[0];
 
-    if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
-      // no email backend configured — acknowledge optimistically
-      setSenderName(first);
-      setStatus("sent");
-      form.reset();
-      return;
-    }
     setStatus("sending");
-    try {
-      await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form, { publicKey: PUBLIC_KEY });
+
+    // Notion is the system of record. EmailJS, when it's configured, is a
+    // best-effort notification on top of it — so a submission counts as
+    // delivered if either lands, and reports failure when neither does.
+    // Nothing here ever reports success without something being written.
+    const recorded = fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, message }),
+    })
+      .then((r) => r.ok)
+      .catch(() => false);
+
+    const notified =
+      SERVICE_ID && TEMPLATE_ID && PUBLIC_KEY
+        ? emailjs
+            .sendForm(SERVICE_ID, TEMPLATE_ID, form, { publicKey: PUBLIC_KEY })
+            .then(
+              () => true,
+              () => false,
+            )
+        : Promise.resolve(false);
+
+    const [stored, sent] = await Promise.all([recorded, notified]);
+    if (stored || sent) {
       setSenderName(first);
       setStatus("sent");
       form.reset();
-    } catch {
+    } else {
       setStatus("error");
     }
   };
@@ -759,9 +796,10 @@ export default function LandingView({
                   href={v.url}
                   target="_blank"
                   rel="noreferrer"
-                  style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 14, fontSize: 11.5, fontWeight: 600, color: "var(--accent)" }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 14, fontSize: 11.5, fontWeight: 600, color: v.live ? "var(--accent)" : "var(--muted)" }}
+                  title={v.live ? `Open the archived ${v.tag} site` : `${v.tag} needs its original toolchain to build — browse the source instead`}
                 >
-                  Visit {v.tag} ↗
+                  {v.live ? `Visit ${v.tag} ↗` : "Source ↗"}
                 </a>
               )}
             </div>
