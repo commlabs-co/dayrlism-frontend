@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import emailjs from "@emailjs/browser";
 import type { Profile } from "@/content/types";
 import { getExperience } from "@/lib/tools";
 import menPhoto from "../../public/assets/img/hero/men.png";
@@ -32,9 +31,6 @@ const LIGHT: Record<string, string> = {
   "--brand": "#0F4C5C",
 };
 
-const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
 // ---- curated presentation content (the design's editorial voice) ----
 const skillGroups = [
@@ -196,41 +192,26 @@ export default function LandingView({
     if (!form) return;
     const data = new FormData(form);
     const name = ((data.get("name") as string) || "").trim();
-    const email = ((data.get("user_email") as string) || "").trim();
+    const email = ((data.get("email") as string) || "").trim();
     const message = ((data.get("message") as string) || "").trim();
     if (!name) return;
     const first = name.split(/\s+/)[0];
 
     setStatus("sending");
 
-    // Notion is the system of record. EmailJS, when it's configured, is a
-    // best-effort notification on top of it — so a submission counts as
-    // delivered if either lands, and reports failure when neither does.
-    // Nothing here ever reports success without something being written.
-    const recorded = fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, message }),
-    })
-      .then((r) => r.ok)
-      .catch(() => false);
-
-    const notified =
-      SERVICE_ID && TEMPLATE_ID && PUBLIC_KEY
-        ? emailjs
-            .sendForm(SERVICE_ID, TEMPLATE_ID, form, { publicKey: PUBLIC_KEY })
-            .then(
-              () => true,
-              () => false,
-            )
-        : Promise.resolve(false);
-
-    const [stored, sent] = await Promise.all([recorded, notified]);
-    if (stored || sent) {
+    // Notion is the only destination: success is reported when — and only
+    // when — the row was actually written.
+    try {
+      const r = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+      if (!r.ok) throw new Error(`contact route returned ${r.status}`);
       setSenderName(first);
       setStatus("sent");
       form.reset();
-    } else {
+    } catch {
       setStatus("error");
     }
   };
@@ -859,7 +840,7 @@ export default function LandingView({
                     <label className="dl-mono" style={labelStyle}>
                       EMAIL
                     </label>
-                    <input className="dl-input" name="user_email" type="email" placeholder="you@company.com" required style={inputStyle} />
+                    <input className="dl-input" name="email" type="email" placeholder="you@company.com" required style={inputStyle} />
                   </div>
                   <div>
                     <label className="dl-mono" style={labelStyle}>

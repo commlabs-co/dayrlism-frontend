@@ -76,10 +76,19 @@ Edit everything through the Keystatic UI at `/keystatic`; each save is a commit,
 ## Environment variables
 
 ```bash
-# Contact form (EmailJS) — public by design
-NEXT_PUBLIC_EMAILJS_SERVICE_ID=...
-NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=...
-NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=...
+# Contact form → Notion (see "Contact form → Notion" below)
+NOTION_TOKEN=...                     # secret — internal integration
+NOTION_CONTACT_DB_ID=...
+
+# Newsletter (Buttondown)
+BUTTONDOWN_API_KEY=...               # secret
+
+# Comments (giscus). Public by design, but baked in at build time —
+# changing any of these needs a redeploy, not just a restart.
+NEXT_PUBLIC_GISCUS_REPO=commlabs-co/dayrlism-frontend
+NEXT_PUBLIC_GISCUS_REPO_ID=...
+NEXT_PUBLIC_GISCUS_CATEGORY=Comments
+NEXT_PUBLIC_GISCUS_CATEGORY_ID=...
 
 # Google Analytics (optional)
 NEXT_PUBLIC_GA_MEASUREMENT_ID=...
@@ -124,7 +133,13 @@ Create the integration at <https://www.notion.so/my-integrations>, then share
 the database with it (••• → Connections → your integration) — without that
 step Notion answers `object_not_found`.
 
-While unset the route returns a clear 503 and the form shows an error; it
-never reports success without something being written. EmailJS, if its
-`NEXT_PUBLIC_EMAILJS_*` vars are present, still fires as a best-effort
-notification alongside the Notion write.
+Notion is the only destination — the form reports success when, and only
+when, the row was written. While the variables are unset the route returns a
+clear 503 and the form shows an error rather than silently accepting the
+message.
+
+Note that Vercel injects environment variables at **deploy** time, so adding
+them to the dashboard has no effect until the next deployment.
+
+To be told about new enquiries rather than discovering them later, follow the
+database in Notion (••• → Follow), or add a database automation.
