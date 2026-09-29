@@ -357,6 +357,11 @@ export default function ResumeView({
             <div className="dl-role-line dl-mono" style={{ fontSize: "clamp(13px,1.6vw,16px)", color: "var(--text)", marginTop: 14, letterSpacing: ".02em" }}>
               {profile.headline}
             </div>
+            {profile.focus && (
+              <div className="dl-mono" style={{ fontSize: "clamp(13px,1.6vw,16px)", color: "var(--accent)", marginTop: 6, letterSpacing: ".02em" }}>
+                {profile.focus}
+              </div>
+            )}
             <p className="dl-summary" style={{ maxWidth: 620, margin: "18px 0 0", fontSize: "clamp(14px,1.4vw,16px)", lineHeight: 1.7, color: "var(--muted)" }}>
               {profile.summary}
             </p>

@@ -50,12 +50,14 @@ export default async function Image() {
           <div style={{ display: "flex", color: MUTED, fontSize: 30, marginTop: 22, maxWidth: 900 }}>
             {profile.headline}
           </div>
+          {profile.focus ? (
+            <div style={{ display: "flex", color: ACCENT, fontSize: 30, marginTop: 8, maxWidth: 900 }}>
+              {profile.focus}
+            </div>
+          ) : null}
         </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", color: MUTED, fontSize: 24 }}>
-          <div style={{ display: "flex" }}>{profile.fullName}</div>
-          <div style={{ display: "flex", color: ACCENT }}>{profile.title}</div>
-        </div>
+        <div style={{ display: "flex", color: MUTED, fontSize: 24 }}>{profile.fullName}</div>
       </div>
     ),
     size,

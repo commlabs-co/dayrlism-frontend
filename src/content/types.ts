@@ -79,6 +79,8 @@ export interface Profile {
   fullName: string;
   title: string;
   headline: string;
+  /** What you're working on now — shown under the headline. Empty hides it. */
+  focus: string;
   summary: string;
   metaDescription: string;
   /** MM/DD/YYYY, used to derive age. */

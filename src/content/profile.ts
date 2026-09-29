@@ -9,6 +9,7 @@ export const profile: Profile = {
   fullName: "Dayrl Lee Pui Shin",
   title: "Fullstack Developer & Climate-Tech Founder",
   headline: "Founder @ Corplabs · Fullstack Developer",
+  focus: "Building carbon MRV at HiTerra",
   summary:
     "Fullstack developer specializing in high-quality, user-friendly web and mobile applications — from Node.js/NestJS backends to React/React Native frontends — with strong DevOps and cloud experience, and a continual push into AI, blockchain, and big data.",
   metaDescription:

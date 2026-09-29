@@ -85,6 +85,11 @@ export default config({
         fullName: fields.text({ label: "Full name" }),
         title: fields.text({ label: "Title" }),
         headline: fields.text({ label: "Headline" }),
+        focus: fields.text({
+          label: "Current focus",
+          description:
+            "Second line under the headline on the résumé and the share card — what you're working on now. Leave empty to hide it.",
+        }),
         summary: fields.text({ label: "Summary", multiline: true }),
         metaDescription: fields.text({
           label: "Meta description (search results)",
