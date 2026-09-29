@@ -24,14 +24,17 @@ export async function generateMetadata(): Promise<Metadata> {
   const profile = await getProfile();
   return {
     metadataBase: new URL("https://dayrlism.info"),
+    // Child routes each declare their own canonical; Next would otherwise
+    // have them inherit this one and point every page at the homepage.
+    alternates: { canonical: "/" },
     title: {
       default: `${profile.name} — ${profile.title}`,
       template: `%s · ${profile.name}`,
     },
-    description: profile.summary,
+    description: profile.metaDescription,
     openGraph: {
       title: `${profile.name} — ${profile.title}`,
-      description: profile.summary,
+      description: profile.metaDescription,
       url: "https://dayrlism.info",
       siteName: "Dayrlism",
       type: "website",
@@ -39,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: `${profile.name} — ${profile.title}`,
-      description: profile.summary,
+      description: profile.metaDescription,
     },
     icons: { icon: "/favicon.png" },
   };

@@ -8,6 +8,7 @@ import { TableOfContents } from "../TableOfContents";
 import { ShareButtons } from "../ShareButtons";
 import { PostEnhancements } from "../PostEnhancements";
 import { ViewCounter } from "../ViewCounter";
+import { JsonLd } from "../../JsonLd";
 import { NewsletterSignup } from "../NewsletterSignup";
 import { Comments } from "../Comments";
 
@@ -24,6 +25,7 @@ export async function generateMetadata({
   const post = await getPost(slug);
   if (!post) return {};
   return {
+    alternates: { canonical: `/blog/${slug}` },
     title: post.title,
     description: post.summary,
     openGraph: {
@@ -53,8 +55,26 @@ export default async function PostPage({
   const adjacent = await getAdjacentPosts(slug);
   const url = `https://dayrlism.info/blog/${slug}`;
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.summary,
+    url,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    datePublished: post.publishedAt ?? undefined,
+    dateModified: post.publishedAt ?? undefined,
+    keywords: post.tags.join(", "),
+    wordCount: post.readingTime * 200,
+    inLanguage: "en",
+    author: { "@type": "Person", name: "Dayrl Lee", url: "https://dayrlism.info" },
+    publisher: { "@id": "https://dayrlism.info/#person" },
+    ...(post.coverImage ? { image: `https://dayrlism.info${post.coverImage}` } : {}),
+  };
+
   return (
     <>
+      <JsonLd data={jsonLd} />
       <ReadingProgress />
       <TableOfContents headings={post.headings} />
 

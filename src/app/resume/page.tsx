@@ -20,6 +20,7 @@ const spaceMono = Space_Mono({
 export async function generateMetadata(): Promise<Metadata> {
   const profile = await getProfile();
   return {
+    alternates: { canonical: "/resume" },
     title: "Résumé",
     description: `Résumé of ${profile.fullName} — ${profile.title}.`,
   };

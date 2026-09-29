@@ -43,6 +43,19 @@ const nextConfig = {
   async headers() {
     return [
       {
+        // HSTS. Deliberately without `preload`: submitting to the preload list
+        // is effectively irreversible and would bind every current and future
+        // subdomain to HTTPS. max-age + includeSubDomains gives the protection
+        // without the one-way door.
+        source: "/:path*",
+        headers: [
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains",
+          },
+        ],
+      },
+      {
         // Keep nine archived portfolios out of the index so they don't compete
         // with the live site (and don't resurface as stale search results).
         source: "/v:n(\\d+)/:path*",

@@ -86,6 +86,13 @@ export default config({
         title: fields.text({ label: "Title" }),
         headline: fields.text({ label: "Headline" }),
         summary: fields.text({ label: "Summary", multiline: true }),
+        metaDescription: fields.text({
+          label: "Meta description (search results)",
+          description:
+            "Shown in search results and link previews. Aim for 150 characters or fewer — longer text is truncated mid-sentence. Kept separate from Summary, which is printed in full on the résumé.",
+          multiline: true,
+          validation: { length: { max: 160 } },
+        }),
         birthDate: fields.text({ label: "Birth date (MM/DD/YYYY)" }),
         careerStartYear: fields.integer({ label: "Career start year" }),
         nationality: fields.text({ label: "Nationality" }),

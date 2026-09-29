@@ -80,6 +80,7 @@ export interface Profile {
   title: string;
   headline: string;
   summary: string;
+  metaDescription: string;
   /** MM/DD/YYYY, used to derive age. */
   birthDate: string;
   /** First professional year, used to derive years of experience. */
