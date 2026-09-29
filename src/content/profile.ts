@@ -11,6 +11,8 @@ export const profile: Profile = {
   headline: "Founder @ Corplabs · Fullstack Developer",
   summary:
     "Fullstack developer specializing in high-quality, user-friendly web and mobile applications — from Node.js/NestJS backends to React/React Native frontends — with strong DevOps and cloud experience, and a continual push into AI, blockchain, and big data.",
+  metaDescription:
+    "Fullstack developer building web and mobile products — NestJS, React, DevOps and cloud. Founder at Corplabs and HiTerra, working on carbon MRV.",
   birthDate: "01/13/1994",
   careerStartYear: 2014,
   nationality: "Malaysian",

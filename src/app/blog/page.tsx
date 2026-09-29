@@ -3,6 +3,9 @@ import Link from "next/link";
 import { getAllPosts, getAllTags, formatDate } from "@/lib/content";
 
 export const metadata: Metadata = {
+  // Tag-filtered views (/blog?tag=…) are the same collection re-sorted, so
+  // they point back here rather than competing as near-duplicates.
+  alternates: { canonical: "/blog" },
   title: "Blog",
   description: "Writing and notes on engineering, design, and building things.",
 };
