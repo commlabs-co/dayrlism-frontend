@@ -9,7 +9,7 @@ Personal site of **Dayrl Lee** — a single Next.js app that hosts the landing p
 - **Next.js 15** (App Router) · **React 19** · **TypeScript** (strict)
 - **Tailwind CSS** + CSS-variable theming (dark/light)
 - **Keystatic** — git-based CMS for the blog (Markdoc) and profile data
-- **EmailJS** — client-side contact form
+- **Notion API** — contact form submissions (`/api/contact`)
 - Deployed on **Vercel** (Node 22+)
 
 ## Routes
@@ -62,7 +62,7 @@ Open **http://localhost:3000/keystatic** to edit content locally (zero setup —
 | --- | --- |
 | `yarn dev` | Dev server on `:3000` |
 | `yarn build` | Production build |
-| `yarn start` | Serve the production build on `:3013` |
+| `yarn start` | Serve the production build on `:3000` |
 | `yarn lint` | ESLint (`next lint`) |
 | `yarn typecheck` | `tsc --noEmit` |
 
@@ -103,7 +103,7 @@ KEYSTATIC_SECRET=...                 # secret — `openssl rand -hex 32`
 
 ## Deployment
 
-Pushing to `master` deploys to production on Vercel (`dayrlism.info`).
+Pushing to `master` deploys to production on Vercel (`dayrlism.info`); every PR gets a Vercel preview. Vercel is the only deploy path — the old SSH + PM2 script for the shared server has been retired.
 
 > **Note:** because the Keystatic reader loads content files at request time, `next.config.js` uses `outputFileTracingIncludes` to bundle `src/content/**` into the serverless functions. Without it, dynamic routes (e.g. the blog index) read an empty content directory in production.
 
@@ -115,7 +115,7 @@ images and personal branding in `public/` — is © Dayrl Lee Pui Shin, all
 rights reserved.
 
 > The committed `.env` intentionally contains only `NEXT_PUBLIC_*` values
-> (GA measurement ID, EmailJS browser keys) — these ship to the client bundle
+> (the GA measurement ID) — these ship to the client bundle
 > and are public by design. Real secrets live in Vercel env vars and
 > `.env.local` (gitignored), and CI runs a gitleaks scan on every push.
 
