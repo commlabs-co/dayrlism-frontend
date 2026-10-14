@@ -128,10 +128,10 @@ export default function BlogLayout({ children }: { children: ReactNode }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/assets/img/brand/logo-mark.png"
-            alt=""
+            alt="dayrlism logo"
             style={{ height: 20, width: "auto", display: "block", objectFit: "contain" }}
           />
-          dayrlism
+          <span aria-hidden="true">dayrlism</span>
         </div>
         <div className="dl-mono" style={{ fontSize: 11.5, color: "var(--muted)" }}>
           © {year} {profile.fullName.toUpperCase()}

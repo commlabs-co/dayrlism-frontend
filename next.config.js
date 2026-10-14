@@ -1,3 +1,8 @@
+// Vercel sets VERCEL_ENV at build time: "production" for master, "preview"
+// for PR/branch deploys, unset for local builds.
+const isVercelProduction = process.env.VERCEL_ENV === "production";
+const isVercelPreview = process.env.VERCEL_ENV === "preview";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -15,6 +20,20 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // The production deployment is also reachable on *.vercel.app, where it
+      // is a full duplicate of dayrlism.info that search engines can index.
+      // Send those hosts to the canonical domain. Production builds only, so
+      // preview deploys (also *.vercel.app) keep working.
+      ...(isVercelProduction
+        ? [
+            {
+              source: "/:path*",
+              has: [{ type: "host", value: ".*\\.vercel\\.app" }],
+              destination: "https://dayrlism.info/:path*",
+              permanent: true,
+            },
+          ]
+        : []),
       // Preserve existing résumé links once resume.dayrlism.info points here.
       {
         source: "/:path*",
@@ -42,6 +61,17 @@ const nextConfig = {
   },
   async headers() {
     return [
+      // Preview deploys must never be indexed. Vercel adds this header to
+      // preview URLs itself; setting it here keeps that true regardless of
+      // project settings.
+      ...(isVercelPreview
+        ? [
+            {
+              source: "/:path*",
+              headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+            },
+          ]
+        : []),
       {
         // HSTS. Deliberately without `preload`: submitting to the preload list
         // is effectively irreversible and would bind every current and future
