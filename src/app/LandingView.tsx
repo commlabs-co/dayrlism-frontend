@@ -870,8 +870,8 @@ export default function LandingView({
       <footer style={{ position: "relative", zIndex: 1, maxWidth: 1280, margin: "0 auto", padding: "46px clamp(20px,5vw,64px)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 9, fontWeight: 700, fontSize: 18, letterSpacing: "-.02em" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/img/brand/logo-mark.png" alt="" style={{ height: 22, width: "auto", display: "block", objectFit: "contain" }} />
-          dayrlism
+          <img src="/assets/img/brand/logo-mark.png" alt="dayrlism logo" style={{ height: 22, width: "auto", display: "block", objectFit: "contain" }} />
+          <span aria-hidden="true">dayrlism</span>
         </div>
         <div className="dl-mono" style={{ fontSize: 11.5, color: "var(--muted)" }}>
           © {year} {profile.fullName.toUpperCase()} · A POSITIVE ATTITUDE CAN CHANGE EVERYTHING

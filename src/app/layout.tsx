@@ -44,7 +44,15 @@ export async function generateMetadata(): Promise<Metadata> {
       title: `${profile.name} — ${profile.title}`,
       description: profile.metaDescription,
     },
-    icons: { icon: "/favicon.png" },
+    // favicon.ico (16/32/48) first for browsers and crawlers that only probe
+    // /favicon.ico; the PNG is the sharper choice for those that read `type`.
+    icons: {
+      icon: [
+        { url: "/favicon.ico", type: "image/x-icon", sizes: "16x16 32x32 48x48" },
+        { url: "/favicon.png", type: "image/png", sizes: "64x64" },
+      ],
+      apple: [{ url: "/apple-touch-icon.png", type: "image/png", sizes: "180x180" }],
+    },
   };
 }
 
