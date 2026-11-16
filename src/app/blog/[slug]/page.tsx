@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPost, getPostSlugs, getRelatedPosts, getAdjacentPosts, formatDate } from "@/lib/content";
+import { getPost, getPostSlugs, getRelatedPosts, getAdjacentPosts, formatDate, isoDuration } from "@/lib/content";
 import { MarkdocContent } from "../MarkdocContent";
 import { ReadingProgress } from "../ReadingProgress";
 import { TableOfContents } from "../TableOfContents";
@@ -54,6 +54,8 @@ export default async function PostPage({
   const related = await getRelatedPosts(slug, post.tags);
   const adjacent = await getAdjacentPosts(slug);
   const url = `https://dayrlism.info/blog/${slug}`;
+  const absolute = (path: string) => (/^https?:\/\//.test(path) ? path : `https://dayrlism.info${path}`);
+  const { video } = post;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -70,6 +72,20 @@ export default async function PostPage({
     author: { "@type": "Person", name: "Dayrl Lee", url: "https://dayrlism.info" },
     publisher: { "@id": "https://dayrlism.info/#person" },
     ...(post.coverImage ? { image: `https://dayrlism.info${post.coverImage}` } : {}),
+    ...(video
+      ? {
+          video: {
+            "@type": "VideoObject",
+            name: post.title,
+            description: post.summary,
+            contentUrl: absolute(video.src),
+            embedUrl: url,
+            uploadDate: post.publishedAt ?? undefined,
+            ...(video.poster ? { thumbnailUrl: absolute(video.poster) } : {}),
+            ...(video.duration ? { duration: isoDuration(video.duration) } : {}),
+          },
+        }
+      : {}),
   };
 
   return (
@@ -105,7 +121,19 @@ export default async function PostPage({
           )}
         </header>
 
-        {post.coverImage && (
+        {video ? (
+          <div className="dl-post-video">
+            <video
+              controls
+              playsInline
+              preload="metadata"
+              poster={video.poster ?? undefined}
+              aria-label={`Video: ${post.title}`}
+            >
+              <source src={video.src} type="video/mp4" />
+            </video>
+          </div>
+        ) : post.coverImage && (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
             src={post.coverImage}
