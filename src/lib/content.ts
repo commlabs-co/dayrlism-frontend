@@ -41,6 +41,13 @@ export type PostSummary = {
   readingTime: number;
 };
 
+export type PostVideo = {
+  src: string;
+  poster: string | null;
+  /** Length in whole seconds, if known. */
+  duration: number | null;
+};
+
 export type FullPost = Awaited<ReturnType<typeof getPost>>;
 /** The parsed Markdoc body node, as returned by the Keystatic reader. */
 export type PostNode = NonNullable<FullPost>["node"];
@@ -51,6 +58,28 @@ function resolveImage(value: string | null): string | null {
   if (!value) return null;
   if (/^(https?:)?\/\//.test(value) || value.startsWith("/")) return value;
   return `/images/blog/${value}`;
+}
+
+/** The optional `video` front-matter object, or null when no source is set.
+ *  The reader yields empty strings / null for posts that omit the block. */
+function resolveVideo(
+  value: { src: string; poster: string; duration: number | null } | null | undefined
+): PostVideo | null {
+  const src = value?.src?.trim();
+  if (!src) return null;
+  return {
+    src,
+    poster: value?.poster?.trim() || null,
+    duration: value?.duration && value.duration > 0 ? value.duration : null,
+  };
+}
+
+/** Seconds as an ISO 8601 duration (e.g. 95 -> "PT1M35S"), for schema.org. */
+export function isoDuration(seconds: number): string {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  return `PT${h ? `${h}H` : ""}${m ? `${m}M` : ""}${s || (!h && !m) ? `${s}S` : ""}`;
 }
 
 function byNewest(a: PostSummary, b: PostSummary): number {
@@ -133,6 +162,7 @@ export async function getPost(slug: string) {
     publishedAt: entry.publishedAt,
     tags: entry.tags,
     coverImage: resolveImage(entry.coverImage),
+    video: resolveVideo(entry.video),
     node,
     readingTime: readingMinutes(node),
     headings: extractHeadings(node),

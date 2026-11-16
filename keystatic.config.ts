@@ -58,6 +58,26 @@ export default config({
           directory: "public/images/blog",
           publicPath: "/images/blog/",
         }),
+        video: fields.object(
+          {
+            src: fields.text({
+              label: "Video URL",
+              description: "Public path to an MP4, e.g. /videos/blog/<slug>/video.mp4. Leave empty for no video.",
+            }),
+            poster: fields.text({
+              label: "Poster image URL",
+              description: "Public path to the still shown before playback, e.g. /videos/blog/<slug>/poster.jpg.",
+            }),
+            duration: fields.integer({
+              label: "Duration (seconds)",
+              description: "Used for search-engine video metadata.",
+            }),
+          },
+          {
+            label: "Video (optional)",
+            description: "A short video shown at the top of the post, in place of the cover image.",
+          }
+        ),
         draft: fields.checkbox({
           label: "Draft",
           description: "Keep hidden from the live site until unchecked.",

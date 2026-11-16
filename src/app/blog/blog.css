@@ -100,6 +100,24 @@
   color: var(--accent);
 }
 
+/* ---------- post video (replaces the cover when set) ---------- */
+.dl-post-video {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  margin-bottom: 38px;
+}
+.dl-post-video video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
 /* ---------- rendered article body ---------- */
 .dl-prose {
   color: var(--text);
