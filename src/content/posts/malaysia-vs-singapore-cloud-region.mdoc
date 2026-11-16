@@ -1,0 +1,100 @@
+---
+title: "Malaysia vs Singapore Cloud Region: How I'd Choose"
+publishedAt: 2026-11-20
+summary: >-
+  Malaysia vs Singapore cloud region? A founder-engineer's take on latency,
+  PDPA data transfers, AI model availability and Malaysia's data centre squeeze.
+tags:
+  - engineering
+  - cloud
+  - malaysia
+coverImage: /images/blog/malaysia-vs-singapore-cloud-region/coverImage.png
+video:
+  src: /videos/blog/malaysia-vs-singapore-cloud-region/video.mp4
+  poster: /videos/blog/malaysia-vs-singapore-cloud-region/poster.jpg
+  duration: 30
+draft: false
+---
+For years, picking a cloud region as a Malaysian startup took about four seconds: you picked Singapore. That default deserves a second look now. Malaysia has hyperscale regions of its own, and this month the data centres behind them are front-page news. Earlier this month Google announced a [US$15 billion Malaysia investment](https://www.malaymail.com/news/malaysia/2026/11/04/google-commits-additional-us15b-to-malaysia-data-centre-expansion-over-two-years-projects-37000-jobs-as-anwar-hails-investment/241985), and Johor told data centre investors to [treat water from polluted rivers](https://www.nst.com.my/amp/news/nation/2026/11/1571372/johor-pushes-data-centres-use-treated-water-polluted-rivers) instead of drawing on household supply.
+
+So: Malaysia vs Singapore cloud region, which one should a small team actually build in? Here's how I'd decide, as someone who has to pay the bill and answer the 3 a.m. page.
+
+## Malaysia vs Singapore cloud region: what's actually on the table
+
+Start with what exists today, not what's been announced.
+
+- **AWS** opened the Asia Pacific (Malaysia) region, `ap-southeast-5`, in [August 2024 with three Availability Zones](https://press.aboutamazon.com/2024/8/aws-launches-infrastructure-region-in-malaysia). One detail people miss: it's an [opt-in region](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-regions.html), so you have to enable it on each account before you can deploy anything there.
+- **Microsoft** launched its Malaysia West region in Greater Kuala Lumpur on [28 May 2025, also with three availability zones](https://www.thestar.com.my/business/business-news/2025/05/28/microsoft-launches-malaysia-west-cloud-region-its-first-in-the-country).
+- **Google Cloud** isn't there yet. Its Elmina data centre in Selangor is now operational, but Google's own November announcement still describes the Malaysian cloud region as [upcoming](https://www.malaymail.com/news/malaysia/2026/11/04/google-commits-additional-us15b-to-malaysia-data-centre-expansion-over-two-years-projects-37000-jobs-as-anwar-hails-investment/241985), with no public launch date that I could find.
+
+Singapore, meanwhile, is the mature hub, with every service and every model on the menu. So the real question isn't "is there a Malaysian region?" It's whether the Malaysian region has everything *your* stack needs, and whether being there buys you anything.
+
+## The four things I'd actually weigh
+
+**1. Latency: probably not the deciding factor**
+
+The network gap between the two is small. One third-party measurement puts AWS inter-region latency between Malaysia and Singapore at [around 9 ms](https://www.economize.cloud/resources/aws/latency/ap-southeast-5-vs-ap-southeast-1/). For a typical web or mobile app, users in Kuala Lumpur won't feel the difference between the two regions. Your bundle size and your N+1 queries matter far more.
+
+Where latency does matter is between your own components. If your API runs in one region and your database in the other, you pay that round trip on every query. Pick one home region per workload and keep the chatty parts together.
+
+If your users are elsewhere in the region, measure from where they are. A team in Thailand that compared both found the Malaysia region [slightly cheaper but slightly farther away on the network](https://dev.classmethod.jp/articles/malaysia-region-or-singapore-region-from-thailand/). Run your own pings before you trust anyone's table, including mine.
+
+**2. Price: a modest discount, so check your actual bill**
+
+The same comparison found EC2 in Malaysia [roughly 10% cheaper than Singapore](https://dev.classmethod.jp/articles/malaysia-region-or-singapore-region-from-thailand/) for a small instance in 2024. Prices move, and they differ by instance family, storage class and data transfer, so treat that as a direction, not a quote. Price your own top five line items in both regions in the AWS calculator.
+
+A 10% compute saving is real money at scale. For an early-stage team it's usually smaller than the cost of one engineer losing a week to a missing service.
+
+**3. Service and model coverage: the one that actually bites**
+
+This is where newer regions catch people out. A region can be "generally available" while still missing an instance type, a managed service or a feature flag you depend on.
+
+AI is the sharpest example right now. Amazon Bedrock's runtime endpoint is available in `ap-southeast-5`, but [model availability varies by model](https://docs.aws.amazon.com/bedrock/latest/userguide/models-region-compatibility.html), and some models are offered there only through global cross-region inference. AWS has written about using that route for [OpenAI models from Malaysia, Singapore, Thailand, Indonesia and Taiwan](https://aws.amazon.com/blogs/machine-learning/accessing-openai-gpt-models-on-amazon-bedrock-with-global-cross-region-inference-in-thailand-malaysia-singapore-indonesia-and-taiwan/). Cross-region inference is convenient, but it means your prompts may be processed outside the region you chose. If you picked Malaysia *for* data residency, that's a detail you need to check model by model.
+
+Before committing, I'd list every managed service and model the product touches and confirm each one in the target region. Do it as a spreadsheet, not a vibe.
+
+**4. Data residency: less of a forcing function than people assume**
+
+Malaysia's PDPA cross-border transfer rules changed in 2025. The amended section 129 took effect on [1 April 2025](https://www.skrine.com/insights/alerts/april-2025/cross-border-personal-data-transfer-guidelines-lau), replacing the old ministerial whitelist with a set of conditions, and the Commissioner issued guidelines later that month. Law-firm summaries say the conditions include consent, contract necessity and transfers to countries with substantially similar law, and that controllers are expected to [keep records of their cross-border transfers](https://cms.law/en/int/legal-updates/malaysian-guidelines-on-cross-border-data-transfers).
+
+I'm not a lawyer, and this isn't legal advice. But as I read those summaries, hosting in Singapore isn't forbidden; it just needs documenting. Hosting in Malaysia removes a category of paperwork. For some customers, especially government-linked ones or enterprises with their own policies, "the data stays in Malaysia" is a requirement in the contract. If that's your market, the decision is made for you.
+
+## The constraint nobody puts in the region picker
+
+Here's the part I think engineers underrate. The capacity behind "Malaysia" is being built fast, and it's running into physical limits.
+
+In a parliamentary reply reported last month, the government projected that peak electricity demand from data centres in Peninsular Malaysia could reach [8.39 GW by 2030, with Johor the largest share](https://www.malaymail.com/news/malaysia/2026/10/20/data-centres-power-demand-to-hit-839gw-by-2030-with-johor-accounting-for-biggest-share/239800), and that water demand from data centres in Selangor and Johor could reach about 389 million litres a day. Johor already requires new projects to meet a water usage effectiveness threshold of 1.8, and says approval [still depends on whether enough water is available](https://www.thestar.com.my/news/nation/2026/01/06/johor-ensures-thorough-evaluation-of-data-centre-projects). Operators are responding: DayOne treats raw water from Sungai Tebrau for its Johor campus, the [example the state is now pushing](https://www.nst.com.my/amp/news/nation/2026/11/1571372/johor-pushes-data-centres-use-treated-water-polluted-rivers), and Google has paired its investment with water replenishment projects, which critics note are [an offset rather than a reduction](https://e27.co/googles-us15b-malaysia-bet-comes-with-a-promise-to-pay-its-own-power-bill-20261105/).
+
+None of this changes your region choice tomorrow. Hyperscalers don't let a water permit take your app down. But it changes two things I care about as a climate-tech founder:
+
+- **Capacity isn't infinite.** GPU instances and new instance families may arrive later, or in smaller quantities, in a region whose expansion depends on permits and power. If your roadmap leans on scarce hardware, have a second region in your plan.
+- **Your footprint is now local.** When your servers sit in Johor or Selangor, the water they use comes out of the same basins that farmers and households rely on. We spend a lot of time at [HiTerra](https://hiterra.co) thinking about measuring environmental impact honestly (that's what [MRV](/blog/mrv-explained-for-engineers) is about). The least I can do is size workloads sensibly and turn off what I'm not using.
+
+## How I'd decide, in practice
+
+Here's the rule of thumb I'd give a team starting today:
+
+1. **Default to Malaysia** if your users and customers are mostly in Malaysia, your stack is mainstream (containers, Postgres, object storage, queues), and anyone in your pipeline cares about data staying in the country.
+2. **Default to Singapore** if you depend on a long tail of managed services, specific GPU capacity or in-region AI models, or if your users are spread across Southeast Asia.
+3. **Either way, keep the decision reversible.** Infrastructure as code with the region as a variable. No hard-coded endpoints. Backups replicated to the other region. A move then becomes a project, not a rewrite.
+4. **Separate the AI layer from the data layer.** Keep your system of record wherever residency says it should live, and treat model calls as an external dependency whose processing location you document. That's the same separation I argued for in [why we didn't build our AI platform around AI](/blog/why-we-didn-t-build-our-ai-platform-around-ai-yet): boring foundation first, AI as a layer on top.
+
+## FAQ
+
+**Is the AWS Malaysia region production-ready?**
+It has been generally available since August 2024 with three Availability Zones. Service coverage is narrower than Singapore, so check the specific services and instance types you need before you migrate.
+
+**Do I legally have to host Malaysian personal data in Malaysia?**
+Not as a blanket rule, as far as I can tell from law-firm summaries of the 2025 PDPA changes. Cross-border transfers are allowed under listed conditions, with record-keeping. Specific sectors and customer contracts may require more, so get proper legal advice for your case.
+
+**Is there a Google Cloud region in Malaysia?**
+Not yet, as of mid-November 2026. Google describes it as upcoming and hasn't announced a launch date.
+
+**Will Malaysia's data centre water and power limits affect my app?**
+Not directly. Those limits shape how fast new capacity gets built, not whether existing regions stay up. The practical risk is slower arrival of scarce hardware, which a second-region plan covers.
+
+## The takeaway
+
+The Malaysia vs Singapore cloud region question used to have one answer. Now it has a checklist: where your users are, what your contracts say, which services and models you need, and how reversible you've kept things. Most mainstream Malaysian products can now live at home. Just make sure "at home" includes everything your stack depends on.
+
+If you're making this call at your company and want a second opinion, that's the kind of infrastructure planning we do at [Corplabs](https://corplabs.co). And if you'd like more posts like this, the newsletter is just below.
