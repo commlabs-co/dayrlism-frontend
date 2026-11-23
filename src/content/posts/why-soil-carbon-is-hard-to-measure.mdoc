@@ -1,0 +1,92 @@
+---
+title: Why Soil Carbon Is So Hard to Measure
+publishedAt: 2026-11-26
+summary: >-
+  Soil carbon measurement is hard because a credit is the difference between
+  two noisy estimates. An engineer's view of what that means for MRV software.
+tags:
+  - agritech
+  - climate
+  - dayrlism
+coverImage: /images/blog/why-soil-carbon-is-hard-to-measure/coverImage.png
+video:
+  src: /videos/blog/why-soil-carbon-is-hard-to-measure/video.mp4
+  poster: /videos/blog/why-soil-carbon-is-hard-to-measure/poster.jpg
+  duration: 30
+draft: false
+---
+Last week at COP31, negotiators argued about how much caution is too much. A draft text on the UN carbon market, [reported by Climate Home News on 16 November](https://www.climatechangenews.com/2026/11/16/countries-take-up-industry-push-to-loosen-un-carbon-market-rules-at-cop31/), asked the market's Supervisory Body to look at how its conservative adjustments stack up, and what that does to credit volumes and prices.
+
+That sounds like diplomacy. It's really a question about error bars — and nowhere are the error bars wider than in soil.
+
+Soil carbon measurement is the hardest measurement problem I know of in carbon markets. Not because the chemistry is exotic, but because of what is actually being sold. I wrote earlier about [MRV as a data pipeline](/blog/mrv-explained-for-engineers). This post goes one layer down, into the measurement itself, and what it demands from the software.
+
+## Why soil carbon measurement is hard: you're selling a diff
+
+A soil carbon credit isn't a measurement of carbon. It's the *difference* between two measurements, taken years apart, compared against what would have happened anyway. Every term in that subtraction is noisy.
+
+**The signal is small and the background is huge.** Soil already holds a lot of carbon, and farming practices change it slowly. Researchers at Illinois and Yale put it plainly: the change is slow against a large background stock, so [detecting it takes many samples](https://asc.illinois.edu/uncategorized/research-shows-the-feasibility-of-large-scale-carbon-measurement-for-agricultural-greenhouse-gas-accounting/).
+
+How many, and how long? A [2011 study in Biogeosciences](https://bg.copernicus.org/articles/8/1193/2011/) took 100 soil cores at each of 12 European sites. Even at that density, the authors estimated a change would take 2 to 15 years to become detectable — and only if it happened in the top 10 cm of soils with few stones. A [2014 study across 13 sites in the US north central region](https://corn.agronomy.wisc.edu/Pubs/JL_JournalArticles/Journal%20of%20Soil%20and%20Water%20Conservation-2014-Necp%C3%A1lov%C3%A1-517-31.pdf) predicted anywhere from 8 to more than 100 years to detect a difference between tillage systems with five replicates, depending on the site.
+
+**A "stock" is several measurements multiplied together.** A lab gives you carbon concentration. To get tonnes per hectare you also need bulk density, sampling depth, and the share of the sample that is actually fine soil rather than stones. Each one carries its own error.
+
+**The ruler moves.** Change how a field is tilled and the soil's density changes with it. Sample to the same fixed depth twice and you may be comparing different masses of soil. The correction is called [equivalent soil mass](https://extension.okstate.edu/fact-sheets/estimating-soil-organic-carbon-stocks-in-fixed-depth-and-fixed-mass-of-soil), and it isn't cosmetic. A [2024 study](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10811869/) found that both the size and the *direction* of measured change can depend on the accounting method and the sampling depth.
+
+Read that again as an engineer. The same field, the same cores, and a gain can become a loss depending on a calculation choice.
+
+**The rulebooks disagree.** A review by the Environmental Defense Fund and Woodwell Climate Research Center looked at 12 published protocols for cropland soil credits and found [widely different approaches](https://edf.org/agricultural-soil-carbon-credits) to measuring, reporting, and verifying — and to additionality, reversals, and permanence.
+
+Satellites don't rescue you here, either. They help decide where to sample and what happened on the surface, but [satellite models are built on what the surface shows](https://agris.fao.org/search/en/records/6878e36c0868163a2f751908) — bare topsoil — not a stock at depth. That one deserves its own post.
+
+## The insight: the product is the error bar
+
+Here's what most explainers skip. In soil carbon, uncertainty isn't a footnote under the number. It *is* the number.
+
+Crediting methodologies don't pay you for your best estimate. Verra's [VM0042](https://verra.org/methodologies/vm0042-improved-agricultural-land-management/) — its methodology for improved agricultural land management — applies an [uncertainty deduction](https://verra.org/documents/vm0042-and-vmd0053-vvb-assessment-report): the less sure you are, the less you can claim. I won't reproduce the formula here; the direction is what matters.
+
+So the width of your confidence interval is a revenue line. Two projects can store identical carbon in identical soil and be issued different volumes of credits, purely because one of them measured better.
+
+That's also what the COP31 argument was about. Every haircut for uncertainty protects the atmosphere from over-crediting, and every haircut also makes a project harder to finance. Stack enough of them and honest projects stop pencilling out. Remove them and you sell tonnes that may not exist.
+
+Software can't settle that politically. It can do something more useful: make the uncertainty smaller, so the haircut matters less.
+
+The Illinois and Yale team makes the case that this is feasible. Their [2025 paper](https://www.sciencedaily.com/releases/2025/01/250117123450.htm) argues that directly measuring and remeasuring can be economical at scale when a project samples a random subset of fields — on the order of 10% — rather than every one. They published an open-source tool for modelling the cost trade-offs.
+
+Notice what that is. Deciding which fields to sample, how many cores, and where is a design problem solved before anyone picks up an auger. Sampling design is software.
+
+## What this means for MRV software
+
+At HiTerra we build [MRV software for agricultural carbon projects](https://hiterra.co), so this is where the theory lands on my desk. Five rules follow from "the product is the error bar."
+
+**Store the ingredients, not the answer.** Keep concentration, bulk density, depth, sample mass, lab method, and coordinates as separate, raw values. A single "tonnes of carbon per hectare" column is a lossy cache. If the sample mass was never recorded, no later correction can recover it.
+
+**Commit the sampling plan before the data exists.** Sample points should be randomised, timestamped, and locked before lab results come back. Otherwise nobody can prove the points weren't chosen because they looked good. Treat the plan like a signed commit, not an editable spreadsheet.
+
+**Make every point re-locatable.** The whole method depends on coming back years later to the same place. The plan has to outlive the people, the phones, and the vendor that created it.
+
+**Carry uncertainty as a first-class value.** A stock is a distribution with lineage, not a float. The diff of two distributions is wider than either. If your schema can't express that, your reports will overstate confidence by default.
+
+**Version the method, and expect it to change.** VM0042 v2.2 is dated October 2025. Verra issued [corrections and clarifications](https://verra.org/program-notice/corrections-and-clarifications-to-ialm-methodology-vm0042/) to it in June 2026, including on its five-year remeasurement requirement, and [consulted on a major revision](https://verra.org/verra-consults-on-major-revision-to-improved-agricultural-land-management-methodology-vm0042/) earlier this year. A project lives through several rulebooks. Recomputing under new rules is only possible if you kept the ingredients.
+
+None of this is glamorous. It's the same instinct behind [keeping AI a thin layer on a solid foundation](/blog/why-we-didn-t-build-our-ai-platform-around-ai-yet): a model trained on soil data you can't defend is a confident guess.
+
+## Where this breaks
+
+Three honest limits.
+
+**Smallholders.** The sampling economics I cited come from large commercial farms — projects spanning tens of thousands of acres. I haven't found equivalent evidence for mosaics of very small plots, which is what much of Southeast Asian farming looks like. A [working paper from the Center for Development Research in Bonn](https://www.zef.de/media-assets/publications/zef_wp/zef_working_paper_251.pdf) describes satellite performance in heterogeneous smallholder settings as uncertain. This is an open problem, not a solved one.
+
+**Permanence.** Measurement tells you what is in the ground on sampling day. It says nothing about whether the carbon stays there. The UN mechanism's permanence rules were [contested when they were approved](https://www.spglobal.com/commodity-insights/en/news-research/latest-news/energy-transition/101625-easing-of-article-64-permanence-rules-sparks-mixed-reactions) in October 2025. Better sampling doesn't answer that.
+
+**The rules themselves.** COP31 closed at the weekend [without an agreed overall deal](https://www.cbc.ca/news/world/cop31-talks-collapse-fossil-fuel-9.7431847). What I've described is a draft; I haven't seen the final Article 6.4 text, so I won't claim what it says. Carbon Market Watch's [reading](https://carbonmarketwatch.org/2026/11/22/cmw-cop31-reaction-climate-focus-of-article-6-survives-fossil-fueled-market-lobby-for-now/) is that the rules held for now, with a wider review due in 2028.
+
+The money isn't waiting. In January, Microsoft agreed to buy [2.85 million tonnes of soil carbon removal from Indigo](https://www.indigoag.com/pages/news/indigo-to-sell-2.85-million-tonnes-of-carbon-removal-to-microsoft) over 12 years. Buyers at that scale will ask how the tonnes were measured.
+
+## The takeaway
+
+A soil carbon credit is the difference between two uncertain estimates. The job of MRV software is to make that uncertainty small, explicit, and defensible — because the uncertainty is what gets priced.
+
+One specific next step, if you work on anything like this: take a single field in your system and try to recompute its stock change with a different sampling depth, or on an equivalent-mass basis. If you can't, you've stored answers instead of ingredients. Fix that before you build anything clever on top.
+
+I'll come back to permanence and to satellite versus ground-truth data in later posts. If you'd like those in your inbox, the newsletter is just below.
